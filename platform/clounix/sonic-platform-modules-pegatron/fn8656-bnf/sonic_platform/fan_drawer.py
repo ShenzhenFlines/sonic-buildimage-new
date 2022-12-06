@@ -17,7 +17,7 @@ except ImportError as e:
 
 class FanDrawer(FanDrawerBase):
 
-    def __init__(self, index,fandrawer_conf):
+    def __init__(self, index, fandrawer_conf):
         self.__conf = fandrawer_conf
         self.__num_of_fans = len(self.__conf[index]['fans'])
         self.__index = index

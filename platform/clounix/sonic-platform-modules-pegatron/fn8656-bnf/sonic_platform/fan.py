@@ -13,7 +13,7 @@ except ImportError as e:
 
 class Fan(FanBase):
 
-    def __init__(self, index,fan_conf):
+    def __init__(self, index, fan_conf):
         self.__index = index
         self.__conf = fan_conf
         self.__api_helper = APIHelper()

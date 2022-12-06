@@ -59,7 +59,7 @@ class QSfp(SfpBase):
     dom_tx_disable_supported = True
     calibration = 1
 
-    def __init__(self, index,qsfp_conf):
+    def __init__(self, index, qsfp_conf):
         self.__index = index
         self.__conf = qsfp_conf
         self.__api_helper = APIHelper()
@@ -130,8 +130,8 @@ class QSfp(SfpBase):
             raw_len = len(raw)
             for n in range(0, raw_len):
                 eeprom_raw[n] = hex(raw[n])[2:].zfill(2)
-        except BaseException:
-            pass
+        #except BaseException:
+        #    pass
         finally:
             if sysfsfile_eeprom:
                 sysfsfile_eeprom.close()

@@ -16,7 +16,7 @@ except ImportError as e:
 
 class Psu(PsuBase):
 
-    def __init__(self, index,psu_conf):
+    def __init__(self, index, psu_conf):
         self.__num_of_fans = len(psu_conf[index]['fans'])
         self.__num_of_thermals = len(psu_conf[index]['thermals'])
         self.__index = index

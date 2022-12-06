@@ -241,7 +241,7 @@ def _get_platform_and_hwsku():
     cmd = ['show', 'platform', 'summary']
     cmd_out = subprocess.check_output(cmd)
     g_sfp_logger.debug(cmd_out)
-    pt = re.compile(r'^Platform:\s*([^\n\r\b]*).*HwSKU\s*:\s*([^\n\r\b]*)', re.I | re.M | re.S)
+    pt = re.compile(r'^Platform:\s*([^\n\r\x08]*).*HwSKU\s*:\s*([^\n\r\x08]*)', re.I | re.M | re.S)
     result = pt.search(cmd_out)
     if result is not None:
         g_sfp_logger.debug("type result:{}, result:{}\nmatch:{}\n".format(type(result), result, result.group()))
@@ -252,7 +252,7 @@ def _get_platform_and_hwsku():
         cmd = ['show', 'platform', 'syseeprom']
         cmd_out = subprocess.check_output(cmd)
         g_sfp_logger.debug(cmd_out)
-        pt = re.compile(r'^Platform\s+Name\s+\w+\s+\d+\s+([^\n\r\b]*)', re.I | re.M | re.S)
+        pt = re.compile(r'^Platform\s+Name\s+\w+\s+\d+\s+([^\n\r\x08]*)', re.I | re.M | re.S)
         result = pt.search(cmd_out)
         if result is not None:
             g_sfp_logger.debug("type result:{}, result:{}\nmatch:{}\n".format(type(result), result, result.group()))
@@ -2061,7 +2061,6 @@ def detect_config_by_user_port(user_port_str=None,
         except ValueError as e:
             err_msg = "{}: {} in {}\n".format(_get_func_meta(), e, START_UP_CFG_FILE)
             g_sfp_logger.info(err_msg)
-            pass
     cfg.update(phy_port_media_dsh)
     with open(START_UP_CFG_FILE, mode='w') as fp:
         json.dump(cfg, fp, indent=4)

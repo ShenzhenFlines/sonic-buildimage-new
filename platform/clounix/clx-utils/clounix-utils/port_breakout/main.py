@@ -22,7 +22,7 @@ from tabulate import tabulate
 import click
 
 import libpcfgparsing as PCFG
-from sonic_py_common.device_info import get_machine_info
+#from sonic_py_common.device_info import get_machine_info
 from sonic_py_common.device_info import get_platform_info
 #from swsssdk import ConfigDBConnector, SonicV2Connector
 from swsssdk import SonicV2Connector
@@ -119,8 +119,8 @@ def get_port_config_clx(platform, hwsku):
 
 
 def get_platform():
-    machine_info = get_machine_info()
-    platform = get_platform_info(machine_info)
+    #machine_info = get_machine_info()
+    platform = get_platform_info()
     return platform
 
 

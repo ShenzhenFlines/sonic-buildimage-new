@@ -125,8 +125,8 @@ class Sfp(SfpBase):
             raw_len = len(raw)
             for n in range(0, raw_len):
                 eeprom_raw[n] = hex(raw[n])[2:].zfill(2)
-        except BaseException:
-            pass
+        #except BaseException:
+        #    pass
         finally:
             if sysfsfile_eeprom:
                 sysfsfile_eeprom.close()

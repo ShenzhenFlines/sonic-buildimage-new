@@ -78,20 +78,20 @@ class Chassis(ChassisBase):
         # Initialize CHASSIS FAN DRWAER
         for drawer_index in range(0, self.__num_of_fan_drawers):
             fandrawer_conf=chassis_conf['fan_drawers']
-            fan_drawer = FanDrawer(drawer_index,fandrawer_conf)
+            fan_drawer = FanDrawer(drawer_index, fandrawer_conf)
             self._fan_drawer_list.append(fan_drawer)
 
 
         # Initialize PSU
         for index in range(0, self.__num_of_psus):
             psu_conf=chassis_conf['psus']
-            psu = Psu(index,psu_conf)
+            psu = Psu(index, psu_conf)
             self._psu_list.append(psu)
 
         # Initialize SFP
         for index in range(0, self.__num_of_sfps):
             qsfp_conf=chassis_conf['sfps']
-            sfp = QSfp(index,qsfp_conf)
+            sfp = QSfp(index, qsfp_conf)
             self._sfp_list.append(sfp)
 
         # Initialize CHASSIS THERMAL
@@ -99,13 +99,13 @@ class Chassis(ChassisBase):
         for x in range(0, self.__num_of_thermals):
             thermal_conf[x].update({'container':'chassis'})
             thermal_conf[x].update({'container_index':0})
-            thermal = Thermal(x,thermal_conf)
+            thermal = Thermal(x, thermal_conf)
             self._thermal_list.append(thermal)
 
         # Initialize COMPONENT
         for index in range(0, self.__num_of_components):
             component_conf=chassis_conf['components']
-            component = Component(index,component_conf)
+            component = Component(index, component_conf)
             self._component_list.append(component)
 
         # Initialize WATCHDOG

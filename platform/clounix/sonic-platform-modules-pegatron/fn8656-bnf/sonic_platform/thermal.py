@@ -20,7 +20,7 @@ class Thermal(ThermalBase):
 
     SS_CONFIG_PATH = "/etc/sensors.d/sensors.conf"
 
-    def __init__(self, thermal_index,thermal_conf):
+    def __init__(self, thermal_index, thermal_conf):
         self.__index = thermal_index
         self.__conf = thermal_conf
         

@@ -17,7 +17,7 @@ import common, device
 #import fwupdates
 import os
 
-HOST = ''
+HOST = '127.0.0.1'
 SOCKET_LIST = []
 SOCKET_MAX_CLIENT = 10
 QUEUES = []
