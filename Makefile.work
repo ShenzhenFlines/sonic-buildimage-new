@@ -41,6 +41,9 @@
 #  * BUILD_LOG_TIMESTAMP: Set timestamp in the build log (simple/none)
 #  * DOCKER_EXTRA_OPTS: Extra command line arguments for dockerd running in slave container.
 #
+#  * INCLUDE_SDK: Include SDK.
+#  *                 Default: no
+#  *                 Values:  yes, no
 ###############################################################################
 
 SHELL = /bin/bash
@@ -85,6 +88,8 @@ endif
 $(shell rm -f .screen)
 
 MAKEFLAGS += -B
+
+INCLUDE_SDK ?= no
 
 CONFIGURED_ARCH := $(shell [ -f .arch ] && cat .arch || echo $(PLATFORM_ARCH))
 ifeq ($(CONFIGURED_ARCH),)
@@ -280,6 +285,7 @@ SONIC_BUILD_INSTRUCTION :=  make \
                            SONIC_ENABLE_IMAGE_SIGNATURE=$(ENABLE_IMAGE_SIGNATURE) \
                            SONIC_DEFAULT_CONTAINER_REGISTRY=$(DEFAULT_CONTAINER_REGISTRY) \
                            SLAVE_DIR=$(SLAVE_DIR) \
+			   INCLUDE_SDK=$(INCLUDE_SDK) \
                            $(SONIC_OVERRIDE_BUILD_VARS)
 
 .PHONY: sonic-slave-build sonic-slave-bash init reset
