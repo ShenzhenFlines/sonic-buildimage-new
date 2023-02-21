@@ -619,7 +619,6 @@ static struct attribute_group motor_attr_group = {
     .attrs = motor_attrs,
 };
 
-/* create fan* eeprom attributes */
 static int fan_sub_single_create_eeprom_attrs(unsigned int index)
 {
     int ret, eeprom_size;
@@ -651,7 +650,7 @@ static int fan_sub_single_create_eeprom_attrs(unsigned int index)
 
     return 0;
 }
-/* remove fan eeprom directory and attributes */
+
 static void fan_sub_single_remove_eeprom_attrs(unsigned int index)
 {
     struct fan_obj_s *curr_fan;
@@ -808,7 +807,6 @@ static int fan_sub_single_remove_kobj_and_attrs(unsigned int index)
     struct fan_obj_s *curr_fan;
 
     fan_sub_single_remove_eeprom_attrs(index);
-
     curr_fan = &g_fan.fan[index - 1];
     if (curr_fan->obj) {
         sysfs_remove_group(&curr_fan->obj->kobj, &fan_attr_group);
@@ -838,10 +836,10 @@ static int fan_sub_single_create_kobj_and_attrs(struct kobject *parent, unsigned
         switch_kobject_delete(&curr_fan->obj);
         return -EBADRQC;
     }
-    FAN_DBG("create %s dir and attrs success.\n", name);
 
     fan_sub_single_create_eeprom_attrs(index);
-
+    
+    FAN_DBG("create %s dir and attrs success.\n", name);
     return 0;
 }
 

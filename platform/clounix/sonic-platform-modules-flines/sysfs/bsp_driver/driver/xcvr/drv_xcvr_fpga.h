@@ -132,11 +132,11 @@ inline static int fpga_reg_read(struct clounix_priv_data *priv, int reg)
 #define QSFP_START_PORT                  48
 /*platform CLX128000*/
 #define SFP_CONFIG_ADDRESS_BASE         (CPLD_BASE_ADDRESS + 0x30)
-#define SFP_CONFIG_TX_DIS_OFFSET         0
+#define SFP_CONFIG_TX_DIS_OFFSET        0
 #define SFP_STATUS_ADDRESS_BASE         (CPLD_BASE_ADDRESS + 0x34)
-#define SFP_STATUS_RXLOS_OFFSET       0
-#define SFP_STATUS_TXTAULT_OFFSET     2
-#define SFP_STATUS_PRESENT_OFFSET     4 
+#define SFP_STATUS_RXLOS_OFFSET       	0
+#define SFP_STATUS_TXTAULT_OFFSET     	2
+#define SFP_STATUS_PRESENT_OFFSET     	4 
 #define SFP_START_PORT                  32
 
 #define FPGA_PORT_BASE      (0x1000) 

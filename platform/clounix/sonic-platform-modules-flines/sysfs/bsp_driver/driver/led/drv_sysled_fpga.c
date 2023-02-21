@@ -20,7 +20,8 @@ struct drv_sysled_fpga driver_sysled_clx8000;
 7: blue(篮色)
 8: blue light flashing(蓝色闪烁)
 */
-static char *colors[] = {
+static char *colors[] =
+{
     "off",
     "blue",
     "green",
@@ -49,8 +50,7 @@ typedef enum sysled_types
 
 #define SYSLED_REG_BIT_DATA_WR(idx, mask, data) (((data)&mask) << ((idx)*2))
 
-typedef enum user_sysled_state
-{
+typedef enum user_sysled_state {
     USER_SYSLED_DARK,
     USER_SYSLED_GREEN,
     USER_SYSLED_RED,
@@ -61,27 +61,24 @@ typedef enum user_sysled_state
     USER_SYSLED_BLUE,
     USER_SYSLED_BLUE_BLINKING,
     USER_SYSLED_NOT_SUPPORT
-} user_sysled_state_s;
+}user_sysled_state_s;
 
 /*PSU FAN*/
-enum dev_led_state
-{
+enum dev_led_state {
     DEV_LED_DARK,
     DEV_LED_GREEN,
     DEV_LED_RED,
     DEV_LED_YELLOW,
 };
 /*SYSLED*/
-enum dev_sysled_state
-{
+enum dev_sysled_state {
     DEV_SYSLED_GREEN_BLINKING,
     DEV_SYSLED_GREEN,
     DEV_SYSLED_RED,
     DEV_SYSLED_YELLOW,
 };
 /*IDLED*/
-enum dev_idled_state
-{
+enum dev_idled_state {
     DEV_IDLED_DARK,
     DEV_IDLED_BLUE,
 };
@@ -136,7 +133,6 @@ ssize_t front_panel_show(struct drv_sysled_fpga *sysled, sysled_types_s type, ch
 ssize_t front_panel_store(struct drv_sysled_fpga *sysled, sysled_types_s type, unsigned char state)
 {
     unsigned int data = readl(sysled->sysled_base + FRONT_PANEL_CFG);
-    unsigned char bit_info;
     unsigned char dev_state = 0;
     unsigned char mask = 0;
     char *led_type_name[LED_MAX] = {"psu", "sys", "fan", "bmc", "id"};
@@ -208,24 +204,23 @@ ssize_t back_panel_show(struct drv_sysled_fpga *sysled, char *buf, int index)
     unsigned char bit_info = (data >> index) & 0x3;
     char *ret_str;
 
-    switch (index)
-    {
-    case 0:
-        if (bit_info == 0)
-            ret_str = OFF(colors);
-        else
-            ret_str = YELLOW(colors);
-        break;
+    switch (index) {
+        case 0:
+            if (bit_info == 0)
+                ret_str = OFF(colors);
+            else
+                ret_str = YELLOW(colors);
+            break;
 
-    case 2:
-        if (bit_info == 0)
-            ret_str = OFF(colors);
-        else
-            ret_str = BLUE(colors);
-        break;
+        case 2:
+            if (bit_info == 0)
+                ret_str = OFF(colors);
+            else
+                ret_str = BLUE(colors);
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return sprintf(buf, "%s\n", ret_str);

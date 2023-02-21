@@ -45,7 +45,6 @@
     "tmp75",
     "adm1166",
     "pca9555",
-    "reboot_eeprom_dev_driver",
     "cputemp_dev_driver"
   ]
 }

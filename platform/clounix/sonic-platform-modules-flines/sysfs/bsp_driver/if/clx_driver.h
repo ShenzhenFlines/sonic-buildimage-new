@@ -36,7 +36,6 @@ typedef enum {
 	CLX_DRIVER_TYPES_SYSLED,
 	CLX_DRIVER_TYPES_PLT,
 	CLX_DRIVER_TYPES_LPC,
-	CLX_DRIVER_TYPES_REBOOT_EEPROM,
 	CLX_DRIVER_TYPES_MAX
 }driver_types_t;
 
@@ -91,15 +90,13 @@ struct bd_syseeprom {
     unsigned char mux_addr;
     unsigned char mux_channel;
 };
-struct bd_reboot_eeprom {
-	char name[BOARD_NAME_LEN];
-};
+
 struct bd_fan {
 	char name[BOARD_NAME_LEN];
 	unsigned int fan_num;
-        unsigned int motor_per_fan;
-        unsigned char bus;
-        unsigned char addr;
+    unsigned int motor_per_fan;
+    unsigned char bus;
+    unsigned char addr;
 };
 
 struct bd_cpld {
@@ -139,6 +136,8 @@ struct bd_i2c_master {
 
 struct bd_fpga {
 	char name[BOARD_NAME_LEN];
+	unsigned char reboot_eeprom_bus;
+    unsigned char reboot_eeprom_addr;
 };
 
 struct bd_watchdog {
@@ -152,7 +151,6 @@ struct bd_lpc {
 struct board_info {
 	struct bd_common common;
 	struct bd_syseeprom syse2p;
-	struct bd_reboot_eeprom reboote2p;
 	struct bd_fan fan;
 	struct bd_cpld cpld;
 	struct bd_sysled sysled;

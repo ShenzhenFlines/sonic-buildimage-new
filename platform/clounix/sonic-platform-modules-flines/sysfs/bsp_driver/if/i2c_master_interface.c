@@ -1,13 +1,16 @@
 #include "clx_driver.h"
 
 extern int drv_i2c_xilinx_init(void **driver);
+extern int drv_i2c_master_xilinx_init(void **driver);
 extern int drv_i2c_anlogic_init(void **driver);
 extern void drv_i2c_xilinx_exit(void **driver);
+extern void drv_i2c_master_xilinx_exit(void **driver);
 extern void drv_i2c_anlogic_exit(void **driver);
 
 static struct driver_map i2c_master_drv_map[] = {
     {"drv_i2c_xilinx", drv_i2c_xilinx_init, drv_i2c_xilinx_exit},
     {"drv_i2c_anlogic", drv_i2c_anlogic_init, drv_i2c_anlogic_exit},
+    {"drv_i2c_master_xilinx", drv_i2c_master_xilinx_init, drv_i2c_master_xilinx_exit},
 };
 
 struct i2c_master_fn_if *i2c_master_driver;

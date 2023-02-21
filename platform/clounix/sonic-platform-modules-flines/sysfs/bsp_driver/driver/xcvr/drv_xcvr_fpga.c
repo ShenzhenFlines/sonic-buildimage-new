@@ -1133,6 +1133,36 @@ static ssize_t get_sfp_present(struct clounix_priv_data *sfp,
 
     return sprintf(buf, "%d\n", val);
 }
+
+static ssize_t get_dsfp_interrupt(struct clounix_priv_data *sfp,
+                unsigned int eth_index, char *buf, size_t count)
+{
+    uint32_t data = 0, val = 0, idx = 0,reg;
+
+    idx = sfp->chip[eth_index].cpld_idx;
+    GET_DSFP_IRQ_STATUS_ADDRESS(idx, reg);
+    data = fpga_reg_read(sfp, reg);
+    LOG_DBG(CLX_DRIVER_TYPES_XCVR, "eth_index:%d, reg: %x, data: %x\r\n",eth_index, reg, data);
+    if(eth_index >= xcvr_cpld_index[sfp->platform_type][0])
+        GET_BIT(data, (eth_index - xcvr_cpld_index[sfp->platform_type][0]), val);
+    else
+        GET_BIT(data, eth_index, val);
+
+    return sprintf(buf, "%d\n", val);
+}
+
+static ssize_t get_qsfp_interrupt(struct clounix_priv_data *sfp,
+                unsigned int eth_index, char *buf, size_t count)
+{
+    uint32_t data = 0, val = 0;
+
+    data = fpga_reg_read(sfp, QSFP_STATUS_ADDRESS_BASE);
+    LOG_DBG(CLX_DRIVER_TYPES_XCVR, " reg: %x, data: %x\r\n", QSFP_STATUS_ADDRESS_BASE, data);
+    GET_BIT((data >> QSFP_STATUS_IRQ_OFFSET), (eth_index - QSFP_START_PORT), val);
+
+    return sprintf(buf, "%d\n", val);
+}
+
 /*
  * drv_xcvr_get_eth_present_status - Used to get port present status,
  * filled the value to buf, 1: present, 0: absent
@@ -1419,8 +1449,18 @@ static int drv_xcvr_set_eth_low_power_mode_status(void *xcvr, unsigned int eth_i
  */
 static ssize_t drv_xcvr_get_eth_interrupt_status(void *xcvr, unsigned int eth_index, char *buf, size_t count)
 {
-    /* it is not supported */
-    return -ENOSYS;
+    struct clounix_priv_data *sfp = &(((struct drv_xcvr_fpga *)xcvr)->dev);
+    switch (get_sfp_porttype(eth_index,sfp->platform_type))
+    {
+    case PORT_DSFP:
+        return get_dsfp_interrupt(sfp, eth_index, buf, count);
+    case PORT_QSFP:
+        return get_qsfp_interrupt(sfp, eth_index, buf, count);
+    case PORT_SFP:
+        return sprintf(buf, "0x%02x\n", 1);       
+    default:
+        return -ENOSYS;
+    }
 }
 
 /*

@@ -14,6 +14,11 @@ struct fpga_fn_if {
     ssize_t (*get_main_board_fpga_board_version)(void * driver, unsigned int fpga_index, char *buf, size_t count);
     ssize_t (*get_main_board_fpga_test_reg)(void * driver, unsigned int fpga_index, char *buf, size_t count);
     int (*set_main_board_fpga_test_reg)(void * driver, unsigned int fpga_index, unsigned int value);
+    int (*get_reboot_eeprom_size)(void * driver);
+    ssize_t (*read_reboot_eeprom_data)(void * driver, char *buf, loff_t offset, size_t count);
+    ssize_t (*write_reboot_eeprom_data)(void * driver, char *buf, loff_t offset, size_t count); 
+    unsigned char reboot_eeprom_bus;
+    unsigned char reboot_eeprom_addr; 
 };
 
 #define FPGA_DEV_VALID(dev) \
