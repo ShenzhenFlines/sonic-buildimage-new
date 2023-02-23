@@ -148,7 +148,7 @@ static int drv_fpga_dev_init(struct fpga_driver_common *fpga)
  * This function returns the size of reboot eeprom by your switch,
  * otherwise it returns a negative value on failed.
  */
-static int drv_get_reboot_eeprom_size(void * driver)
+static int drv_get_reboot_eeprom_size(void * fpga)
 {
     /* add vendor codes here */
     return 8;
@@ -164,10 +164,10 @@ static int drv_get_reboot_eeprom_size(void * driver)
  * returns 0 means EOF,
  * otherwise it returns a negative value on failed.
  */
-ssize_t drv_read_reboot_eeprom_data(void * driver, char *buf, loff_t offset, size_t count)
+ssize_t drv_read_reboot_eeprom_data(void * fpga, char *buf, loff_t offset, size_t count)
 {
-    struct fpga_driver_common *dev = (struct fpga_driver_common *)driver;
-    //REBOOTE2_DBG("read bus:%d addr:0x%x offset:0x%x, count:%d", dev->fpga_if.reboot_eeprom_bus, dev->fpga_if.reboot_eeprom_addr, offset, count);
+    struct fpga_driver_common *dev = (struct fpga_driver_common *)fpga;
+    LOG_DBG(CLX_DRIVER_TYPES_FPGA,"read bus:%d addr:0x%x offset:0x%x, count:%d", dev->fpga_if.reboot_eeprom_bus, dev->fpga_if.reboot_eeprom_addr, offset, count);
     return clx_i2c_read(dev->fpga_if.reboot_eeprom_bus, dev->fpga_if.reboot_eeprom_addr, offset, buf, count);
 }
 
@@ -181,10 +181,10 @@ ssize_t drv_read_reboot_eeprom_data(void * driver, char *buf, loff_t offset, siz
  * returns 0 means EOF,
  * otherwise it returns a negative value on failed.
  */
-static ssize_t drv_write_reboot_eeprom_data(void * driver, char *buf, loff_t offset, size_t count)
+static ssize_t drv_write_reboot_eeprom_data(void * fpga, char *buf, loff_t offset, size_t count)
 {
-    struct fpga_driver_common *dev = (struct fpga_driver_common *)driver;
-    //REBOOTE2_DBG("write bus:%d addr:0x%x offset:0x%x, count:%d", dev->fpga_if.reboot_eeprom_bus, dev->fpga_if.reboot_eeprom_addr, offset, count);
+    struct fpga_driver_common *dev = (struct fpga_driver_common *)fpga;
+    LOG_DBG(CLX_DRIVER_TYPES_FPGA, "write bus:%d addr:0x%x offset:0x%x, count:%d", dev->fpga_if.reboot_eeprom_bus, dev->fpga_if.reboot_eeprom_addr, offset, count);
     return clx_i2c_write(dev->fpga_if.reboot_eeprom_bus, dev->fpga_if.reboot_eeprom_addr, offset, buf, count);
 }
 

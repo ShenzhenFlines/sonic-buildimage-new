@@ -29,6 +29,7 @@ int fpga_if_create_driver(void)
     int rc = DRIVER_ERR;
 
     driver_type = clx_driver_identify(CLX_DRIVER_TYPES_FPGA);
+
     for (i = 0; i < sizeof(fpga_drv_map)/sizeof(fpga_drv_map[0]); i++)
     {
         it = &fpga_drv_map[i];
@@ -37,13 +38,14 @@ int fpga_if_create_driver(void)
              rc = it->driver_init((void *)&fpga_driver);
         }
     }
+    
+    clx_driver_fpga_common_init((void *)&fpga_driver);
+
     if (DRIVER_OK == rc) {
         bd = clx_driver_get_platform_bd();
         fpga_driver->reboot_eeprom_bus = bd->fpga.reboot_eeprom_bus;
         fpga_driver->reboot_eeprom_addr = bd->fpga.reboot_eeprom_addr;
-    }	
-    
-    clx_driver_fpga_common_init((void *)&fpga_driver);
+    }
 
     return rc;
 }

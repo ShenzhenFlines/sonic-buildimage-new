@@ -433,7 +433,7 @@ static int clounix_i2c_master_smbus_xfer(struct i2c_adapter *adap, unsigned shor
     case I2C_SMBUS_WORD_DATA:
 
         tmp_value = (FPGA_I2C_MASTER_MGR_RST | FPGA_I2C_MASTER_MGR_ENABLE | (r_addr << 8) | w_addr);
-        
+
         writel(tmp_value, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_CFG_ADDR);
 
         if (read_write == I2C_SMBUS_READ)

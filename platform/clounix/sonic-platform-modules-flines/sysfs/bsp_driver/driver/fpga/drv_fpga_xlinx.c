@@ -275,7 +275,6 @@ void drv_xilinx_fpga_remove(struct pci_dev *pdev)
     devm_release_mem_region(&pdev->dev, pci_resource_start(pdev, 0), pci_resource_len(pdev, 0));
     pci_disable_device(pdev);
     sysfs_remove_file(&pdev->dev.kobj, &attr.attr);
-
     return;
 }
 
