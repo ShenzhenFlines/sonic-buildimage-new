@@ -14,13 +14,13 @@
 #define PORT_CLK_DIV_DS410 (0xc8)
 
 #define FAN_MAX_DS410 5
-#define MOTOR_NUM_PER_FAN_DS410   1
+#define MOTOR_NUM_PER_FAN_DS410 1
 
 #define FAN_BUS_DS410 6
 #define FAN_ADDR_DS410 0x60
 
-#define CLX_REBOOT_EEPROM_BUS 10
-#define CLX_REBOOT_EEPROM_ADDR 0x50
+#define CLX_DS410_REBOOT_EEPROM_BUS 10
+#define CLX_DS410_REBOOT_EEPROM_ADDR 0x50
 
 struct sensor_descript ds410_sensor_map_index[] = {
     {"fpga-tmp", 0x48, "BOARD 0x48"},
@@ -63,4 +63,3 @@ struct sensor_descript ds410_sensor_map_index[] = {
 };
 
 #endif //_BD_INFO_DS410_H_
-

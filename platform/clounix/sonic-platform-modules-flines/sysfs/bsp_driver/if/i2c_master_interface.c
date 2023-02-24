@@ -23,9 +23,11 @@ int i2c_master_if_create_driver(void)
 
     driver_type = clx_driver_identify(CLX_DRIVER_TYPES_I2C_MASTER);
 
-    for (i=0; i<sizeof(i2c_master_drv_map)/sizeof(struct driver_map); i++) {
+    for (i = 0; i < sizeof(i2c_master_drv_map) / sizeof(struct driver_map); i++)
+    {
         it = &i2c_master_drv_map[i];
-        if (strcmp(driver_type, it->name) == 0) {
+        if (strcmp(driver_type, it->name) == 0)
+        {
             return it->driver_init((void *)&i2c_master_driver);
         }
     }
@@ -41,9 +43,11 @@ void i2c_master_if_delete_driver(void)
 
     driver_type = clx_driver_identify(CLX_DRIVER_TYPES_I2C_MASTER);
 
-    for (i=0; i<sizeof(i2c_master_drv_map)/sizeof(struct driver_map); i++) {
+    for (i = 0; i < sizeof(i2c_master_drv_map) / sizeof(struct driver_map); i++)
+    {
         it = &i2c_master_drv_map[i];
-        if (strcmp(driver_type, it->name) == 0) {
+        if (strcmp(driver_type, it->name) == 0)
+        {
             it->driver_exit((void *)&i2c_master_driver);
             break;
         }

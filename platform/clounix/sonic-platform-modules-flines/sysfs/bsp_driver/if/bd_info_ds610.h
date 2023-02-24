@@ -1,26 +1,26 @@
-#ifndef _BD_INFO_CLX8000_H_
-#define _BD_INFO_CLX8000_H_
+#ifndef _BD_INFO_DS610_H_
+#define _BD_INFO_DS610_H_
 
 #include "clx_driver.h"
 
-#define SYSEEPROM_BUS_CLX8000 0
-#define SYSEEPROM_ADDR_CLX8000 0x50
-#define SYSEEPROM_SIZE_CLX8000 256
+#define SYSEEPROM_BUS_DS610 0
+#define SYSEEPROM_ADDR_DS610 0x50
+#define SYSEEPROM_SIZE_DS610 256
 
-#define MUX_ADDR_CLX8000 0x70
-#define MUX_CH_SEL_CLX8000 0x40
+#define MUX_ADDR_DS610 0x70
+#define MUX_CH_SEL_DS610 0x40
 
-#define PORT_MAX_CLX8000 56
-#define PORT_CLK_DIV_CLX8000 (0xc8)
+#define PORT_MAX_DS610 56
+#define PORT_CLK_DIV_DS610 (0xc8)
 
-#define FAN_MAX_CLX8000 6
-#define MOTOR_NUM_PER_FAN_CLX8000   1
+#define FAN_MAX_DS610 6
+#define MOTOR_NUM_PER_FAN_DS610 1
 
-#define FAN_BUS_CLX8000 6
-#define FAN_ADDR_CLX8000 0x60
+#define FAN_BUS_DS610 6
+#define FAN_ADDR_DS610 0x60
 
-#define CLX_REBOOT_EEPROM_BUS 10
-#define CLX_REBOOT_EEPROM_ADDR 0x50
+#define CLX_DS610_REBOOT_EEPROM_BUS 10
+#define CLX_DS610_REBOOT_EEPROM_ADDR 0x50
 
 struct sensor_descript clx8000_sensor_map_index[] = {
     {"fpga-tmp", 0x48, "BOARD 0x48"},
@@ -63,4 +63,3 @@ struct sensor_descript clx8000_sensor_map_index[] = {
 };
 
 #endif //_BD_INFO_CLX8000_H_
-
