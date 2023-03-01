@@ -55,7 +55,7 @@ static int drv_get_fan_motor_number(void *fan, unsigned int fan_index)
 
 static ssize_t drv_get_fan_vendor_name(void *fan, unsigned int fan_index, char *buf, size_t count)
 {
-    return sprintf(buf, "clounix");
+    return sprintf(buf, "clounix\n");
 }
 /*
  * clx_get_fan_model_name - Used to get fan model name,
@@ -69,7 +69,7 @@ static ssize_t drv_get_fan_vendor_name(void *fan, unsigned int fan_index, char *
  */
 static ssize_t drv_get_fan_model_name(void *fan, unsigned int fan_index, char *buf, size_t count)
 {
-    return sprintf(buf, "DFTA0456B2UP209");
+    return sprintf(buf, "DFTA0456B2UP209\n");
 }
 
 /*
@@ -84,7 +84,7 @@ static ssize_t drv_get_fan_model_name(void *fan, unsigned int fan_index, char *b
  */
 static ssize_t drv_get_fan_serial_number(void *fan, unsigned int fan_index, char *buf, size_t count)
 {
-    return sprintf(buf, "N/A");
+    return sprintf(buf, "N/A\n");
 }
 
 /*
@@ -99,7 +99,7 @@ static ssize_t drv_get_fan_serial_number(void *fan, unsigned int fan_index, char
  */
 static ssize_t drv_get_fan_part_number(void *fan, unsigned int fan_index, char *buf, size_t count)
 {
-    return sprintf(buf, "N/A");
+    return sprintf(buf, "N/A\n");
 }
 
 /*
@@ -363,7 +363,7 @@ static ssize_t drv_get_fan_motor_speed_target(void *fan, unsigned int fan_index,
 static ssize_t drv_get_fan_motor_speed_max(void *fan, unsigned int fan_index, unsigned int motor_index,
                    char *buf, size_t count)
 {
-    return sprintf(buf, "21000");
+    return sprintf(buf, "21000\n");
 }
 
 /*
@@ -536,6 +536,8 @@ static ssize_t drv_read_fan_eeprom_data(void *fan, unsigned int fan_index, char 
         }
     } 
 
+    usleep_range(50, 100);
+
     return count;  
 }
 
@@ -597,7 +599,7 @@ static ssize_t drv_write_fan_eeprom_data(void *fan, unsigned int fan_index, char
             return -ETIMEDOUT;
         }
 
-        usleep_range(5000, 6000);
+        usleep_range(4000, 5000);
     }
 
     return count;

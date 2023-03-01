@@ -167,7 +167,7 @@ static int drv_get_reboot_eeprom_size(void * fpga)
 ssize_t drv_read_reboot_eeprom_data(void * fpga, char *buf, loff_t offset, size_t count)
 {
     struct fpga_driver_common *dev = (struct fpga_driver_common *)fpga;
-    LOG_DBG(CLX_DRIVER_TYPES_FPGA,"read bus:%d addr:0x%x offset:0x%x, count:%d", dev->fpga_if.reboot_eeprom_bus, dev->fpga_if.reboot_eeprom_addr, offset, count);
+    LOG_DBG(CLX_DRIVER_TYPES_FPGA,"read bus:%d addr:0x%x offset:0x%llx, count:%ld", dev->fpga_if.reboot_eeprom_bus, dev->fpga_if.reboot_eeprom_addr, offset, count);
     return clx_i2c_read(dev->fpga_if.reboot_eeprom_bus, dev->fpga_if.reboot_eeprom_addr, offset, buf, count);
 }
 
@@ -184,7 +184,7 @@ ssize_t drv_read_reboot_eeprom_data(void * fpga, char *buf, loff_t offset, size_
 static ssize_t drv_write_reboot_eeprom_data(void * fpga, char *buf, loff_t offset, size_t count)
 {
     struct fpga_driver_common *dev = (struct fpga_driver_common *)fpga;
-    LOG_DBG(CLX_DRIVER_TYPES_FPGA, "write bus:%d addr:0x%x offset:0x%x, count:%d", dev->fpga_if.reboot_eeprom_bus, dev->fpga_if.reboot_eeprom_addr, offset, count);
+    LOG_DBG(CLX_DRIVER_TYPES_FPGA, "write bus:%d addr:0x%x offset:0x%llx, count:%ld", dev->fpga_if.reboot_eeprom_bus, dev->fpga_if.reboot_eeprom_addr, offset, count);
     return clx_i2c_write(dev->fpga_if.reboot_eeprom_bus, dev->fpga_if.reboot_eeprom_addr, offset, buf, count);
 }
 

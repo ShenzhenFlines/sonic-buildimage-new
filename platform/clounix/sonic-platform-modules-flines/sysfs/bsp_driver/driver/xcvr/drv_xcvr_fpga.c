@@ -1534,7 +1534,7 @@ static int drv_xcvr_dev_init(void *xcvr)
     mutex_init(&(driver->dev.lock));
     driver->xcvr_base = clounix_fpga_base + XCVR_BASE_ADDRESS;
     driver->dev.mmio = driver->xcvr_base;
-    LOG_ERR(CLX_DRIVER_TYPES_XCVR, "clx_driver_xcvr_dev_init:%p :base:%p.\r\n", driver->dev.mmio, driver->xcvr_base);
+    LOG_DBG(CLX_DRIVER_TYPES_XCVR, "clx_driver_xcvr_dev_init:%p :base:%p.\r\n", driver->dev.mmio, driver->xcvr_base);
     drv_xcvr_fpga_init_port(&driver->dev);
     platform_type = drv_xcvr_get_platform_idx(driver->xcvr_if.port_max);
     if (platform_type == DRIVER_ERR) {

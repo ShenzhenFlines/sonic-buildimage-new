@@ -10,7 +10,6 @@ static struct driver_map xcvr_drv_map[] = {
 	{"drv_xcvr_fpga", drv_xcvr_fpga_init, NULL},
 };	
 
-
 struct xcvr_fn_if *get_xcvr(void)
 {
 	return xcvr_driver;

@@ -20,7 +20,7 @@
 extern void __iomem *clounix_fpga_base;
 
 #define FPGA_I2C_DEFAULT_RETRY 3
-#define FPGA_I2C_TIMEOUT (msecs_to_jiffies(500))
+#define FPGA_I2C_TIMEOUT (msecs_to_jiffies(250))
 #define FPGA_I2C_MASTER_MGR_RST (1 << 31)
 #define FPGA_I2C_MASTER_MGR_ENABLE ((1 << 30) | (1 << 29) | (0x64 << 16))
 #define FPGA_I2C_MASTER_TX_FINISH_MASK (0x80000000UL)
@@ -47,21 +47,20 @@ struct master_conf
     int iomem_offset;
     int reg_base_addr;
     int i2c_channel_sel;
-    int i2c_16bit_reg_flag;
     char *name;
 };
 
 static const struct master_conf priv_conf[] = {
-    {0x000000, 0x1100, 0x01, 0, "fpga-psu1"}, /*58*/
-    {0x000000, 0x1100, 0x02, 0, "fpga-adm"},
-    {0x000000, 0x1100, 0x04, 0, "fpga-pmbus"},
-    {0x000000, 0x1100, 0x08, 1, "fpga-pll"},
-    {0x000000, 0x1100, 0x06, 0, "fpga-tmp"},
-    {0x000000, 0x1100, 0x07, 0, "fpga-fan"},
-    {0x000000, 0x1100, 0x00, 0, "fpga-psu0"}, /*5a*/
-    {0x000000, 0x1100, 0x03, 0, "fpga-adm1"},
-    {0x000000, 0x1100, 0x05, 0, "fpga-pmbus1"},
-    {0x000000, 0x1100, 0x09, 0, "fpga-rebootrom"},
+    {0x000000, 0x1100, 0x01, "fpga-psu1"},      /*58*/
+    {0x000000, 0x1100, 0x02, "fpga-adm"},       /*34*/
+    {0x000000, 0x1100, 0x04, "fpga-pmbus"},     /*20*/
+    {0x000000, 0x1100, 0x08, "fpga-pll"},       /*64*/
+    {0x000000, 0x1100, 0x06, "fpga-tmp"},       /*48*/
+    {0x000000, 0x1100, 0x07, "fpga-fan"},       /*60*/
+    {0x000000, 0x1100, 0x00, "fpga-psu0"},      /*5a*/
+    {0x000000, 0x1100, 0x03, "fpga-adm1"},      /*36*/
+    {0x000000, 0x1100, 0x05, "fpga-pmbus1"},    /*21*/
+    {0x000000, 0x1100, 0x09, "fpga-rebootrom"}, /*50*/
 };
 
 struct master_priv_data
@@ -71,7 +70,6 @@ struct master_priv_data
     void __iomem *mmio;
     int reg_base_addr;
     int i2c_channel_sel;
-    int i2c_16bit_reg_flag;
 };
 
 static struct master_priv_data *group_priv;
@@ -79,6 +77,15 @@ static struct master_priv_data *group_priv;
 static u32 clounix_i2c_master_func(struct i2c_adapter *a)
 {
     return ((I2C_FUNC_I2C | I2C_FUNC_SMBUS_EMUL) & (~I2C_FUNC_SMBUS_QUICK)) | I2C_FUNC_SMBUS_BLOCK_DATA;
+}
+
+static void clounix_i2c_master_dump_reg(struct master_priv_data *priv)
+{
+    LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "FPGA_I2C_MASTER_CFG_ADDR 0x%x\r\n", readl(priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_CFG_ADDR));
+    LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "FPGA_I2C_MASTER_CTRL_ADDR 0x%x\r\n", readl(priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_CTRL_ADDR));
+    LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "FPGA_I2C_MASTER_STATUS_ADDR 0x%x\r\n", readl(priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_STATUS_ADDR));
+    LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "FPGA_I2C_MASTER_16BIT_ADDR 0x%x\r\n", readl(priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_16BIT_ADDR));
+    LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "FPGA_I2C_MASTER_CHANNEL_SEL_ADDR 0x%x\r\n", readl(priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_CHANNEL_SEL_ADDR));
 }
 
 static int clounix_i2c_wait_bus_tx_done(struct master_priv_data *priv)
@@ -94,7 +101,9 @@ static int clounix_i2c_wait_bus_tx_done(struct master_priv_data *priv)
         {
             if (data & FPGA_I2C_MASTER_TX_ERROR_MASK)
             {
-                LOG_ERR(CLX_DRIVER_TYPES_I2C_MASTER, "clounix_i2c_wait_bus_tx_done data ECOMM error\r\n");
+                clounix_i2c_master_dump_reg(priv);
+
+                LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "clounix_i2c_wait_bus_tx_done data ECOMM error\r\n");
 
                 return -ECOMM;
             }
@@ -104,7 +113,7 @@ static int clounix_i2c_wait_bus_tx_done(struct master_priv_data *priv)
 
     } while (time_before(jiffies, timeout));
 
-    LOG_ERR(CLX_DRIVER_TYPES_I2C_MASTER, "clounix_i2c_wait_bus_tx_done data ETIMEDOUT error\r\n");
+    LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "clounix_i2c_wait_bus_tx_done data ETIMEDOUT error\r\n");
 
     return -ETIMEDOUT;
 }
@@ -114,6 +123,7 @@ static int clounix_i2c_master_xfer(struct i2c_adapter *adap, struct i2c_msg *msg
     struct master_priv_data *priv = i2c_get_adapdata(adap);
     struct i2c_msg *p;
     unsigned char addr = 0, r_addr = 0, w_addr = 0, reg_addr = 0;
+    unsigned char i2c_16bit_reg_flag = 0, reg_16bit_high_addr = 0;
     unsigned int *tmp_addr = NULL;
     unsigned int tmp_value = 0, i = 0, j = 0;
 
@@ -121,12 +131,243 @@ static int clounix_i2c_master_xfer(struct i2c_adapter *adap, struct i2c_msg *msg
 
     writel(priv->i2c_channel_sel, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_CHANNEL_SEL_ADDR);
 
-    if (priv->i2c_16bit_reg_flag == 0)
-    {
-        tmp_value = 0x00;
+    tmp_value = 0x00;
 
-        writel(tmp_value, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_16BIT_ADDR);
+    writel(tmp_value, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_16BIT_ADDR);
+
+    for (i = 0; i < num; i++)
+    {
+        p = &msgs[i];
+
+        if (p->flags & I2C_M_TEN)
+
+            goto out;
+
+        addr = i2c_8bit_addr_from_msg(p);
+
+        w_addr = (addr & (~(0x01)));
+
+        r_addr = (addr | 0x01);
+
+        if(p->flags & I2C_M_RD)
+        {
+            tmp_value = readl(priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_CTRL_ADDR);
+
+            reg_addr = ((tmp_value >> 16) & 0xFF);
+
+            LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "read reg_addr: 0x%x \r\n", reg_addr);
+
+            tmp_value = (FPGA_I2C_MASTER_MGR_RST | FPGA_I2C_MASTER_MGR_ENABLE | (r_addr << 8) | w_addr);
+
+            writel(tmp_value, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_CFG_ADDR);
+
+            if (p->len == 1)
+            {
+                tmp_value = 0;
+
+                tmp_value = (FPGA_I2C_MASTER_MGR_RD_BYTE | (reg_addr & 0xFF) << 16 | (p->len << 8));
+
+                writel(tmp_value, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_CTRL_ADDR);
+
+                if (clounix_i2c_wait_bus_tx_done(priv) != 0)
+                {
+                    goto out;
+                }
+                else
+                {
+                    p->buf[0] = readb(priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_STATUS_ADDR);
+
+                    LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "read lenth: %d,data : 0x%x \r\n", p->len, p->buf[0]);
+                }
+            }
+            else
+            {
+                if (p->len > FPGA_I2C_MASTER_RX_BUFFER_MAX)
+                {
+                    goto out;
+                }
+
+                tmp_value = 0;
+
+                tmp_value = (FPGA_I2C_MASTER_MGR_RD_WORD | ((reg_addr & 0xFF) << 16) | ((p->len) << 8));
+
+                writel(tmp_value, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_CTRL_ADDR);
+
+                if (clounix_i2c_wait_bus_tx_done(priv) != 0)
+                {
+                    goto out;
+                }
+                else
+                {
+                    tmp_addr = (unsigned int *)(priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_RX_BUFFER_ADDR);
+
+                    for (j = 0; j < p->len; j += 4)
+                    {
+                        tmp_value = readl(tmp_addr);
+
+                        p->buf[j] = (tmp_value & 0xFF);
+
+                        LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "read lenth :%d,num :%d ,data:0x%x \r\n", p->len, j, p->buf[j]);
+
+                        if ((j + 1) >= p->len)
+                        {
+                            break;
+                        }
+
+                        p->buf[j + 1] = ((tmp_value >> 8) & 0xFF);
+
+                        LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "read lenth :%d,num :%d ,data:0x%x \r\n", p->len, j + 1, p->buf[j + 1]);
+
+                        if ((j + 2) >= p->len)
+                        {
+                            break;
+                        }
+
+                        p->buf[j + 2] = ((tmp_value >> 16) & 0xFF);
+
+                        LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "read lenth :%d,num :%d ,data:0x%x \r\n", p->len, j + 2, p->buf[j + 2]);
+
+                        if ((j + 3) >= p->len)
+                        {
+                            break;
+                        }
+
+                        p->buf[j + 3] = ((tmp_value >> 24) & 0xFF);
+
+                        LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "read lenth :%d,num :%d ,data:0x%x \r\n", p->len, j + 3, p->buf[j + 3]);
+
+                        tmp_addr++;
+                    }
+                }
+            }
+        }
+        else
+        {
+            tmp_value = (FPGA_I2C_MASTER_MGR_RST | FPGA_I2C_MASTER_MGR_ENABLE | (r_addr << 8) | w_addr);
+
+            writel(tmp_value, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_CFG_ADDR);
+
+            if (p->len < 2)
+            {
+                LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "write addr : 0x%x, len : %d, reg_addr:0x%x\r\n", addr, p->len, p->buf[0]);
+
+                tmp_value = 0;
+
+                tmp_value = (FPGA_I2C_MASTER_MGR_WT_NONE | ((p->buf[0] & 0xFF) << 16) | (0x01 << 8));
+
+                writel(tmp_value, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_CTRL_ADDR);
+
+                if (clounix_i2c_wait_bus_tx_done(priv) != 0)
+                {
+                    goto out;
+                }
+            }
+            else if (p->len == 2)
+            {
+                LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "write addr : 0x%x, len : %d, reg_addr:0x%x, data:0x%x\r\n", addr, p->len, p->buf[0], p->buf[1]);
+
+                tmp_value = 0;
+
+                tmp_value = (FPGA_I2C_MASTER_MGR_WT_BYTE | ((p->buf[0] & 0xFF) << 16) | ((p->len - 1) << 8) | p->buf[1]);
+
+                writel(tmp_value, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_CTRL_ADDR);
+
+                if (clounix_i2c_wait_bus_tx_done(priv) != 0)
+                {
+                    goto out;
+                }
+            }
+            else
+            {
+                if (p->len > FPGA_I2C_MASTER_TX_BUFFER_MAX)
+                {
+                    goto out;
+                }
+
+                tmp_addr = (unsigned int *)(priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_TX_BUFFER_ADDR);
+
+                LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "write addr : 0x%x, len : %d, reg_addr:0x%x, data:0x%x\r\n", addr, p->len, p->buf[0], p->buf[1]);
+
+                for (j = 1; j <= p->len; j += 4)
+                {
+                    tmp_value = p->buf[j];
+
+                    if ((j + 1) > p->len)
+                    {
+                        writel(tmp_value, tmp_addr);
+
+                        break;
+                    }
+
+                    tmp_value += (p->buf[j + 1] << 8);
+
+                    if ((j + 2) > p->len)
+                    {
+                        writel(tmp_value, tmp_addr);
+
+                        break;
+                    }
+
+                    tmp_value += (p->buf[j + 2] << 16);
+
+                    if ((j + 3) > p->len)
+                    {
+                        writel(tmp_value, tmp_addr);
+
+                        break;
+                    }
+
+                    tmp_value += (p->buf[j + 3] << 24);
+
+                    writel(tmp_value, tmp_addr);
+
+                    tmp_addr++;
+                }
+
+                tmp_value = 0;
+
+                tmp_value = (FPGA_I2C_MASTER_MGR_WT_WORD | ((p->buf[0] & 0xFF) << 16) | ((p->len - 1) << 8));
+
+                writel(tmp_value, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_CTRL_ADDR);
+
+                if (clounix_i2c_wait_bus_tx_done(priv) != 0)
+                {
+                    goto out;
+                }
+            }
+        }
     }
+
+    mutex_unlock(&priv->lock);
+
+    usleep_range(50, 100);
+
+    return num;
+
+out:
+
+    mutex_unlock(&priv->lock);
+
+    return -ETIMEDOUT;
+}
+
+#if 0
+static int clounix_i2c_master_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int num)
+{
+    struct master_priv_data *priv = i2c_get_adapdata(adap);
+    struct i2c_msg *p;
+    unsigned char addr = 0, r_addr = 0, w_addr = 0, reg_addr = 0;
+    unsigned char i2c_16bit_reg_flag = 0, reg_16bit_high_addr = 0;
+    unsigned int *tmp_addr = NULL;
+    unsigned int tmp_value = 0, i = 0, j = 0;
+
+    mutex_lock(&priv->lock);
+
+    writel(priv->i2c_channel_sel, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_CHANNEL_SEL_ADDR);
+
+    tmp_value = 0x00;
+
+    writel(tmp_value, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_16BIT_ADDR);
 
     if (num == 1) // write
     {
@@ -147,9 +388,28 @@ static int clounix_i2c_master_xfer(struct i2c_adapter *adap, struct i2c_msg *msg
 
         writel(tmp_value, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_CFG_ADDR);
 
-        if (p->len == 1)
+        if (p->len < 2)
         {
-            tmp_value = (FPGA_I2C_MASTER_MGR_WT_BYTE | ((p->buf[0] & 0xFF) << 16) | (p->len << 8) | p->buf[1]);
+            LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "write addr : 0x%x, len : %d, reg_addr:0x%x\r\n", addr, p->len, p->buf[0]);
+
+            tmp_value = 0;
+
+            tmp_value = (FPGA_I2C_MASTER_MGR_WT_NONE | ((p->buf[0] & 0xFF) << 16) | (0x01 << 8));
+
+            writel(tmp_value, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_CTRL_ADDR);
+
+            if (clounix_i2c_wait_bus_tx_done(priv) != 0)
+            {
+                goto out;
+            }
+        }
+        else if (p->len == 2)
+        {
+            LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "write addr : 0x%x, len : %d, reg_addr:0x%x, data:0x%x\r\n", addr, p->len, p->buf[0], p->buf[1]);
+
+            tmp_value = 0;
+
+            tmp_value = (FPGA_I2C_MASTER_MGR_WT_BYTE | ((p->buf[0] & 0xFF) << 16) | ((p->len - 1) << 8) | p->buf[1]);
 
             writel(tmp_value, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_CTRL_ADDR);
 
@@ -166,6 +426,8 @@ static int clounix_i2c_master_xfer(struct i2c_adapter *adap, struct i2c_msg *msg
             }
 
             tmp_addr = (unsigned int *)(priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_TX_BUFFER_ADDR);
+
+            LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "write addr : 0x%x, len : %d, reg_addr:0x%x, data:0x%x\r\n", addr, p->len, p->buf[0], p->buf[1]);
 
             for (j = 1; j <= p->len; j += 4)
             {
@@ -205,7 +467,7 @@ static int clounix_i2c_master_xfer(struct i2c_adapter *adap, struct i2c_msg *msg
 
             tmp_value = 0;
 
-            tmp_value = (FPGA_I2C_MASTER_MGR_WT_WORD | ((p->buf[0] & 0xFF) << 16) | (p->len << 8));
+            tmp_value = (FPGA_I2C_MASTER_MGR_WT_WORD | ((p->buf[0] & 0xFF) << 16) | ((p->len - 1) << 8));
 
             writel(tmp_value, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_CTRL_ADDR);
 
@@ -238,6 +500,21 @@ static int clounix_i2c_master_xfer(struct i2c_adapter *adap, struct i2c_msg *msg
 
                 writel(tmp_value, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_CFG_ADDR);
 
+                if (i2c_16bit_reg_flag == 1)
+                {
+                    tmp_value = 0x00;
+
+                    tmp_value = ((1 << 31) | reg_16bit_high_addr);
+
+                    writel(tmp_value, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_16BIT_ADDR);
+                }
+                else
+                {
+                    tmp_value = 0x00;
+
+                    writel(tmp_value, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_16BIT_ADDR);
+                }
+
                 if (p->len == 1)
                 {
                     tmp_value = 0;
@@ -253,6 +530,8 @@ static int clounix_i2c_master_xfer(struct i2c_adapter *adap, struct i2c_msg *msg
                     else
                     {
                         p->buf[0] = readb(priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_STATUS_ADDR);
+
+                        LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "read lenth: %d,data : 0x%x \r\n", p->len, p->buf[0]);
                     }
                 }
                 else
@@ -282,12 +561,16 @@ static int clounix_i2c_master_xfer(struct i2c_adapter *adap, struct i2c_msg *msg
 
                             p->buf[j] = (tmp_value & 0xFF);
 
+                            LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "read lenth :%d,num :%d ,data:0x%x \r\n", p->len, j, p->buf[j]);
+
                             if ((j + 1) >= p->len)
                             {
                                 break;
                             }
 
                             p->buf[j + 1] = ((tmp_value >> 8) & 0xFF);
+
+                            LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "read lenth :%d,num :%d ,data:0x%x \r\n", p->len, j + 1, p->buf[j + 1]);
 
                             if ((j + 2) >= p->len)
                             {
@@ -296,12 +579,16 @@ static int clounix_i2c_master_xfer(struct i2c_adapter *adap, struct i2c_msg *msg
 
                             p->buf[j + 2] = ((tmp_value >> 16) & 0xFF);
 
+                            LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "read lenth :%d,num :%d ,data:0x%x \r\n", p->len, j + 2, p->buf[j + 2]);
+
                             if ((j + 3) >= p->len)
                             {
                                 break;
                             }
 
                             p->buf[j + 3] = ((tmp_value >> 24) & 0xFF);
+
+                            LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "read lenth :%d,num :%d ,data:0x%x \r\n", p->len, j + 3, p->buf[j + 3]);
 
                             tmp_addr++;
                         }
@@ -310,20 +597,44 @@ static int clounix_i2c_master_xfer(struct i2c_adapter *adap, struct i2c_msg *msg
             }
             else
             {
-                reg_addr = p->buf[0];
+                LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "read reg lenth :%d\r\n", p->len);
+
+                if (p->len == 1)
+                {
+                    reg_addr = p->buf[0];
+
+                    i2c_16bit_reg_flag = 0;
+
+                    LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "read reg lenth :%d,reg_addr:0x%x \r\n", p->len, reg_addr);
+                }
+                if (p->len == 2)
+                {
+                    reg_16bit_high_addr = p->buf[0];
+
+                    reg_addr = p->buf[1];
+
+                    i2c_16bit_reg_flag = 1;
+
+                    LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "read 16_bit_reg lenth :%d,reg_addr1:0x%x ,reg_addr1:0x%x\r\n", p->len, reg_addr, reg_16bit_high_addr);
+                }
             }
         }
     }
 
     mutex_unlock(&priv->lock);
 
+    usleep_range(50, 100);
+
     return num;
 
 out:
     mutex_unlock(&priv->lock);
 
+    LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "go out ETIMEDOUT ETIMEDOUT ETIMEDOUTE TIMEDOUT\r\n");
+
     return -ETIMEDOUT;
 }
+#endif
 
 static int clounix_i2c_master_smbus_xfer(struct i2c_adapter *adap, unsigned short addr, unsigned short flags,
                                          char read_write, unsigned char command, int size, union i2c_smbus_data *data)
@@ -342,12 +653,9 @@ static int clounix_i2c_master_smbus_xfer(struct i2c_adapter *adap, unsigned shor
 
     writel(priv->i2c_channel_sel, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_CHANNEL_SEL_ADDR);
 
-    if (priv->i2c_16bit_reg_flag == 0)
-    {
-        tmp_value = 0x00;
+    tmp_value = 0x00;
 
-        writel(tmp_value, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_16BIT_ADDR);
-    }
+    writel(tmp_value, priv->mmio + priv->reg_base_addr + FPGA_I2C_MASTER_16BIT_ADDR);
 
     w_addr = (addr & 0x7f) << 1;
 
@@ -568,7 +876,7 @@ static int clounix_i2c_master_smbus_xfer(struct i2c_adapter *adap, unsigned shor
     }
 
     mutex_unlock(&priv->lock);
-    usleep_range(6000, 10000);
+    usleep_range(50, 100);
     return 0;
 
 out:
@@ -629,7 +937,6 @@ int drv_i2c_master_xilinx_init(void **driver)
         priv[i].mmio = base + priv_conf[i].iomem_offset;
         priv[i].reg_base_addr = priv_conf[i].reg_base_addr;
         priv[i].i2c_channel_sel = priv_conf[i].i2c_channel_sel;
-        priv[i].i2c_16bit_reg_flag = priv_conf[i].i2c_16bit_reg_flag;
         mutex_init(&(priv[i].lock));
 
         err = i2c_add_adapter(adap);

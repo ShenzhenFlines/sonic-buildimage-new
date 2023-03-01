@@ -481,7 +481,7 @@ int clx_driver_common_init(char *hw_platform)
         LOG_ERR(CLX_DRIVER_TYPES_PLT, "clx_driver_common_init:failed to read syseeprom");
         return DRIVER_ERR;
     }
-    if (tlvinfo_decode_tlv(eeprom, TLV_CODE_PRODUCT_NAME, tlv_value)) {
+    if (tlvinfo_decode_tlv(eeprom, TLV_CODE_PLATFORM_NAME, tlv_value)) {
         LOG_DBG(CLX_DRIVER_TYPES_PLT, "decode product name:%s", tlv_value);
         snprintf(hw_platform, PRODUCT_NAME_LEN_MAX, "%s", tlv_value);
     } else {

@@ -4,13 +4,10 @@
 
 extern int drv_sensor_current_init(void **current_driver);
 
-
 struct current_fn_if *current_driver;
-
 static struct driver_map current_drv_map[] = {
 	{"drv_curr_sensor", drv_sensor_current_init, NULL},
-};	
-
+};
 
 struct current_fn_if *get_curr(void)
 {
