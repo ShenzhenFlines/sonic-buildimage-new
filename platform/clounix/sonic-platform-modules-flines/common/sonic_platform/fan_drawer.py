@@ -48,9 +48,9 @@ class FanDrawer(FanDrawerBase):
         led_value = 0
         if color == "green":
             led_value = 1
-        elif color == "red":
-            led_value = 2
         elif color == "yellow":
+            led_value = 2
+        elif color == "red":
             led_value = 3
         elif color == "off":
             led_value = 0
@@ -71,9 +71,9 @@ class FanDrawer(FanDrawerBase):
         if (int(attr_rv, 16) == 0x1):
             color = "green"
         elif(int(attr_rv, 16) == 0x2):
-            color = "red"
-        elif(int(attr_rv, 16) == 0x3):
             color = "yellow"
+        elif(int(attr_rv, 16) == 0x3):
+            color = "red"
         else:
             color = "off"
 

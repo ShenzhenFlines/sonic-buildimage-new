@@ -214,7 +214,7 @@ class Psu(PsuBase):
         if color == self.STATUS_LED_COLOR_GREEN:
             led_value = 1
         elif color == self.STATUS_LED_COLOR_RED:
-            led_value = 2
+            led_value = 3
         else:
             return False
         ret_val = self.__api_helper.write_txt_file(self.__attr_led_path_prefix + 'psu_led_status',led_value) 
@@ -254,8 +254,6 @@ class Psu(PsuBase):
         if status not in self.led_dict_str:
             return False
         return self.led_dict_str[status]
-
-
 
     def get_voltage_high_threshold(self):
         """
