@@ -6,12 +6,12 @@
 #
 
 try:
-    from sonic_eeprom import eeprom_tlvinfo
+    from sonic_eeprom.eeprom_tlvinfo import TlvInfoDecoder
     import binascii
 except ImportError as e:
     raise ImportError(str(e) + "- required module not found")
 
-class Eeprom(eeprom_tlvinfo.TlvInfoDecoder):
+class Eeprom(TlvInfoDecoder):
 
     def __init__(self):
         self.__eeprom_path = "/sys/switch/syseeprom/eeprom"
