@@ -152,7 +152,7 @@ class SfpUtil(SfpUtilBase):
     def get_low_power_mode(self, port_num):
         if port_num not in self.qsfp_ports:
             return False
-        lowpower_path = '/sys/switch/transceiver/eth{}/low_power_mode'.format(port_num + 1)
+        lowpower_path = '/sys/switch/transceiver/eth{}/lpmode'.format(port_num + 1)
         
         try:
             file = open(lowpower_path)
@@ -171,7 +171,7 @@ class SfpUtil(SfpUtilBase):
     def set_low_power_mode(self, port_num, lpmode):
         if port_num not in self.qsfp_ports:
             return False
-        lowpower_path = '/sys/switch/transceiver/eth{}/low_power_mode'.format(port_num + 1)
+        lowpower_path = '/sys/switch/transceiver/eth{}/lpmode'.format(port_num + 1)
         
         # LPMode is active high; set or clear the bit accordingly
         if lpmode is True:

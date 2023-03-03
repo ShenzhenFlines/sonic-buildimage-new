@@ -213,10 +213,17 @@ static int flks_driver_ds610_board(void)
     // temp info
     memcpy(bd->temp.name, temp_name, sizeof(temp_name));
     memcpy(bd->temp.sensor_map_index, clx8000_sensor_map_index, sizeof(clx8000_sensor_map_index));
-    // cuff info
+    // curr info
     memcpy(bd->curr.name, curr_name, sizeof(curr_name));
-    // sysled info
+    bd->curr.total_sensor_num = DS610_CURR_TOTAL_SENSOR_NUM;
+    memcpy(bd->curr.curr_sensor_map, ds610_curr_sensor_map, sizeof(ds610_curr_sensor_map));
+    memcpy(bd->curr.curr_index_range_map, ds610_curr_index_range_map, sizeof(ds610_curr_index_range_map));
+    // vol info
     memcpy(bd->vol.name, vol_name, sizeof(vol_name));
+    bd->vol.total_sensor_num = DS610_VOL_TOTAL_SENSOR_NUM;
+    memcpy(bd->vol.vol_sensor_map, ds610_vol_sensor_map, sizeof(ds610_vol_sensor_map));
+    memcpy(bd->vol.vol_index_range_map, ds610_vol_index_range_map, sizeof(ds610_vol_index_range_map));
+
     LOG_INFO(CLX_DRIVER_TYPES_PLT, "syseeprom_if_create_driver\n");
 
     return DRIVER_OK;
@@ -273,10 +280,17 @@ static int flks_driver_ds410_board(void)
     // temp info
     memcpy(bd->temp.name, temp_name, sizeof(temp_name));
     memcpy(bd->temp.sensor_map_index, ds410_sensor_map_index, sizeof(ds410_sensor_map_index));
-    // cuff info
+    // curr info
     memcpy(bd->curr.name, curr_name, sizeof(curr_name));
-    // sysled info
+    bd->curr.total_sensor_num = DS410_CURR_TOTAL_SENSOR_NUM;
+    memcpy(bd->curr.curr_sensor_map, ds410_curr_sensor_map, sizeof(ds410_curr_sensor_map));
+    memcpy(bd->curr.curr_index_range_map, ds410_curr_index_range_map, sizeof(ds410_curr_index_range_map));
+    // vol info
     memcpy(bd->vol.name, vol_name, sizeof(vol_name));
+    bd->vol.total_sensor_num = DS410_VOL_TOTAL_SENSOR_NUM;
+    memcpy(bd->vol.vol_sensor_map, ds410_vol_sensor_map, sizeof(ds410_vol_sensor_map));
+    memcpy(bd->vol.vol_index_range_map, ds410_vol_index_range_map, sizeof(ds410_vol_index_range_map));
+
     LOG_INFO(CLX_DRIVER_TYPES_PLT, "syseeprom_if_create_driver\n");
 
     return DRIVER_OK;
@@ -380,7 +394,8 @@ int clx_driver_init(char *platform)
     memset(hw_platform, 0, sizeof(hw_platform));
     memset(product, 0, sizeof(product));
 
-    if (clx_driver_common_init((char *)hw_platform) != DRIVER_OK) {
+    if (clx_driver_common_init((char *)hw_platform) != DRIVER_OK)
+    {
         hw_platform_valid = clx_platform_check((char *)hw_platform);
     }
 

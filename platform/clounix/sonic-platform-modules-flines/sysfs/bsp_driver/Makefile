@@ -119,6 +119,7 @@ lpc_syscpld_dev_driver-objs := lpc_syscpld_device_driver.o \
 obj-m += i2c-mux-pca9548.o
 obj-m += adm1275.o
 obj-m += mp2882.o
+obj-m += mp2886.o
 obj-m += clx_psu_dev.o
     clx_psu_dev-objs := clx_psu.o clx_psu_cfg.o
 obj-m += tps546b24a.o

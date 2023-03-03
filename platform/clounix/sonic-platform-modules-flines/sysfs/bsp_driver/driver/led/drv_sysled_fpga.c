@@ -160,53 +160,42 @@ ssize_t front_panel_store(struct drv_sysled_fpga *sysled, sysled_types_s type, u
         data &= ~(PSU_LED_STATUS_BIT_MASK);
         dev_state = led_state_user_to_dev[state];
         mask = 0x3;
-        if (dev_state == DEV_LED_NOT_SUPPORT)
-        {
-            return -1;
-        }
         break;
 
     case FAN_LED_STATUS:
         data &= ~(FAN_LED_STATUS_BIT_MASK);
         dev_state = led_state_user_to_dev[state];
         mask = 0x3;
-        if (dev_state == DEV_LED_NOT_SUPPORT)
-        {
-            return -1;
-        }
         break;
 
     case BMC_LED_STATUS:
         data &= ~(BMC_LED_STATUS_BIT_MASK);
         dev_state = led_state_user_to_dev[state];
         mask = 0x3;
-        if (dev_state == DEV_LED_NOT_SUPPORT)
-        {
-            return -1;
-        }
         break;
 
     case SYS_LED_STATUS:
         data &= ~(SYS_LED_STATUS_BIT_MASK);
         dev_state = sysled_state_user_to_dev[state];
         mask = 0x3;
-        if (dev_state == DEV_SYSLED_NOT_SUPPORT)
-        {
-            return -1;
-        }
         break;
 
     case ID_LED_STATUS:
         data &= ~(ID_LED_STATUS_BIT_MASK);
         dev_state = idled_state_user_to_dev[state];
         mask = 0x1;
-        if (dev_state == DEV_IDLED_NOT_SUPPORT)
-        {
-            return -1;
-        }
         break;
 
     default:
+        return -1;
+    }
+
+    if ((type == ID_LED_STATUS) && (dev_state == DEV_IDLED_NOT_SUPPORT))
+    {
+        return -1;
+    }
+    if ((dev_state == DEV_LED_NOT_SUPPORT) || (dev_state == DEV_SYSLED_NOT_SUPPORT))
+    {
         return -1;
     }
 

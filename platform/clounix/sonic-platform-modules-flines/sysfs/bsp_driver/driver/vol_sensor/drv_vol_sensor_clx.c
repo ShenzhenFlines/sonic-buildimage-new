@@ -10,11 +10,11 @@
 #include <linux/string.h>
 #include "clounix/pmbus_dev_common.h"
 
-//internal function declaration
+// internal function declaration
 struct drv_vol_sensor vol_sensor;
 
-#define TOTAL_SENSOR_NUM (8)
 #define REAL_MAX_SENSOR_NUM (2)
+#define DS410_VOL_TOTAL_SENSOR_NUM (2)
 
 #define VOL_NODE "in"
 
@@ -30,8 +30,8 @@ static DEFINE_RWLOCK(list_lock);
     [2]:sensor offse
 */
 static short sensor_map[][3] = {
-    {0x20, 0, -1},
-    {0x21, 1, 3},
+    {0x2B, 0, -3},
+    {0x27, 1, -3},
     {0x0, 0},
 };
 
@@ -40,8 +40,8 @@ static short sensor_map[][3] = {
     [1]: location in sensor_arry
 */
 static unsigned char vol_index_range_map[][2] = {
-    {4, 0},
-    {8, 1},
+    {1, 0},
+    {2, 1},
 };
 
 static struct i2c_client *sensor_arry[REAL_MAX_SENSOR_NUM + 1] = {0};
@@ -52,11 +52,14 @@ int vol_sensor_add(struct i2c_client *client)
     int i;
 
     write_lock(&list_lock);
-    
+
     i = 0;
-    while (sensor_map[i][ADDR_LABEL] != 0) {
-        if (client->addr == sensor_map[i][ADDR_LABEL]) {
-            if (sensor_arry[(sensor_map[i][LOCATION_LABEL])] == NULL) {
+    while (sensor_map[i][ADDR_LABEL] != 0)
+    {
+        if (client->addr == sensor_map[i][ADDR_LABEL])
+        {
+            if (sensor_arry[(sensor_map[i][LOCATION_LABEL])] == NULL)
+            {
                 LOG_DBG(CLX_DRIVER_TYPES_VOL, "vol sensor add %s\n", client->name);
                 sensor_arry[(sensor_map[i][LOCATION_LABEL])] = client;
                 ret = 0;
@@ -77,8 +80,10 @@ void vol_sensor_del(struct i2c_client *client)
     int i;
 
     write_lock(&list_lock);
-    for (i=0; i<REAL_MAX_SENSOR_NUM; i++) {
-        if (sensor_arry[i] == client) {
+    for (i = 0; i < REAL_MAX_SENSOR_NUM; i++)
+    {
+        if (sensor_arry[i] == client)
+        {
             LOG_DBG(CLX_DRIVER_TYPES_VOL, "vol sensor del %s\n", client->name);
             sensor_arry[i] = NULL;
         }
@@ -91,8 +96,7 @@ EXPORT_SYMBOL(vol_sensor_del);
 
 static int drv_sensor_get_main_board_vol_number(void *driver)
 {
-    /* add vendor codes here */
-    return TOTAL_SENSOR_NUM;
+    return DS410_VOL_TOTAL_SENSOR_NUM;
 }
 
 /*
@@ -111,12 +115,13 @@ static ssize_t drv_sensor_get_main_board_vol_alias(void *driver, unsigned int vo
     struct i2c_client *client = sensor_arry[sensor_index];
     unsigned char vol_sensor_index;
     unsigned char node_name[PMBUS_NAME_SIZE];
-    unsigned char tmp_buf[PMBUS_NAME_SIZE*3];
+    unsigned char tmp_buf[PMBUS_NAME_SIZE * 3];
     int ret = -1;
 
     /* add vendor codes here */
     read_lock(&list_lock);
-    if (client != NULL) {
+    if (client != NULL)
+    {
         vol_sensor_index = get_sensor_internal_index(sensor_index, vol_index, sensor_map);
         sprintf(node_name, "%s%d%s", VOL_NODE, vol_sensor_index, VOL_DIR);
         if (get_attr_val_by_name(client, node_name, tmp_buf) > 0)
@@ -146,11 +151,12 @@ static ssize_t drv_sensor_get_main_board_vol_type(void *driver, unsigned int vol
 
     /* add vendor codes here */
     read_lock(&list_lock);
-    if (client != NULL) {
+    if (client != NULL)
+    {
         ret = sprintf(buf, "%s\n", client->name);
     }
     read_unlock(&list_lock);
-    
+
     return ret;
 }
 
@@ -175,13 +181,14 @@ static ssize_t drv_sensor_get_main_board_vol_max(void *driver, unsigned int vol_
 
     /* add vendor codes here */
     read_lock(&list_lock);
-    if (client != NULL) {
+    if (client != NULL)
+    {
         vol_sensor_index = get_sensor_internal_index(sensor_index, vol_index, sensor_map);
         sprintf(node_name, "%s%d%s", VOL_NODE, vol_sensor_index, VOL_MAX);
         ret = get_attr_val_by_name(client, node_name, buf);
     }
     read_unlock(&list_lock);
-    
+
     return ret;
 }
 
@@ -205,7 +212,8 @@ static int drv_sensor_set_main_board_vol_max(void *driver, unsigned int vol_inde
 
     /* add vendor codes here */
     read_lock(&list_lock);
-    if (client != NULL) {
+    if (client != NULL)
+    {
         vol_sensor_index = get_sensor_internal_index(sensor_index, vol_index, sensor_map);
         sprintf(node_name, "%s%d%s", VOL_NODE, vol_sensor_index, VOL_MAX);
         ret = set_attr_val_by_name(client, node_name, buf, count);
@@ -236,7 +244,8 @@ static ssize_t drv_sensor_get_main_board_vol_min(void *driver, unsigned int vol_
 
     /* add vendor codes here */
     read_lock(&list_lock);
-    if (client != NULL) {
+    if (client != NULL)
+    {
         vol_sensor_index = get_sensor_internal_index(sensor_index, vol_index, sensor_map);
         sprintf(node_name, "%s%d%s", VOL_NODE, vol_sensor_index, VOL_MIN);
         ret = get_attr_val_by_name(client, node_name, buf);
@@ -266,7 +275,8 @@ static int drv_sensor_set_main_board_vol_min(void *driver, unsigned int vol_inde
 
     /* add vendor codes here */
     read_lock(&list_lock);
-    if (client != NULL) {
+    if (client != NULL)
+    {
         vol_sensor_index = get_sensor_internal_index(sensor_index, vol_index, sensor_map);
         sprintf(node_name, "%s%d%s", VOL_NODE, vol_sensor_index, VOL_MIN);
         ret = set_attr_val_by_name(client, node_name, buf, count);
@@ -330,7 +340,8 @@ static ssize_t drv_sensor_get_main_board_vol_value(void *driver, unsigned int vo
 
     /* add vendor codes here */
     read_lock(&list_lock);
-    if (client != NULL) {
+    if (client != NULL)
+    {
         vol_sensor_index = get_sensor_internal_index(sensor_index, vol_index, sensor_map);
         sprintf(node_name, "%s%d%s", VOL_NODE, vol_sensor_index, VOL_VALUE);
         ret = get_attr_val_by_name(client, node_name, buf);
@@ -368,5 +379,4 @@ int drv_sensor_voltage_init(void **voltage_driver)
     LOG_INFO(CLX_DRIVER_TYPES_VOL, "VOLTAGE driver initialization done.\r\n");
     return DRIVER_OK;
 }
-//clx_driver_define_initcall(drv_sensor_voltage_init);
-
+// clx_driver_define_initcall(drv_sensor_voltage_init);

@@ -21,6 +21,46 @@
 
 #define CLX_DS610_REBOOT_EEPROM_BUS 10
 #define CLX_DS610_REBOOT_EEPROM_ADDR 0x50
+#define DS610_VOL_TOTAL_SENSOR_NUM (8)
+#define DS610_CURR_TOTAL_SENSOR_NUM (4)
+
+/*
+    [0]:addr
+    [1]:location in sensor_arry
+    [2]:sensor offse
+*/
+short ds610_vol_sensor_map[3][3] = {
+    {0x20, 0, -1},
+    {0x21, 1, 3},
+    {0x0, 0},
+};
+/*
+    [0]: range
+    [1]: location in sensor_arry
+*/
+unsigned char ds610_vol_index_range_map[2][2] = {
+    {4, 0},
+    {8, 1},
+};
+
+/*
+    [0]:addr
+    [1]:location in sensor_arry
+    [2]:sensor offse
+*/
+short ds610_curr_sensor_map[3][3] = {
+    {0x20, 0, -1},
+    {0x21, 1, 1},
+    {0x0, 0},
+};
+/*
+    [0]: range
+    [1]: location in sensor_arry
+*/
+unsigned char ds610_curr_index_range_map[2][2] = {
+    {2, 0},
+    {4, 1},
+};
 
 struct sensor_descript clx8000_sensor_map_index[] = {
     {"fpga-tmp", 0x48, "BOARD 0x48"},

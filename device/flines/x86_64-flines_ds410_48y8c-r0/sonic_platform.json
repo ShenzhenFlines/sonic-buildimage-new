@@ -1,12 +1,12 @@
 {
   "i2c_topology_dict": [
-    {"bus": "i2c-0",   "driver": "pca9555",   "address": "0x26"},
+    {"bus": "i2c-0",   "driver": "pca9555",       "address": "0x26"},
     {"bus": "i2c-0",   "driver": "24c02",         "address": "0x50"},
     {"bus": "i2c-1",   "driver": "gw1200d",       "address": "0x58"},
     {"bus": "i2c-1",   "driver": "tmp75c",        "address": "0x4a"},
     {"bus": "i2c-1",   "driver": "24c02",         "address": "0x50"},
     {"bus": "i2c-2",   "driver": "adm1166",       "address": "0x34"},
-    {"bus": "i2c-3",   "driver": "mp2882",        "address": "0x20"},
+    {"bus": "i2c-3",   "driver": "mp2886",        "address": "0x2B"},
     {"bus": "i2c-5",   "driver": "tmp75c",        "address": "0x48"},
     {"bus": "i2c-6",   "driver": "clx_hwmon_fan", "address": "0x60"},
     {"bus": "i2c-6",   "driver": "tmp75c",        "address": "0x4b"},
@@ -14,7 +14,7 @@
     {"bus": "i2c-7",   "driver": "tmp75c",        "address": "0x49"},
     {"bus": "i2c-7",   "driver": "24c02",         "address": "0x52"},
     {"bus": "i2c-8",   "driver": "adm1166",       "address": "0x36"},
-    {"bus": "i2c-9",   "driver": "mp2882",        "address": "0x21"},
+    {"bus": "i2c-9",   "driver": "mp2886",        "address": "0x27"},
     {"bus": "i2c-10",   "driver": "24c02",        "address": "0x50"}
   ],
 
@@ -41,11 +41,11 @@
     "adm1275",
     "clx_psu_dev",
     "mp2882",
+    "mp2886",
     "tps546b24a",
     "tmp75",
     "adm1166",
     "pca9555",
-    "reboot_eeprom_dev_driver",
     "cputemp_dev_driver"
   ]
 }

@@ -19,6 +19,7 @@ struct voltage_fn_if {
     ssize_t (*get_main_board_vol_range)(void *driver, unsigned int vol_index, char *buf, size_t count);
     ssize_t (*get_main_board_vol_nominal_value)(void *driver, unsigned int vol_index, char *buf, size_t count);
     ssize_t (*get_main_board_vol_value)(void *driver, unsigned int vol_index, char *buf, size_t count);
+    unsigned char total_sensor_num;
 };
 
 #define VOLTAGE_DEV_VALID(dev) \
