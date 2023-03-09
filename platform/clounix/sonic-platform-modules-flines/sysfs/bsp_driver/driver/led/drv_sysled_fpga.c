@@ -31,21 +31,22 @@ static char *colors[] = {
 
 typedef enum sysled_types
 {
-    PSU_LED_STATUS,
-    SYS_LED_STATUS,
-    FAN_LED_STATUS,
     BMC_LED_STATUS,
+    PSU_LED_STATUS,
+    FAN_LED_STATUS,
+    LED_STATUS_RESERVED,
+    SYS_LED_STATUS,
     ID_LED_STATUS,
     LED_MAX
 } sysled_types_s;
 
-#define PSU_LED_STATUS_BIT_MASK 0x3
-#define SYS_LED_STATUS_BIT_MASK (0x3 << 2)
-#define FAN_LED_STATUS_BIT_MASK (0x3 << 4)
-#define BMC_LED_STATUS_BIT_MASK (0x3 << 6)
-#define ID_LED_STATUS_BIT_MASK (0x1 << 8)
-#define SYSLED_REG_BIT_DATA_RD(idx, mask, data) (((data) >> ((idx)*2)) & mask)
-#define SYSLED_REG_BIT_DATA_WR(idx, mask, data) (((data)&mask) << ((idx)*2))
+#define BMC_LED_STATUS_BIT_MASK 0xF
+#define PSU_LED_STATUS_BIT_MASK (0xF << 4)
+#define FAN_LED_STATUS_BIT_MASK (0xF << 8)
+#define SYS_LED_STATUS_BIT_MASK (0xF << 16)
+#define ID_LED_STATUS_BIT_MASK (0xF << 20)
+#define SYSLED_REG_BIT_DATA_RD(idx, mask, data) (((data) >> ((idx)*4)) & mask)
+#define SYSLED_REG_BIT_DATA_WR(idx, mask, data) (((data)&mask) << ((idx)*4))
 typedef enum user_sysled_state
 {
     USER_SYSLED_DARK,
@@ -67,35 +68,41 @@ enum dev_led_state
     DEV_LED_GREEN,
     DEV_LED_RED,
     DEV_LED_YELLOW,
-    DEV_LED_NOT_SUPPORT
+    DEV_LED_NOT_SUPPORT = 13
 };
 /*SYSLED*/
 enum dev_sysled_state
 {
-    DEV_SYSLED_GREEN_BLINKING,
+    DEV_SYSLED_DARK,
     DEV_SYSLED_GREEN,
     DEV_SYSLED_RED,
     DEV_SYSLED_YELLOW,
-    DEV_SYSLED_NOT_SUPPORT
+    DEV_SYSLED_GREEN_BLINKING = 9,
+    DEV_SYSLED_RED_BLINKING,
+    DEV_SYSLED_YELLOW_BLINKING,
+    DEV_SYSLED_NOT_SUPPORT = 13
 };
 /*IDLED*/
 enum dev_idled_state
 {
     DEV_IDLED_DARK,
-    DEV_IDLED_BLUE,
-    DEV_IDLED_NOT_SUPPORT
+    DEV_IDLED_BLUE = 4,
+    DEV_IDLED_BLUE_BLINKING = 12,
+    DEV_IDLED_NOT_SUPPORT = 13
 };
 
-static unsigned char led_state_user_to_dev[] = {DEV_LED_DARK, DEV_LED_GREEN, DEV_LED_YELLOW, DEV_SYSLED_RED,
+static unsigned char led_state_user_to_dev[] = {DEV_LED_DARK, DEV_LED_GREEN, DEV_LED_YELLOW, DEV_LED_RED,
                                                 DEV_LED_NOT_SUPPORT, DEV_LED_NOT_SUPPORT, DEV_LED_NOT_SUPPORT, DEV_LED_NOT_SUPPORT, DEV_LED_NOT_SUPPORT};
-static unsigned char sysled_state_user_to_dev[] = {DEV_SYSLED_NOT_SUPPORT, DEV_SYSLED_GREEN, DEV_SYSLED_YELLOW,
-                                                   DEV_SYSLED_RED, DEV_SYSLED_GREEN_BLINKING, DEV_SYSLED_NOT_SUPPORT, DEV_SYSLED_NOT_SUPPORT, DEV_SYSLED_NOT_SUPPORT, DEV_SYSLED_NOT_SUPPORT};
+static unsigned char sysled_state_user_to_dev[] = {DEV_SYSLED_DARK, DEV_SYSLED_GREEN, DEV_SYSLED_YELLOW, DEV_SYSLED_RED,
+                                                   DEV_SYSLED_GREEN_BLINKING, DEV_SYSLED_YELLOW_BLINKING, DEV_SYSLED_RED_BLINKING, DEV_SYSLED_NOT_SUPPORT, DEV_SYSLED_NOT_SUPPORT};
 static unsigned char idled_state_user_to_dev[] = {DEV_IDLED_DARK, DEV_IDLED_NOT_SUPPORT, DEV_IDLED_NOT_SUPPORT, DEV_IDLED_NOT_SUPPORT,
-                                                  DEV_IDLED_NOT_SUPPORT, DEV_IDLED_NOT_SUPPORT, DEV_IDLED_NOT_SUPPORT, DEV_IDLED_BLUE, DEV_IDLED_NOT_SUPPORT};
+                                                  DEV_IDLED_NOT_SUPPORT, DEV_IDLED_NOT_SUPPORT, DEV_IDLED_NOT_SUPPORT, DEV_IDLED_BLUE, DEV_IDLED_BLUE_BLINKING};
 
 static unsigned char led_state_dev_to_user[] = {USER_SYSLED_DARK, USER_SYSLED_GREEN, USER_SYSLED_RED, USER_SYSLED_YELLOW};
-static unsigned char sysled_state_dev_to_user[] = {USER_SYSLED_GREEN_BLINKING, USER_SYSLED_GREEN, USER_SYSLED_RED, USER_SYSLED_YELLOW};
-static unsigned char idled_state_dev_to_user[] = {USER_SYSLED_DARK, USER_SYSLED_BLUE};
+static unsigned char sysled_state_dev_to_user[] = {USER_SYSLED_DARK, USER_SYSLED_GREEN, USER_SYSLED_RED, USER_SYSLED_YELLOW, USER_SYSLED_NOT_SUPPORT, USER_SYSLED_NOT_SUPPORT, USER_SYSLED_NOT_SUPPORT,
+                                                   USER_SYSLED_NOT_SUPPORT, USER_SYSLED_NOT_SUPPORT, USER_SYSLED_GREEN_BLINKING, USER_SYSLED_RED_BLINKING, USER_SYSLED_YELLOW_BLINKING};
+static unsigned char idled_state_dev_to_user[] = {USER_SYSLED_DARK, USER_SYSLED_NOT_SUPPORT, USER_SYSLED_NOT_SUPPORT, USER_SYSLED_NOT_SUPPORT, USER_SYSLED_BLUE, USER_SYSLED_NOT_SUPPORT, USER_SYSLED_NOT_SUPPORT,
+                                                  USER_SYSLED_NOT_SUPPORT, USER_SYSLED_NOT_SUPPORT, USER_SYSLED_NOT_SUPPORT, USER_SYSLED_NOT_SUPPORT, USER_SYSLED_NOT_SUPPORT, USER_SYSLED_BLUE_BLINKING};
 
 ssize_t front_panel_show(struct drv_sysled_fpga *sysled, sysled_types_s type, char *buf)
 {
@@ -114,17 +121,17 @@ ssize_t front_panel_show(struct drv_sysled_fpga *sysled, sysled_types_s type, ch
     case PSU_LED_STATUS:
     case FAN_LED_STATUS:
     case BMC_LED_STATUS:
-        bit_info = SYSLED_REG_BIT_DATA_RD(type, 0x3, data);
+        bit_info = SYSLED_REG_BIT_DATA_RD(type, 0xF, data);
         user_led_state = led_state_dev_to_user[bit_info];
         break;
 
     case SYS_LED_STATUS:
-        bit_info = SYSLED_REG_BIT_DATA_RD(type, 0x3, data);
+        bit_info = SYSLED_REG_BIT_DATA_RD(type, 0xF, data);
         user_led_state = sysled_state_dev_to_user[bit_info];
         break;
 
     case ID_LED_STATUS:
-        bit_info = SYSLED_REG_BIT_DATA_RD(type, 0x1, data);
+        bit_info = SYSLED_REG_BIT_DATA_RD(type, 0xF, data);
         user_led_state = idled_state_dev_to_user[bit_info];
         break;
 
@@ -159,42 +166,38 @@ ssize_t front_panel_store(struct drv_sysled_fpga *sysled, sysled_types_s type, u
     case PSU_LED_STATUS:
         data &= ~(PSU_LED_STATUS_BIT_MASK);
         dev_state = led_state_user_to_dev[state];
-        mask = 0x3;
+        mask = 0xF;
         break;
 
     case FAN_LED_STATUS:
         data &= ~(FAN_LED_STATUS_BIT_MASK);
         dev_state = led_state_user_to_dev[state];
-        mask = 0x3;
+        mask = 0xF;
         break;
 
     case BMC_LED_STATUS:
         data &= ~(BMC_LED_STATUS_BIT_MASK);
         dev_state = led_state_user_to_dev[state];
-        mask = 0x3;
+        mask = 0xF;
         break;
 
     case SYS_LED_STATUS:
         data &= ~(SYS_LED_STATUS_BIT_MASK);
         dev_state = sysled_state_user_to_dev[state];
-        mask = 0x3;
+        mask = 0xF;
         break;
 
     case ID_LED_STATUS:
         data &= ~(ID_LED_STATUS_BIT_MASK);
         dev_state = idled_state_user_to_dev[state];
-        mask = 0x1;
+        mask = 0xF;
         break;
 
     default:
         return -1;
     }
 
-    if ((type == ID_LED_STATUS) && (dev_state == DEV_IDLED_NOT_SUPPORT))
-    {
-        return -1;
-    }
-    if ((dev_state == DEV_LED_NOT_SUPPORT) || (dev_state == DEV_SYSLED_NOT_SUPPORT))
+    if ((dev_state == DEV_LED_NOT_SUPPORT) || (dev_state == DEV_SYSLED_NOT_SUPPORT) || (dev_state == DEV_IDLED_NOT_SUPPORT))
     {
         return -1;
     }
