@@ -168,7 +168,7 @@ static int flks_driver_ds610_board(void)
     char syse2p_name[] = "drv_syseeprom";
     char cpld_name[] = "drv_cpld_lattice";
     char fpga_name[] = "drv_fpga_xilinx";
-    char i2c_master_name[] = "drv_i2c_master_xilinx";
+    char i2c_master_name[] = "drv_i2c_xilinx";
     char xcvr_name[] = "drv_xcvr_fpga";
     char fan_name[] = "drv_fan_clx";
     char watchdog_name[] = "drv_wdt_cpld";

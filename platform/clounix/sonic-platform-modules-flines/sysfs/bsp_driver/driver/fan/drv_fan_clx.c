@@ -320,7 +320,7 @@ static ssize_t drv_get_fan_motor_speed_tolerance(void *fan, unsigned int fan_ind
                    char *buf, size_t count)
 {
     /* to be update: is it not supported from hardware */
-    return sprintf(buf, "2100");
+    return sprintf(buf, "2100\n");
 }
 
 /*
@@ -381,7 +381,7 @@ static ssize_t drv_get_fan_motor_speed_max(void *fan, unsigned int fan_index, un
 static ssize_t drv_get_fan_motor_speed_min(void *fan, unsigned int fan_index, unsigned int motor_index,
                    char *buf, size_t count)
 {
-    return sprintf(buf, "2100");
+    return sprintf(buf, "2100\n");
 }
 
 /*

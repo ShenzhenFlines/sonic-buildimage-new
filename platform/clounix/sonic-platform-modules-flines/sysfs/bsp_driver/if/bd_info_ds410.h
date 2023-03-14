@@ -11,7 +11,7 @@
 #define MUX_CH_SEL_DS410 0x40
 
 #define PORT_MAX_DS410 56
-#define PORT_CLK_DIV_DS410 (0xc8)
+#define PORT_CLK_DIV_DS410 (0x19)
 
 #define FAN_MAX_DS410 5
 #define MOTOR_NUM_PER_FAN_DS410 1

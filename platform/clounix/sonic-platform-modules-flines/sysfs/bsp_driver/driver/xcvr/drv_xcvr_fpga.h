@@ -86,7 +86,6 @@
  * it's important to recover from write timeouts.
  */
 static unsigned int write_timeout = 250;
-
 struct sfp_platform_data {
     u32          byte_len;       /* size (sum of all addr) */
     u16          page_size;      /* for writes */
@@ -187,6 +186,10 @@ inline static int fpga_reg_read(struct clounix_priv_data *priv, int reg)
 #define FPGA_PORT_BATCH_DATA (0x100000)
 
 #define XCVR_I2C_DEV_MAX 3
+
+#define FPGA_I2C_TIMEOUT (msecs_to_jiffies(250))
+#define FPGA_I2C_MASTER_TX_FINISH_MASK (0x80000000UL)
+#define FPGA_I2C_MASTER_TX_ERROR_MASK (0x40000000UL)
 
 enum {
     XCVR_PLATFORM_TYPEA,

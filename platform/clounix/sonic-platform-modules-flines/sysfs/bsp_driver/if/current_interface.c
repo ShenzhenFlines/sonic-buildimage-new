@@ -37,9 +37,9 @@ int current_if_create_driver(void)
 	{
 		bd = clx_driver_get_platform_bd();
 		current_driver->total_sensor_num = bd->curr.total_sensor_num;
-		memcpy(current_driver->psensor_map,bd->curr.curr_sensor_map,sizeof(bd->curr.curr_sensor_map));
-		memcpy(current_driver->pcurr_index_range_map,bd->curr.curr_index_range_map, \
-		sizeof(bd->curr.curr_index_range_map));		
+		memcpy(current_driver->psensor_map, bd->curr.curr_sensor_map, sizeof(bd->curr.curr_sensor_map));
+		memcpy(current_driver->pcurr_index_range_map, bd->curr.curr_index_range_map,
+			   sizeof(bd->curr.curr_index_range_map));
 	}
 
 	return rc;

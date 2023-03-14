@@ -14,7 +14,6 @@
 struct drv_curr_sensor_clx drv_sensor;
 
 #define REAL_MAX_SENSOR_NUM (2)
-#define DS410_CURR_TOTAL_SENSOR_NUM (2)
 
 #define CURR_NODE "curr"
 #define CURR_MIN "_min"
@@ -35,7 +34,6 @@ static short sensor_map[3][3];
     [1]: location in sensor_arry
 */
 static unsigned char curr_index_range_map[3][2];
-
 
 static struct i2c_client *sensor_arry[REAL_MAX_SENSOR_NUM + 1] = {0};
 

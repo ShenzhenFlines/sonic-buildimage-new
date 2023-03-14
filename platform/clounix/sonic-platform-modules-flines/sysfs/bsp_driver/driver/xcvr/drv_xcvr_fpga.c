@@ -184,6 +184,116 @@ static int fpga_i2c_byte_write(struct clounix_priv_data *sfp,
     return -ENXIO;
 }
 
+static int clx_fpga_sfp_i2c_wait_bus_tx_done(struct clounix_priv_data *sfp, uint32_t idx)
+{
+    unsigned int data;
+    unsigned long timeout = jiffies + FPGA_I2C_TIMEOUT;
+
+    do
+    {
+        data = readl(port_mgr_stat_reg(sfp->mmio, idx));
+
+        if (data & FPGA_I2C_MASTER_TX_FINISH_MASK)
+        {
+            if (data & FPGA_I2C_MASTER_TX_ERROR_MASK)
+            {
+                LOG_DBG(CLX_DRIVER_TYPES_XCVR, "clx_fpga_sfp_i2c_wait_bus_tx_done data ECOMM error\r\n");
+
+                return -ECOMM;
+            }
+
+            return 0;
+        }
+
+    } while (time_before(jiffies, timeout));
+
+    LOG_DBG(CLX_DRIVER_TYPES_XCVR, "clx_fpga_sfp_i2c_wait_bus_tx_done data ETIMEDOUT error\r\n");
+
+    return -ETIMEDOUT;
+}
+
+static ssize_t clx_fpga_sfp_eeprom_read_byte_by_byte(struct clounix_priv_data *sfp,
+            int port,
+            char *buf, unsigned int offset, size_t count)
+{
+    uint32_t data;
+    uint32_t idx = 0;
+    unsigned int *tmp_addr = NULL;
+    unsigned int tmp_value = 0, j = 0;
+
+    idx = sfp->chip[port].dev_idx;
+    data = 0xe0000000 | (((sfp->chip[port].slave_addr + 1) & 0xFF) << 8) | (sfp->chip[port].slave_addr & 0xFF) | (sfp->chip[port].clk_div << 16);
+    writel(data, port_mgr_cfg_reg(sfp->mmio, idx));
+
+    data = drv_xcvr_i2c_port_data(port, sfp->platform_type, idx);
+    writel(data, port_mgr_mux_reg(sfp->mmio, idx));
+
+    if (count == 1)
+    {
+        data = 0;
+        data = 0x81000000 | ((offset & 0xFF) << 16);
+        writel(data, port_mgr_ctrl_reg(sfp->mmio, idx));
+
+        if (clx_fpga_sfp_i2c_wait_bus_tx_done(sfp, idx) != 0)
+        {
+            return -ECOMM;
+        }
+        else
+        {
+            data = readl(port_mgr_stat_reg(sfp->mmio, idx));
+            *buf = data & 0xFF;
+        }
+    }
+    else
+    {
+        data = 0;
+        data = (0x82000000 | ((offset & 0xFF) << 16) | ((count & 0xFF) << 8));
+        writel(data, port_mgr_ctrl_reg(sfp->mmio, idx));
+
+        if (clx_fpga_sfp_i2c_wait_bus_tx_done(sfp, idx) != 0)
+        {
+            return -ECOMM;
+        }
+        else
+        {
+            tmp_addr = (sfp->mmio + FPGA_PORT_BATCH_DATA + 0x10000 * (idx));
+
+            for (j = 0; j < count; j += 4)
+            {
+                tmp_value = readl(tmp_addr);
+
+                buf[j] = (tmp_value & 0xFF);
+
+                if ((j + 1) >= count)
+                {
+                    break;
+                }
+
+                buf[j + 1] = ((tmp_value >> 8) & 0xFF);
+
+                if ((j + 2) >= count)
+                {
+                    break;
+                }
+
+                buf[j + 2] = ((tmp_value >> 16) & 0xFF);
+
+                if ((j + 3) >= count)
+                {
+                    break;
+                }
+
+                buf[j + 3] = ((tmp_value >> 24) & 0xFF);
+
+                tmp_addr++;
+            }
+        }
+    }
+
+    return count;
+}
+
+#if 0
 static ssize_t clx_fpga_sfp_eeprom_read_byte_by_byte(struct clounix_priv_data *sfp,
             int port,
             char *buf, unsigned int offset, size_t count)
@@ -208,18 +318,18 @@ static ssize_t clx_fpga_sfp_eeprom_read_byte_by_byte(struct clounix_priv_data *s
 
     return -ETIMEDOUT;
 }
-
+#endif
 static ssize_t clx_fpga_sfp_eeprom_read(struct clounix_priv_data *sfp,
             int port,
             char *buf, unsigned int offset, size_t count)
 {
     unsigned long timeout, read_time;
     int status;
-
+#if 0
     /*smaller eeproms can work given some SMBus extension calls */
     if (count > I2C_SMBUS_BLOCK_MAX)
         count = I2C_SMBUS_BLOCK_MAX;
-
+#endif
     /*
      * Reads fail if the previous write didn't complete yet. We may
      * loop a few times until this one succeeds, waiting at least
@@ -263,7 +373,7 @@ static ssize_t clx_fpga_sfp_eeprom_write_byte_by_byte(
         if (ret == -ENXIO)
             return ret;
     i++;
-    usleep_range(10000, 15000);
+    usleep_range(5000, 6000);
     } while (time_before(write_time, timeout) && (i < count));
 
     if (i == count) {

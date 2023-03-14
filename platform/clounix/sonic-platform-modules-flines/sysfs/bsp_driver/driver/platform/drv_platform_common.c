@@ -134,8 +134,8 @@ int clx_syseeprom_read(uint8_t *buf, int offset, uint32_t size)
 {
     char dummy = 0;
 
-    //to be update for standard interface,DS610 and DS410 don't have  PCA9548
-   /* clx_i2c_mux_write(CLX_SYSEEPROM_BUS, CLX_PCA9548_ADDR, CLX_PCA9548_CHANNEL_IDROM, &dummy, 1);*/
+    //to be update for standard interface
+    //clx_i2c_mux_write(CLX_SYSEEPROM_BUS, CLX_PCA9548_ADDR, CLX_PCA9548_CHANNEL_IDROM, &dummy, 1);
     return clx_i2c_read(CLX_SYSEEPROM_BUS, CLX_SYSEEPROM_ADDR, offset, buf, size); 
 }
 
