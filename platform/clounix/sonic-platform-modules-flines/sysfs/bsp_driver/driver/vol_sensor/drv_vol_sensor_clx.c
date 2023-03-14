@@ -29,20 +29,13 @@ static DEFINE_RWLOCK(list_lock);
     [1]:location in sensor_arry
     [2]:sensor offse
 */
-static short sensor_map[][3] = {
-    {0x2B, 0, -3},
-    {0x27, 1, -3},
-    {0x0, 0},
-};
+static short sensor_map[3][3];
 
 /*
     [0]: range
     [1]: location in sensor_arry
 */
-static unsigned char vol_index_range_map[][2] = {
-    {1, 0},
-    {2, 1},
-};
+static unsigned char vol_index_range_map[3][2];
 
 static struct i2c_client *sensor_arry[REAL_MAX_SENSOR_NUM + 1] = {0};
 
@@ -96,7 +89,8 @@ EXPORT_SYMBOL(vol_sensor_del);
 
 static int drv_sensor_get_main_board_vol_number(void *driver)
 {
-    return DS410_VOL_TOTAL_SENSOR_NUM;
+    struct voltage_fn_if *voltage_if = driver;
+    return voltage_if->total_sensor_num;
 }
 
 /*
@@ -375,6 +369,8 @@ int drv_sensor_voltage_init(void **voltage_driver)
     voltage->voltage_if.get_main_board_vol_range = drv_sensor_get_main_board_vol_range;
     voltage->voltage_if.get_main_board_vol_nominal_value = drv_sensor_get_main_board_vol_nominal_value;
     voltage->voltage_if.get_main_board_vol_value = drv_sensor_get_main_board_vol_value;
+    voltage->voltage_if.psensor_map = sensor_map;
+    voltage->voltage_if.pvol_index_range_map = vol_index_range_map;
     *voltage_driver = voltage;
     LOG_INFO(CLX_DRIVER_TYPES_VOL, "VOLTAGE driver initialization done.\r\n");
     return DRIVER_OK;

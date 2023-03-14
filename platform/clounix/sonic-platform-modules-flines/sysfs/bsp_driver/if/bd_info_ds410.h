@@ -39,9 +39,10 @@ short ds410_vol_sensor_map[3][3] = {
     [0]: range
     [1]: location in sensor_arry
 */
-unsigned char ds410_vol_index_range_map[2][2] = {
+unsigned char ds410_vol_index_range_map[3][2] = {
     {1, 0},
     {2, 1},
+    {0, 0},
 };
 /*
     [0]:addr
@@ -57,9 +58,10 @@ short ds410_curr_sensor_map[3][3] = {
     [0]: range
     [1]: location in sensor_arry
 */
-unsigned char ds410_curr_index_range_map[2][2] = {
+unsigned char ds410_curr_index_range_map[][2] = {
     {1, 0},
     {2, 1},
+    {0, 0},
 };
 struct sensor_descript ds410_sensor_map_index[] = {
     {"fpga-tmp", 0x48, "BOARD 0x48"},

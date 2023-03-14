@@ -19,6 +19,8 @@ struct current_fn_if {
     ssize_t (*get_main_board_curr_average)(void *driver, unsigned int curr_index, char *buf, size_t count);
     ssize_t (*get_main_board_curr_value)(void *driver, unsigned int curr_index, char *buf, size_t count);
     unsigned char total_sensor_num;
+    short (*psensor_map)[3];
+    unsigned char (*pcurr_index_range_map)[2];    
 };
 
 #define CURRENT_DEV_VALID(dev) \

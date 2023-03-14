@@ -28,20 +28,14 @@ static DEFINE_RWLOCK(list_lock);
     [1]:location in sensor_arry
     [2]:sensor offse
 */
-static short sensor_map[][3] = {
-    {0x2B, 0, -1},
-    {0x27, 1, -1},
-    {0x0, 0},
-};
+static short sensor_map[3][3];
 
 /*
     [0]: range
     [1]: location in sensor_arry
 */
-static unsigned char curr_index_range_map[][2] = {
-    {1, 0},
-    {2, 1},
-};
+static unsigned char curr_index_range_map[3][2];
+
 
 static struct i2c_client *sensor_arry[REAL_MAX_SENSOR_NUM + 1] = {0};
 
@@ -95,7 +89,8 @@ EXPORT_SYMBOL(curr_sensor_del);
 
 static int drv_sensor_get_main_board_curr_number(void *driver)
 {
-    return DS410_CURR_TOTAL_SENSOR_NUM;
+    struct current_fn_if *curr_if = driver;
+    return curr_if->total_sensor_num;
 }
 
 /*
@@ -338,6 +333,8 @@ int drv_sensor_current_init(void **current_driver)
     curr->current_if.get_main_board_curr_min = drv_sensor_get_main_board_curr_min;
     curr->current_if.set_main_board_curr_min = drv_sensor_set_main_board_curr_min;
     curr->current_if.get_main_board_curr_value = drv_sensor_get_main_board_curr_value;
+    curr->current_if.psensor_map = sensor_map;
+    curr->current_if.pcurr_index_range_map = curr_index_range_map;    
     *current_driver = curr;
     LOG_INFO(CLX_DRIVER_TYPES_CURR, "CURRENT driver clx8000 initialization done.\r\n");
     return DRIVER_OK;

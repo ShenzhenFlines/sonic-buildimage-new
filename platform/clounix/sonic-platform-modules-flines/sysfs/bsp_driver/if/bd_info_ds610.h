@@ -38,9 +38,10 @@ short ds610_vol_sensor_map[3][3] = {
     [0]: range
     [1]: location in sensor_arry
 */
-unsigned char ds610_vol_index_range_map[2][2] = {
+unsigned char ds610_vol_index_range_map[3][2] = {
     {4, 0},
     {8, 1},
+    {0, 0},
 };
 
 /*
@@ -57,9 +58,10 @@ short ds610_curr_sensor_map[3][3] = {
     [0]: range
     [1]: location in sensor_arry
 */
-unsigned char ds610_curr_index_range_map[2][2] = {
+unsigned char ds610_curr_index_range_map[3][2] = {
     {2, 0},
     {4, 1},
+    {0, 0},
 };
 
 struct sensor_descript clx8000_sensor_map_index[] = {
