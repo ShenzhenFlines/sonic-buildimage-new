@@ -319,8 +319,9 @@ static ssize_t drv_get_fan_motor_speed(void *fan, unsigned int fan_index, unsign
 static ssize_t drv_get_fan_motor_speed_tolerance(void *fan, unsigned int fan_index, unsigned int motor_index,
                    char *buf, size_t count)
 {
-    /* to be update: is it not supported from hardware */
-    return sprintf(buf, "2100\n");
+    struct fan_driver_clx *dev = (struct fan_driver_clx *)fan;
+
+    return sprintf(buf, "%d\n", (dev->fan_if.fan_max_speed/10));
 }
 
 /*
@@ -363,7 +364,9 @@ static ssize_t drv_get_fan_motor_speed_target(void *fan, unsigned int fan_index,
 static ssize_t drv_get_fan_motor_speed_max(void *fan, unsigned int fan_index, unsigned int motor_index,
                    char *buf, size_t count)
 {
-    return sprintf(buf, "21000\n");
+    struct fan_driver_clx *dev = (struct fan_driver_clx *)fan;
+
+    return sprintf(buf, "%d\n", dev->fan_if.fan_max_speed);
 }
 
 /*
@@ -381,7 +384,9 @@ static ssize_t drv_get_fan_motor_speed_max(void *fan, unsigned int fan_index, un
 static ssize_t drv_get_fan_motor_speed_min(void *fan, unsigned int fan_index, unsigned int motor_index,
                    char *buf, size_t count)
 {
-    return sprintf(buf, "2100\n");
+    struct fan_driver_clx *dev = (struct fan_driver_clx *)fan;
+
+    return sprintf(buf, "%d\n", (dev->fan_if.fan_max_speed/10));
 }
 
 /*

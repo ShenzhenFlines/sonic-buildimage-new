@@ -201,6 +201,7 @@ static int flks_driver_ds610_board(void)
     // fan info
     memcpy(bd->fan.name, fan_name, sizeof(fan_name));
     bd->fan.fan_num = FAN_MAX_DS610;
+    bd->fan.fan_max_speed = FAN_MAX_SPEED_DS610;
     bd->fan.motor_per_fan = MOTOR_NUM_PER_FAN_DS610;
     bd->fan.bus = FAN_BUS_DS610;
     bd->fan.addr = FAN_ADDR_DS610;
@@ -212,7 +213,7 @@ static int flks_driver_ds610_board(void)
     memcpy(bd->psu.name, psu_name, sizeof(psu_name));
     // temp info
     memcpy(bd->temp.name, temp_name, sizeof(temp_name));
-    memcpy(bd->temp.sensor_map_index, clx8000_sensor_map_index, sizeof(clx8000_sensor_map_index));
+    memcpy(bd->temp.sensor_map_index, ds610_sensor_map_index, sizeof(ds610_sensor_map_index));
     // curr info
     memcpy(bd->curr.name, curr_name, sizeof(curr_name));
     bd->curr.total_sensor_num = DS610_CURR_TOTAL_SENSOR_NUM;
@@ -268,6 +269,7 @@ static int flks_driver_ds410_board(void)
     // fan info
     memcpy(bd->fan.name, fan_name, sizeof(fan_name));
     bd->fan.fan_num = FAN_MAX_DS410;
+    bd->fan.fan_max_speed = FAN_MAX_SPEED_DS410;
     bd->fan.motor_per_fan = MOTOR_NUM_PER_FAN_DS410;
     bd->fan.bus = FAN_BUS_DS410;
     bd->fan.addr = FAN_ADDR_DS410;

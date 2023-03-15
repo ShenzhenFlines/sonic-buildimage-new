@@ -103,6 +103,7 @@ struct bd_fan
 {
 	char name[BOARD_NAME_LEN];
 	unsigned int fan_num;
+	unsigned int fan_max_speed;
 	unsigned int motor_per_fan;
 	unsigned char bus;
 	unsigned char addr;

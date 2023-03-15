@@ -14,6 +14,7 @@
 #define PORT_CLK_DIV_DS610 (0x19)
 
 #define FAN_MAX_DS610 6
+#define FAN_MAX_SPEED_DS610 27800
 #define MOTOR_NUM_PER_FAN_DS610 1
 
 #define FAN_BUS_DS610 6
@@ -64,7 +65,7 @@ unsigned char ds610_curr_index_range_map[3][2] = {
     {0, 0},
 };
 
-struct sensor_descript clx8000_sensor_map_index[] = {
+struct sensor_descript ds610_sensor_map_index[] = {
     {"fpga-tmp", 0x48, "BOARD 0x48"},
     {"fpga-psu0", 0x49, "BOARD 0x49"},
     {"fpga-psu1", 0x4a, "BOARD 0x4a"},
