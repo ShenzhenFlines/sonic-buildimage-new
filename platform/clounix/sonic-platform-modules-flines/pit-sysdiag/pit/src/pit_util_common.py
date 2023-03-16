@@ -31,7 +31,7 @@ def get_platform_and_hwsku():
                                 stderr=subprocess.STDOUT)
         stdout = proc.communicate()[0]
         proc.wait()
-        platform = stdout.rstrip("\n")
+        platform = stdout.decode().rstrip("\n")
 
         proc = subprocess.Popen([SONIC_CFGGEN_PATH, '-d', '-v', HWSKU_KEY],
                                 stdout=subprocess.PIPE,
@@ -39,7 +39,7 @@ def get_platform_and_hwsku():
                                 stderr=subprocess.STDOUT)
         stdout = proc.communicate()[0]
         proc.wait()
-        hwsku = stdout.rstrip("\n")
+        hwsku = stdout.decode().rstrip("\n")
     except OSError as e:
         raise OSError("Cannot detect platform")
 
@@ -84,7 +84,7 @@ def run_command(cmd):
     out, err = proc.communicate()
     if err and proc.returncode != 0:
         return proc.returncode, err
-    return 0, out.rstrip('\n')
+    return 0, out.decode().rstrip('\n')
 
 
 def execute_cmd(cmdlist):

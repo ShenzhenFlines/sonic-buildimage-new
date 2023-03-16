@@ -29,7 +29,7 @@
     "software_system":{
         "sysdiag_version":"1.1",
         "timezone":"Etc/UTC",
-        "sonic_version":"SONiC.202012.clounix_uefi.0-dirty-20220815.162650"
+        "sonic_version":"SONiC.20230316"
     },
     "pcie":{
         "1d9f:8579": {
