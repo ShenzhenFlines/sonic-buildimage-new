@@ -142,6 +142,21 @@ def doUninstall():
     common.doBash("rmmod " + PLATFORM_CFG_MODULE)
     return
 
+def doBurnInTest():
+    signPath = '/home/admin/1.txt'
+    signExecutable = '/home/admin/vtysh'
+    if os.path.exists(signPath):
+        with open(signPath, 'r') as f:
+            c = f.read()
+            if c == '1':
+                if os.path.exists(signExecutable):
+                    os.system(signExecutable)
+                else:
+                    print('cannot find executable')
+            else:
+                print('skip test')
+    else:
+        print('cannot find sign file.')
 
 def main():
     args = common.sys.argv[1:]
@@ -161,6 +176,7 @@ def main():
         doUninstall()
         os.system("/usr/local/bin/s3ip_load.py stop")
 
+    doBurnInTest()
     common.sys.exit(0)
 
 
