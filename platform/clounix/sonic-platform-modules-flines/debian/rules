@@ -97,7 +97,6 @@ binary-indep:
 		cp -r $(MOD_SRC_DIR)/${MODULE_DIRS}/bios_bin debian/$(PACKAGE_PRE_NAME)-${MODULE_DIRS}/usr/local/bin/; \
 	fi; \
 	cp $(MOD_SRC_DIR)/${MODULE_DIRS}/$(SERVICE_DIR)/platform_api_mgnt.sh debian/$(PACKAGE_PRE_NAME)-${MODULE_DIRS}/usr/local/bin/;
-	cp $(MOD_SRC_DIR)/${MODULE_DIRS}/vtysh_bin/vtysh debian/usr/local/bin;
 	
 	# Resuming debhelper scripts
 	dh_testroot
