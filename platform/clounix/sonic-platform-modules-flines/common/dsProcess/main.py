@@ -18,6 +18,7 @@ import common
 import device
 import os
 from sonic_py_common import device_info
+import syslog
 
 PLATFORM_CFG_MODULE = "clounix_platform"
 
@@ -152,15 +153,16 @@ def doBurnInTest():
                 if os.path.exists(signExecutable):
                     os.system(signExecutable)
                 else:
-                    print('cannot find executable')
+                    syslog.syslog('cannot find executable')
             else:
-                print('skip test')
+                syslog.syslog('skip test')
     else:
-        print('cannot find sign file.')
+        syslog.syslog('cannot find sign file.')
 
 def main():
     args = common.sys.argv[1:]
 
+    doBurnInTest()
     if len(args[0:]) < 1:
         common.sys.exit(0)
 
@@ -176,7 +178,6 @@ def main():
         doUninstall()
         os.system("/usr/local/bin/s3ip_load.py stop")
 
-    doBurnInTest()
     common.sys.exit(0)
 
 
