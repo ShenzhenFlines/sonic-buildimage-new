@@ -1371,7 +1371,8 @@ static ssize_t set_dsfp_reset(struct clounix_priv_data *sfp, unsigned int eth_in
             CLEAR_BIT(data, (eth_index - xcvr_cpld_index[sfp->platform_type][0]));
         else
             CLEAR_BIT(data, eth_index );
-    }else
+    }
+    else
     {
         if(eth_index >= xcvr_cpld_index[sfp->platform_type][0])
             SET_BIT(data, (eth_index - xcvr_cpld_index[sfp->platform_type][0]));

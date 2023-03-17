@@ -225,7 +225,7 @@ int drv_xilinx_fpga_probe(struct pci_dev *pdev, const struct pci_device_id *pci_
     }
     pci_set_drvdata(pdev, clounix_fpga_base);
 
-    LOG_ERR(CLX_DRIVER_TYPES_FPGA, "support %d msi vector\n", pci_msi_vec_count(pdev));
+    //LOG_ERR(CLX_DRIVER_TYPES_FPGA, "support %d msi vector\n", pci_msi_vec_count(pdev));
     // err = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_MSI | PCI_IRQ_AFFINITY);
     // if (err < 0) {
     //     LOG_ERR(CLX_DRIVER_TYPES_FPGA, "%s[%d] MSI vector alloc fail.\r\n", __func__, __LINE__);

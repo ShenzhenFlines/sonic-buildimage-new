@@ -322,20 +322,22 @@ class Chassis(ChassisBase):
             '12': (self.REBOOT_CAUSE_BMC_SHUTDOWN, 'BMC Shutdown')
         }.get(hw_reboot_cause, (self.REBOOT_CAUSE_HARDWARE_OTHER, 'Hardware - Other'))
 
+        if hw_reboot_cause != '00':
+            #print("hw reboot_cause {0}".format(reboot_cause))
+            return reboot_cause
+
         sw_reboot_cause = self.__api_helper.read_one_line_file(
             REBOOT_CAUSE_FILE) or "Unknown"
-
-        # print("hw_reboot_cause %s" %(hw_reboot_cause))
-        # print("sw_reboot_cause %s" %(sw_reboot_cause))
-
-        if sw_reboot_cause != 'Unknown':
+        if sw_reboot_cause != "Unknown":
             reboot_cause = (self.REBOOT_CAUSE_NON_HARDWARE, sw_reboot_cause)
+            #print("sw reboot_cause {0}".format(reboot_cause))
+            return reboot_cause
 
         # thermal policy reboot cause
         if os.path.isfile(THERMAL_OVERLOAD_POSITION_FILE):
             thermal_overload_pos = self.__api_helper.read_one_line_file(
-                THERMAL_OVERLOAD_POSITION_FILE)
-            if thermal_overload_pos is not "None":
+                THERMAL_OVERLOAD_POSITION_FILE) or "Unknown"
+            if thermal_overload_pos != "Unknown":
                 str = thermal_overload_pos
                 if str.find('CPU') >= 0:
                     reboot_cause = (
@@ -348,15 +350,18 @@ class Chassis(ChassisBase):
                         self.REBOOT_CAUSE_THERMAL_OVERLOAD_OTHER, thermal_overload_pos)
 
                 os.remove(THERMAL_OVERLOAD_POSITION_FILE)
+                #print("thermal reboot_cause {0}".format(reboot_cause))
+                return reboot_cause
 
         if os.path.isfile(ADDITIONAL_FAULT_CAUSE_FILE):
             addational_fault_cause = self.__api_helper.read_one_line_file(
-                ADDITIONAL_FAULT_CAUSE_FILE)
-            if addational_fault_cause is not 'None':
-                description = ' '.join([description, addational_fault_cause])
-                reboot_cause = (self.REBOOT_CAUSE_HARDWARE_OTHER, description)
+                ADDITIONAL_FAULT_CAUSE_FILE) or "Unknown"
+            if addational_fault_cause != "Unknown":
+                reboot_cause = (self.REBOOT_CAUSE_HARDWARE_OTHER, addational_fault_cause)
                 os.remove(ADDITIONAL_FAULT_CAUSE_FILE)
-
+                #print("add reboot_cause {0}".format(reboot_cause))
+                return reboot_cause
+        #print(" reboot_cause {0}".format(reboot_cause))
         return reboot_cause
 
     @property
