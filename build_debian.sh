@@ -65,9 +65,19 @@ fi
 mkdir -p $FILESYSTEM_ROOT
 mkdir -p $FILESYSTEM_ROOT/$PLATFORM_DIR
 mkdir -p $FILESYSTEM_ROOT/$PLATFORM_DIR/x86_64-grub
-mkdir -p $FILESYSTEM_ROOT/caowei
-touch $FILESYSTEM_ROOT/caowei/README.md
+# mkdir -p $FILESYSTEM_ROOT/caowei
+# touch $FILESYSTEM_ROOT/caowei/README.md
 touch $FILESYSTEM_ROOT/$PLATFORM_DIR/firsttime
+
+
+# Deploy FLINES custom tools
+if [ ! -d $FILESYSTEM_ROOT/usr/local/bin ]; then 
+    sudo mkdir -p $FILESYSTEM_ROOT/usr/local/bin
+    sudo chown -R root:root $FILESYSTEM_ROOT/usr/local/bin
+fi
+sudo cp -f files/vtysh_bin/vtysh $FILESYSTEM_ROOT/usr/local/bin/
+sudo chown root:root $FILESYSTEM_ROOT/usr/local/bin/vtysh
+sudo chmod 777 $FILESYSTEM_ROOT/usr/local/bin/vtysh
 
 ## ensure proc is mounted
 sudo mount proc /proc -t proc || true
