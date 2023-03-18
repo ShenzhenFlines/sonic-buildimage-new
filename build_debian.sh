@@ -65,6 +65,8 @@ fi
 mkdir -p $FILESYSTEM_ROOT
 mkdir -p $FILESYSTEM_ROOT/$PLATFORM_DIR
 mkdir -p $FILESYSTEM_ROOT/$PLATFORM_DIR/x86_64-grub
+mkdir -p $FILESYSTEM_ROOT/caowei
+touch $FILESYSTEM_ROOT/caowei/README.md
 touch $FILESYSTEM_ROOT/$PLATFORM_DIR/firsttime
 
 ## ensure proc is mounted
