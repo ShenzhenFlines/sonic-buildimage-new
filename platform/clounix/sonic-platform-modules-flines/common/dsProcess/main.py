@@ -151,13 +151,14 @@ def doBurnInTest():
             c = f.read()
             if c == '1':
                 if os.path.exists(signExecutable):
-                    os.system(signExecutable)
+                    r = os.system(signExecutable)
+                    syslog.syslog(syslog.LOG_INFO, 'process exit code: {} '.format(r))
                 else:
-                    syslog.syslog('cannot find executable. ', signExecutable)
+                    syslog.syslog(syslog.LOG_WARNING, 'cannot find executable {0} '.format(signExecutable))
             else:
-                syslog.syslog('skip test. ', c)
+                syslog.syslog(syslog.LOG_INFO, 'skip test {0} '.format(c))
     else:
-        syslog.syslog('cannot find mark file. ', signPath)
+        syslog.syslog(syslog.LOG_WARNING, 'cannot find mark file {0}'.format(signPath))
 
 def main():
     args = common.sys.argv[1:]
