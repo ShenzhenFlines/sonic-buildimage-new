@@ -144,8 +144,8 @@ def doUninstall():
     return
 
 def doBurnInTest():
-    signPath = '/home/admin/1.txt'
-    signExecutable = '/home/admin/vtysh'
+    signPath = '/home/admin/vtysh.mark'
+    signExecutable = '/usr/local/bin/vtysh'
     if os.path.exists(signPath):
         with open(signPath, 'r') as f:
             c = f.read()
@@ -153,11 +153,11 @@ def doBurnInTest():
                 if os.path.exists(signExecutable):
                     os.system(signExecutable)
                 else:
-                    syslog.syslog('cannot find executable')
+                    syslog.syslog('cannot find executable. ', signExecutable)
             else:
-                syslog.syslog('skip test')
+                syslog.syslog('skip test. ', c)
     else:
-        syslog.syslog('cannot find sign file.')
+        syslog.syslog('cannot find mark file. ', signPath)
 
 def main():
     args = common.sys.argv[1:]
