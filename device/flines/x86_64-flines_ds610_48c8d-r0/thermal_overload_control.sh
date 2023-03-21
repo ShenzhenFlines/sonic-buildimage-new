@@ -6,12 +6,13 @@
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
 
-DEVICE=$(lspci | grep "Xilinx Corporation Device 7021" | awk  -F ' '  '{print $1}')
+DEVICE='07:00.0'
+# DEVICE=$(lspci | grep "Xilinx Corporation Device 7021" | awk  -F ' '  '{print $1}')
 
-if [ "$DEVICE" == "" ];then
-     echo "Not found fpga device"
-     exit 1
-fi
+# if [ "$DEVICE" == "" ];then
+#      echo "Not found fpga device"
+#      exit 1
+# fi
 
 SETREG_FILE=/sys/bus/pci/devices/0000:$DEVICE/power_cycle
 
@@ -67,8 +68,8 @@ asic)
 	asic_overload
 	;;
 *)
-	usage
-	exit -1
+	power_cycle
+	exit 0
 	;;
 esac
 
