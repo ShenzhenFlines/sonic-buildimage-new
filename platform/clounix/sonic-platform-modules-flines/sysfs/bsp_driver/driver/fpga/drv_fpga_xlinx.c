@@ -24,6 +24,9 @@ extern void __iomem *clounix_fpga_base;
 #define P12V_STBY_EN 1
 #define RESET_MUX_BIT 4
 
+#define FPGA_POWER_CYCLE_PSU2_CFG (0x600)
+#define FPGA_POWER_CYCLE_PSU1_CFG (0x604)
+
 static DEFINE_SPINLOCK(fpga_msi_lock);
 
 static struct notifier_block reboot_nb = {0};
@@ -160,19 +163,21 @@ static irqreturn_t clounix_fpga_irq_hd(int irq, void *dev_id)
 static ssize_t get_sys_fpga_power_cycle(struct device *dev, struct device_attribute *da,
                                         char *buf)
 {
-    uint32_t data = 0, value = 0;
+    uint32_t data1 = 0, data2 = 0;
 
     if (NULL != clounix_fpga_base)
     {
-        data = readl(clounix_fpga_base + FPGA_RESET_CFG_BASE);
+        data1 = readl(clounix_fpga_base + FPGA_POWER_CYCLE_PSU2_CFG);
+
+        data2 = readl(clounix_fpga_base + FPGA_POWER_CYCLE_PSU1_CFG);
     }
-    return sprintf(buf, "0x%x\n", (data >> P12V_STBY_EN) & 0x1);
+
+    return sprintf(buf, "0x%x\n", (data1 & data2) & 0x1);
 }
 static ssize_t set_sys_fpga_power_cycle(struct device *dev, struct device_attribute *da,
                                         const char *buf, size_t count)
 {
     uint32_t value = 0;
-    uint32_t data = 0;
 
     if (kstrtouint(buf, 16, &value))
     {
@@ -180,13 +185,11 @@ static ssize_t set_sys_fpga_power_cycle(struct device *dev, struct device_attrib
     }
     if (NULL != clounix_fpga_base)
     {
-        data = readl(clounix_fpga_base + FPGA_RESET_CFG_BASE);
-        if (1 == value)
-            SET_BIT(data, P12V_STBY_EN);
-        else
-            CLEAR_BIT(data, P12V_STBY_EN);
-        writel(data, clounix_fpga_base + FPGA_RESET_CFG_BASE);
+        writel(value, clounix_fpga_base + FPGA_POWER_CYCLE_PSU2_CFG);
+        
+        writel(value, clounix_fpga_base + FPGA_POWER_CYCLE_PSU1_CFG);
     }
+
     return count;
 }
 static struct device_attribute attr = __ATTR(power_cycle, S_IRUGO | S_IWUSR, get_sys_fpga_power_cycle, set_sys_fpga_power_cycle);
