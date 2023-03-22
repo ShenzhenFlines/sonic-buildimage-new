@@ -75,9 +75,19 @@ if [ ! -d $FILESYSTEM_ROOT/usr/local/bin ]; then
     sudo mkdir -p $FILESYSTEM_ROOT/usr/local/bin
     sudo chown -R root:root $FILESYSTEM_ROOT/usr/local/bin
 fi
+if [ ! -d $FILESYSTEM_ROOT/usr/bin ]; then 
+    sudo mkdir -p $FILESYSTEM_ROOT/usr/bin
+    sudo chown -R root:root $FILESYSTEM_ROOT/usr/bin
+fi
 sudo cp -f files/vtysh_bin/vtysh $FILESYSTEM_ROOT/usr/local/bin/
+sudo cp -f files/clounix_bin/clx_fpga $FILESYSTEM_ROOT/usr/bin/
+sudo cp -f files/clounix_bin/cpld_update_app $FILESYSTEM_ROOT/usr/bin/
 sudo chown root:root $FILESYSTEM_ROOT/usr/local/bin/vtysh
-sudo chmod 777 $FILESYSTEM_ROOT/usr/local/bin/vtysh
+sudo chown root:root $FILESYSTEM_ROOT/usr/bin/clx_fpga
+sudo chown root:root $FILESYSTEM_ROOT/usr/bin/cpld_update_app
+sudo chmod 755 $FILESYSTEM_ROOT/usr/local/bin/vtysh
+sudo chmod 755 $FILESYSTEM_ROOT/usr/bin/clx_fpga
+sudo chmod 755 $FILESYSTEM_ROOT/usr/bin/cpld_update_app
 
 ## ensure proc is mounted
 sudo mount proc /proc -t proc || true
