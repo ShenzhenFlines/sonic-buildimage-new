@@ -18,7 +18,7 @@ class Watchdog(WatchdogBase):
         self.__conf = watchdog_conf
         self.__attr_path_prefix = '/sys/switch/watchdog/'
         self.__api_helper = APIHelper()
-        WatchdogBase.__init__(self)
+        # WatchdogBase.__init__(self)
 
     def get_name(self):
         return self.__conf['name']
