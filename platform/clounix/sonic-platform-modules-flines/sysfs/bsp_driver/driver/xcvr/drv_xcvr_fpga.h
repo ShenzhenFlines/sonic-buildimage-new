@@ -5,6 +5,10 @@
 
 #include "xcvr_interface.h"
 
+#define PORT_DSFP 1
+#define PORT_QSFP 2
+#define PORT_SFP 3
+
 #define XCVR_PORT_MAX (56)
 
 #define XCVR_CHIP_NUM 1
@@ -158,24 +162,32 @@ inline static int fpga_reg_read(struct clounix_priv_data *priv, int reg)
 #define FPGA_MGR_RD     (0x81 << 24)
 #define FPGA_MGR_WT     (0x84 << 24)
 
-#define DSFP_RESET_ADDRESS_BASE       (CPLD_BASE_ADDRESS+0x10)
-#define DSFP_LOW_POWER_ADDRESS_BASE   (CPLD_BASE_ADDRESS+0x14)
-#define DSFP_IRQ_STATUS_ADDRESS_BASE  (CPLD_BASE_ADDRESS+0x18)
-#define DSFP_PRESENT_ADDRESS_BASE     (CPLD_BASE_ADDRESS+0x1c)
+#define DSFP_RESET_ADDRESS_BASE (CPLD_BASE_ADDRESS + 0x10)
+#define DSFP_LOW_POWER_ADDRESS_BASE (CPLD_BASE_ADDRESS + 0x14)
+#define DSFP_IRQ_STATUS_ADDRESS_BASE (CPLD_BASE_ADDRESS + 0x18)
+#define DSFP_PRESENT_ADDRESS_BASE (CPLD_BASE_ADDRESS + 0x1c)
+
+#define SFP_TX_DIS_ADDRESS_BASE (CPLD_BASE_ADDRESS + 0x10)
+#define SFP_RX_LOS_ADDRESS_BASE (CPLD_BASE_ADDRESS + 0x18)
+#define SFP_TX_FAULT_ADDRESS_BASE (CPLD_BASE_ADDRESS + 0x38)
 
 #define XCVR_CPLD_GROUP_MAX 2
 
 #define GET_DSFP_RST_ADDRESS(idx, reg) \
-            reg = (DSFP_RESET_ADDRESS_BASE + (0x10 * (idx))); 
-
+    reg = (DSFP_RESET_ADDRESS_BASE + (0x10 * (idx)));
 #define GET_DSFP_LOWPOWER_ADDRESS(idx, reg) \
-            reg = (DSFP_LOW_POWER_ADDRESS_BASE + (0x10 * (idx))); 
-
+    reg = (DSFP_LOW_POWER_ADDRESS_BASE + (0x10 * (idx)));
 #define GET_DSFP_IRQ_STATUS_ADDRESS(idx, reg) \
-            reg = (DSFP_IRQ_STATUS_ADDRESS_BASE + (0x10 * (idx)));
-
+    reg = (DSFP_IRQ_STATUS_ADDRESS_BASE + (0x10 * (idx)));
 #define GET_DSFP_PRESENT_ADDRESS(idx, reg) \
-            reg = (DSFP_PRESENT_ADDRESS_BASE + (0x10 * (idx)));
+    reg = (DSFP_PRESENT_ADDRESS_BASE + (0x10 * (idx)));
+
+#define GET_SFP_TX_DIS_ADDRESS(idx, reg) \
+    reg = (SFP_TX_DIS_ADDRESS_BASE + (0x10 * (idx)));
+#define GET_SFP_RX_LOS_STATUS_ADDRESS(idx, reg) \
+    reg = (SFP_RX_LOS_ADDRESS_BASE + (0x10 * (idx)));
+#define GET_SFP_TX_FAULT_ADDRESS(idx, reg) \
+    reg = (SFP_TX_FAULT_ADDRESS_BASE + (0x10 * (idx)));
 
 #define XCVRD_POWR_ON 1
 
