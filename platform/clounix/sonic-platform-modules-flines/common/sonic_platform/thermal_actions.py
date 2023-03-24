@@ -1,6 +1,6 @@
 import os
 import sys
-
+import time
 from sonic_platform_base.sonic_thermal_control.thermal_action_base import ThermalPolicyActionBase
 from sonic_platform_base.sonic_thermal_control.thermal_json_object import thermal_json_object
 from sonic_py_common import logger
@@ -110,6 +110,7 @@ class SwitchPolicyAction(ThermalPolicyActionBase):
         helper_logger.log_error("recorded the fault cause begin...")
         print("Error: thermal overload !!!!!!!!!!!!!!!!!!Please reboot Now!!")
         # wait for all record actions done
+        time.sleep(35)
         wait_ms = 30
         while wait_ms > 0:
             if os.path.isfile(THERMAL_OVERLOAD_POSITION_FILE):

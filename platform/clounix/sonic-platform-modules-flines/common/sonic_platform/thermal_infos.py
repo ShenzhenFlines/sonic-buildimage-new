@@ -138,9 +138,11 @@ class ThermalInfo(ThermalPolicyInfoBase):
         :return: True if the temperature is over high critical threshold else False
         """
         if self._over_high_critical_threshold:
-            APIHelper().write_txt_file(THERMAL_OVERLOAD_POSITION_FILE,
-                                       self._thermal_overload_position + ' temperature over critical threshold')
-            time.sleep(1)
+            with open(THERMAL_OVERLOAD_POSITION_FILE, 'wb+', buffering=0) as fd:
+                fd.write(str(self._thermal_overload_position +
+                         ' temperature over critical threshold\n').encode('utf-8'))
+                fd.flush()
+                fd.close()
         return self._over_high_critical_threshold
 
     def is_over_high_threshold(self):
@@ -234,7 +236,9 @@ class AsicInfo(ThermalPolicyInfoBase):
         :return: True if the temperature is over high critical threshold else False
         """
         if self._over_high_critical_threshold:
-            APIHelper().write_txt_file(THERMAL_OVERLOAD_POSITION_FILE,
-                                       self._thermal_overload_position + ' temperature over critical threshold')
-            time.sleep(1)
+            with open(THERMAL_OVERLOAD_POSITION_FILE, 'wb+', buffering=0) as fd:
+                fd.write(str(self._thermal_overload_position +
+                         ' temperature over critical threshold\n').encode('utf-8'))
+                fd.flush()
+                fd.close()
         return self._over_high_critical_threshold

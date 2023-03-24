@@ -80,7 +80,7 @@ class APIHelper():
 
     def write_txt_file(self, file_path, value):
         try:
-            with open(file_path, 'w+') as fd:
+            with open(file_path, 'w') as fd:
                 fd.write(str(value))
         except Exception:
             return False

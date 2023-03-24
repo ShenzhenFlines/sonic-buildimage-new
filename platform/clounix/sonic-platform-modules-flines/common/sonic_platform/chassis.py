@@ -308,6 +308,24 @@ class Chassis(ChassisBase):
             # print("sw reboot_cause {0}".format(reboot_cause))
             return reboot_cause
 
+        # thermal policy reboot cause
+        if os.path.isfile(THERMAL_OVERLOAD_POSITION_FILE):
+            thermal_overload_pos = self.__api_helper.read_one_line_file(
+                THERMAL_OVERLOAD_POSITION_FILE)
+            str = thermal_overload_pos
+            if str.find('CPU') >= 0:
+                reboot_cause = (
+                    self.REBOOT_CAUSE_THERMAL_OVERLOAD_CPU, 'Thermal Overload: CPU')
+            elif str.find('ASIC') >= 0:
+                reboot_cause = (
+                    self.REBOOT_CAUSE_THERMAL_OVERLOAD_ASIC, 'Thermal Overload: ASIC')
+            else:
+                reboot_cause = (
+                    self.REBOOT_CAUSE_THERMAL_OVERLOAD_OTHER, thermal_overload_pos)
+            os.remove(THERMAL_OVERLOAD_POSITION_FILE)
+            # print("thermal reboot_cause {0}".format(reboot_cause))
+            return reboot_cause
+
         binfile = open(REBOOT_EEPROM_PATH, 'wb+')
         hw_reboot_cause = binfile.read(1).hex()
         binfile.seek(0)
@@ -331,26 +349,6 @@ class Chassis(ChassisBase):
             }.get(hw_reboot_cause, (self.REBOOT_CAUSE_HARDWARE_OTHER, 'Hardware - Other'))
             # print("hw reboot_cause {0}".format(reboot_cause))
             return reboot_cause
-        
-        # thermal policy reboot cause
-        if os.path.isfile(THERMAL_OVERLOAD_POSITION_FILE):
-            thermal_overload_pos = self.__api_helper.read_one_line_file(
-                THERMAL_OVERLOAD_POSITION_FILE) or "Unknown"
-            if thermal_overload_pos != "Unknown":
-                str = thermal_overload_pos
-                if str.find('CPU') >= 0:
-                    reboot_cause = (
-                        self.REBOOT_CAUSE_THERMAL_OVERLOAD_CPU, 'Thermal Overload: CPU')
-                elif str.find('ASIC') >= 0:
-                    reboot_cause = (
-                        self.REBOOT_CAUSE_THERMAL_OVERLOAD_ASIC, 'Thermal Overload: ASIC')
-                else:
-                    reboot_cause = (
-                        self.REBOOT_CAUSE_THERMAL_OVERLOAD_OTHER, thermal_overload_pos)
-
-                os.remove(THERMAL_OVERLOAD_POSITION_FILE)
-                # print("thermal reboot_cause {0}".format(reboot_cause))
-                return reboot_cause
 
         if os.path.isfile(ADDITIONAL_FAULT_CAUSE_FILE):
             addational_fault_cause = self.__api_helper.read_one_line_file(
