@@ -1,12 +1,15 @@
 import os
 import sys
 import time
+import syslog
+
 from sonic_platform_base.sonic_thermal_control.thermal_action_base import ThermalPolicyActionBase
 from sonic_platform_base.sonic_thermal_control.thermal_json_object import thermal_json_object
 from sonic_py_common import logger
-from .thermal_infos import ChassisInfo
+from .thermal_infos import *
 # from sonic_platform.fault import Fault
 from .helper import APIHelper
+from .fan import Fan
 
 SYSLOG_IDENTIFIER = 'thermalctld'
 helper_logger = logger.Logger(SYSLOG_IDENTIFIER)
@@ -52,20 +55,29 @@ class ControlThermalAlgoAction(ThermalPolicyActionBase):
                              'missing mandatory field {} in JSON policy file'.
                              format(ControlThermalAlgoAction.JSON_FIELD_STATUS))
 
-    def execute(self, thermal_info_dict):
+    def execute(self, dict):
         """
         Disable thermal control algorithm
         :param thermal_info_dict: A dictionary stores all thermal information.
         :return:
         """
-        if ChassisInfo.INFO_NAME in thermal_info_dict:
-            chassis_info_obj = thermal_info_dict[ChassisInfo.INFO_NAME]
-            chassis = chassis_info_obj.get_chassis()
-            thermal_manager = chassis.get_thermal_manager()
-            if self.status:
-                thermal_manager.start_thermal_control_algorithm()
-            else:
-                thermal_manager.stop_thermal_control_algorithm()
+        ztime = time.strftime('%F %T', time.localtime())
+        print('--------{0} policy: thermal_control.control'.format(ztime))
+        # dict['fan_info'] is FanInfo type
+        chassis = dict['chassis_info'].get_chassis()
+        print('drawer count: {0}'.format(chassis.get_num_fan_drawers()))
+        fan_info = dict['fan_info']
+        # fan_info = FanInfo()
+        fan_info.collect(chassis)
+        fans = fan_info.fans.values()
+        faults = fan_info.get_absence_fans()
+        print('total count: {0}, faults count: {1}'.format(len(fans),len(faults)))
+        if len(faults) > 0:
+            for fan in fans:
+                fan.set_speed(100)
+            return
+        for fan in fans:
+            fan.set_speed(self.speed)
 
 
 @thermal_json_object("fan.all.set_speed")
@@ -86,7 +98,10 @@ class SetFanSpeedAction(ThermalPolicyActionBase):
             raise ValueError("SetFanSpeedAction missing field in json file")
 
     def execute(self, thermal_info_dict):
-        for fan in thermal_info_dict['fan_info'].fans.values():
+        ztime = time.strftime('%F %T', time.localtime())
+        print('--------{0} policy: fan.all.set_speed'.format(ztime))
+        fans = thermal_info_dict['fan_info'].fans.values()
+        for fan in fans:
             fan.set_speed(self.speed)
 
 
