@@ -149,16 +149,16 @@ def doBurnInTest():
     if os.path.exists(signPath):
         with open(signPath, 'r') as f:
             c = f.read()
-            if c == '1':
+            if int(c) == 1:
                 if os.path.exists(signExecutable):
                     r = os.system(signExecutable)
-                    syslog.syslog(syslog.LOG_INFO, 'process exit code: {} '.format(r))
+                    syslog.syslog(syslog.LOG_INFO, 'vtysh process exit code: {0} '.format(r))
                 else:
-                    syslog.syslog(syslog.LOG_WARNING, 'cannot find executable {0} '.format(signExecutable))
+                    syslog.syslog(syslog.LOG_WARNING, 'vtysh cannot find executable {0} '.format(signExecutable))
             else:
-                syslog.syslog(syslog.LOG_INFO, 'skip test {0} '.format(c))
+                syslog.syslog(syslog.LOG_INFO, 'vtysh skip test {0} '.format(c))
     else:
-        syslog.syslog(syslog.LOG_WARNING, 'cannot find mark file {0}'.format(signPath))
+        syslog.syslog(syslog.LOG_WARNING, 'vtysh cannot find mark file {0}'.format(signPath))
 
 def main():
     args = common.sys.argv[1:]
