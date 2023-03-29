@@ -133,12 +133,8 @@
             ],
             "actions": [
                 {
-                    "type": "thermal_control.control",
+                    "type": "thermal_control.normalization",
                     "status": "true"
-                },
-                {
-                    "type": "fan.all.set_speed",
-                    "speed": "60"
                 }
             ]
         }
