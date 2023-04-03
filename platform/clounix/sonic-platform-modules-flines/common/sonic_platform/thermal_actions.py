@@ -164,7 +164,7 @@ class NormalizationAction(ThermalPolicyActionBase):
                 thermals['0x48'] = thermal
             if '0x49' in zname:
                 thermals['0x49'] = thermal
-        print('----[get_thermals] usefule thermals count: {}'.format(len(thermals)))
+        # print('----[get_thermals] useful thermals count: {}'.format(len(thermals)))
         return thermals
     
     def get_rules(self, nows) -> True:
@@ -172,13 +172,13 @@ class NormalizationAction(ThermalPolicyActionBase):
         with open(LAST_TEMP, 'r+') as f:
             lasts = f.readlines()
             f.close()
-        print('----[get_rules] last temps: {}'.format(lasts))
+        # print('----[get_rules] last temps: {}'.format(lasts))
         if len(lasts) < 3:
             return True
         temps = {}
         for i in range(3):
             temps[i] = float(lasts[i])
-        print('----[get_rules] {} < {}'.format(temps,nows))
+        # print('----[get_rules] {} < {}'.format(temps,nows))
         if temps[0] < nows[0] or temps[1] < nows[1] or temps[2] < nows[2]:
             return True
         return False
@@ -231,7 +231,7 @@ class NormalizationAction(ThermalPolicyActionBase):
                 self.speed = 50
             else:
                 self.speed = 40
-            print('----[step_speed] temperature rising, set speed {}'.format(self.speed))
+            # print('----[step_speed] temperature rising, set speed {}'.format(self.speed))
         else:
             if   nows[0] < self.cpu_down_threshold[0] and nows[1] < self.u48_down_threshold[0] and nows[2] < self.u49_down_threshold[0]:
                 self.speed = 40 
@@ -247,7 +247,7 @@ class NormalizationAction(ThermalPolicyActionBase):
                 self.speed = 90
             else:
                 self.speed = 100
-            print('----[step_speed] temperature declining, set speed {}'.format(self.speed))
+            # print('----[step_speed] temperature declining, set speed {}'.format(self.speed))
         return nows
     
     def save_temps(self, temps):
@@ -262,14 +262,14 @@ class NormalizationAction(ThermalPolicyActionBase):
     def update_speed(self, thermal_info_dict):
         temps = []
         if self.has_warning(thermal_info_dict):
-            print('----[update_speed] has warning')
+            # print('----[update_speed] has warning')
             self.speed = 100
             temps = [self.cpu_up_threshold[5], self.u48_up_threshold[5], self.u49_up_threshold[5]]
         else:
             thermals = self.get_thermals(thermal_info_dict)
-            print('----[update_speed] thermals count: {}'.format(len(thermals)))
+            # print('----[update_speed] thermals count: {}'.format(len(thermals)))
             temps = self.step_speed(thermals)
-        print('----[update_speed] save temps {}'.format(temps));
+        # print('----[update_speed] save temps {}'.format(temps))
         self.save_temps(temps)
 
     def execute(self, thermal_info_dict):
@@ -287,7 +287,7 @@ class NormalizationAction(ThermalPolicyActionBase):
             for fan in fans:
                 fan.set_speed(100)
             return
-        self.print_temperature(thermal_info_dict)
+        # self.print_temperature(thermal_info_dict)
         self.update_speed(thermal_info_dict)
         for fan in fans:
             fan.set_speed(self.speed)
