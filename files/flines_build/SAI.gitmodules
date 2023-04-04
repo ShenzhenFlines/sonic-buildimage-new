@@ -1,0 +1,9 @@
+﻿[submodule "test/ptf"]
+	path = test/ptf
+	url = ssh://git@172.168.120.89:3022/flks/ptf.git
+[submodule "test/saithrift/ctypesgen"]
+	path = test/saithrift/ctypesgen
+	url = ssh://git@172.168.120.89:3022/flks/ctypesgen.git
+[submodule "bm/behavioral-model"]
+	path = bm/behavioral-model
+	url = ssh://git@172.168.120.89:3022/flks/behavioral-model.git

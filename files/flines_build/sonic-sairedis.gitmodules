@@ -1,0 +1,5 @@
+﻿[submodule "SAI"]
+	path = SAI
+	url = ssh://git@172.168.120.89:3022/flks/SAI.git
+	ignore = dirty
+	branch = v1.3

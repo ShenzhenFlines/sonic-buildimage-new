@@ -358,9 +358,20 @@ showtag:
 	@echo $(SLAVE_BASE_IMAGE):$(SLAVE_BASE_TAG)
 
 init :
-	@git submodule update --init --recursive
+	@git submodule update --init
 	@echo current directory: $(pwd)
 	@cp -f ./files/flines_build/SAI-P4-BM.gitmodules ./platform/p4/SAI-P4-BM/.gitmodules
+	@pushd ./platform/p4/SAI-P4-BM
+	@git submodule update --init
+	@popd
+	@cp -f ./files/flines_build/sonic-sairedis.gitmodules ./src/sonic-sairedis/.gitmodules
+	@pushd ./src/sonic-sairedis
+	@git submodule update --init
+	@popd
+	@cp -f ./files/flines_build/SAI.gitmodules ./src/sonic-sairedis/SAI/.gitmodules
+	@pupshd ./src/sonic-sairedis/SAI
+	@git submodule update --init
+	@popd
 	@git submodule foreach --recursive '[ -f .git ] && echo "gitdir: $$(realpath --relative-to=. $$(cut -d" " -f2 .git))" > .git'
 
 .ONESHELL : reset
