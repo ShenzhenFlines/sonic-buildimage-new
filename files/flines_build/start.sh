@@ -1,8 +1,9 @@
 ﻿# !/bin/bash
 # work directory must be project root directory, not this shell directory
 # call me use ./files/flines_build/start.sh
-export http_proxy=http://172.168.120.84:7890
-export https_proxy=http://172.168.120.84:7890
+# buidler should set proxy by self
+# export http_proxy=http://172.168.120.84:7890
+# export https_proxy=http://172.168.120.84:7890
 git reset --hard HEAD
 git checkout evb_8t_rel
 git checkout -f .
