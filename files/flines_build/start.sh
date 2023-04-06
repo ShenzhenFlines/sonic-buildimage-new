@@ -15,6 +15,10 @@ cp -f files/flines_build/.gitmodules ./
 cp -f files/flines_build/Makefile.work ./
 cp -f files/flines_build/Dockfile* sonic-slave-buster/
 cp -f files/flines_build/sources.list.amd64 files/apt/
+cp -f files/flines_build/docker-base-stretch/versions-deb-stretch files/build/versions/dockers/docker-base-stretch/versions-deb-stretch
+cp -f files/flines_build/docker-base-buster/versions-deb-buster files/build/versions/dockers/docker-base-buster/versions-deb-buster
+cp -f files/flines_build/dockers/docker-base/Dockerfile.j2 dockers/docker-base-stretch/Dockerfile.j2
+cp -f files/flines_build/dockers/docker-base-buster/Dockerfile.j2 dockers/docker-base-buster/Dockerfile.j2
 # git add .gitmodules Makefile.work
 # git commit -m "fix: use internal git repository"
 # git tag $(date +%Y%m%d%H%M)
