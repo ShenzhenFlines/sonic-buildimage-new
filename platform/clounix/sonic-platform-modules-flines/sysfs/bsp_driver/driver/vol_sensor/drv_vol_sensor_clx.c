@@ -27,9 +27,10 @@ static DEFINE_RWLOCK(list_lock);
 /*
     [0]:addr
     [1]:location in sensor_arry
-    [2]:sensor offse
+    [2]:sensor offset
+    [3]:scaling factor
 */
-static short sensor_map[3][3];
+static short sensor_map[3][SENSOR_DRIVER_INDEX_COL_MAX];
 
 /*
     [0]: range
@@ -86,6 +87,13 @@ void vol_sensor_del(struct i2c_client *client)
     return;
 }
 EXPORT_SYMBOL(vol_sensor_del);
+
+struct voltage_fn_if *get_vol_sensor_if(void)
+{
+    return &(vol_sensor.voltage_if);
+}
+EXPORT_SYMBOL(get_vol_sensor_if);
+
 
 static int drv_sensor_get_main_board_vol_number(void *driver)
 {

@@ -12,7 +12,8 @@
 #include <linux/module.h>
 #include <linux/pmbus.h>
 #include "pmbus.h"
-
+#include "voltage_interface.h"
+#include "clounix/pmbus_dev_common.h"
 /* Vendor specific registers. */
 
 #define MP2888_MFR_SYS_CONFIG   0x44
@@ -35,8 +36,9 @@ struct mp2886_data {
     int total_curr_resolution;
     int phase_curr_resolution;
     int curr_sense_gain;
+    int vol_scal_factor;    
 };
-
+extern struct voltage_fn_if *get_vol_sensor_if(void);
 /*
 struct range not_allow_range[] = {
     {0x2, 0x2},
@@ -76,8 +78,14 @@ static int mp2886_read_byte_data(struct i2c_client *client, int page, int reg)
 static unsigned short process_vout(struct i2c_client *client, int page, int reg)
 {
     unsigned short vout ;
+    int vscale_factor;
+    const struct pmbus_driver_info *info = pmbus_get_driver_info(client);
+    struct mp2886_data *data = to_mp2886_data(info);
+
+    vscale_factor = data->vol_scal_factor;
+    /*LOG_ERR(CLX_DRIVER_TYPES_VOL, "%s, addr=0x%x, vscale_factor = %d.\n",client->name,client->addr,vscale_factor);*/
     vout = pmbus_read_word_data(client, page, reg);
-    vout = vout & 0xfff;
+    vout = (vout & 0xfff)*vscale_factor;
     return vout;
 }
 
@@ -421,10 +429,24 @@ static int mp2886_probe(struct i2c_client *client, const struct i2c_device_id *i
     struct pmbus_driver_info *info;
     struct mp2886_data *data;
     unsigned short cfg_data;
+    struct voltage_fn_if *voltage_if;
+    int i = 0;
 
     data = devm_kzalloc(&client->dev, sizeof(struct mp2886_data), GFP_KERNEL);
     if (!data)
         return -ENOMEM;
+
+    data->vol_scal_factor = 1;     
+    voltage_if = get_vol_sensor_if();
+    if(voltage_if->psensor_map == NULL ){
+        LOG_ERR(CLX_DRIVER_TYPES_VOL, "ERROR:voltage_if->psensor_map = NULL.\n");
+    }
+    while(voltage_if->psensor_map[i][ADDR_LABEL] != 0){
+        if(client->addr == voltage_if->psensor_map[i][ADDR_LABEL]){
+           data->vol_scal_factor = voltage_if->psensor_map[i][SCALE_FACTOR_LABEL];
+        }
+        i++;
+    }
 
     client->dev.platform_data = &mp2886_pdata;
     mp2886_pdata.flags = PMBUS_SKIP_STATUS_CHECK;

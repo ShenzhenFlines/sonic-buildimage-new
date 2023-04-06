@@ -29,12 +29,13 @@
 /*
     [0]:addr
     [1]:location in sensor_arry
-    [2]:sensor offse
+    [2]:sensor offset
+    [3]:scaling factor
 */
-short ds410_vol_sensor_map[3][3] = {
-    {0x2B, 0, -3},
-    {0x27, 1, -3},
-    {0x0, 0},
+short ds410_vol_sensor_map[3][SENSOR_DRIVER_INDEX_COL_MAX] = {
+    {0x2B, 0, -3, 1},
+    {0x27, 1, -3, 3},
+    {0x0, 0, 0, 0},
 };
 /*
     [0]: range
@@ -50,10 +51,10 @@ unsigned char ds410_vol_index_range_map[3][2] = {
     [1]:location in sensor_arry
     [2]:sensor offse
 */
-short ds410_curr_sensor_map[3][3] = {
-    {0x2B, 0, -1},
-    {0x27, 1, -1},
-    {0x0, 0},
+short ds410_curr_sensor_map[3][SENSOR_DRIVER_INDEX_COL_MAX] = {
+    {0x2B, 0, -1, 1},
+    {0x27, 1, -1, 3},
+    {0x0, 0, 0, 1},
 };
 /*
     [0]: range

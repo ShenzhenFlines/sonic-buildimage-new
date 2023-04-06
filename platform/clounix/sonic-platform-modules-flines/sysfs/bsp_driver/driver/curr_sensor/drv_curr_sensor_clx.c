@@ -27,7 +27,7 @@ static DEFINE_RWLOCK(list_lock);
     [1]:location in sensor_arry
     [2]:sensor offse
 */
-static short sensor_map[3][3];
+static short sensor_map[3][SENSOR_DRIVER_INDEX_COL_MAX];
 
 /*
     [0]: range
