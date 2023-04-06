@@ -7,20 +7,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -53,20 +53,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -99,20 +99,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -145,20 +145,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -191,20 +191,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -237,20 +237,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -283,20 +283,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -329,20 +329,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -375,20 +375,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -421,20 +421,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -467,20 +467,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -513,20 +513,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -559,20 +559,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -605,20 +605,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -651,20 +651,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -697,20 +697,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -743,20 +743,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -789,20 +789,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -835,20 +835,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -881,20 +881,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -927,20 +927,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -973,20 +973,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -1019,20 +1019,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -1065,20 +1065,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
 		}
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -1111,20 +1111,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -1157,20 +1157,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -1203,20 +1203,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -1249,20 +1249,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -1295,20 +1295,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -1341,20 +1341,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -1387,20 +1387,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -1433,20 +1433,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -1479,20 +1479,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -1525,20 +1525,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -1571,20 +1571,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -1617,20 +1617,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -1663,20 +1663,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -1709,20 +1709,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -1755,20 +1755,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -1801,20 +1801,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -1847,20 +1847,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -1893,20 +1893,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -1939,20 +1939,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -1985,20 +1985,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -2031,20 +2031,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -2077,20 +2077,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -2123,20 +2123,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "DSFP-{'media_interface':'AOC'}": {
@@ -2169,20 +2169,20 @@
                     "lane1":"0x01"
                 },
                 "pre1": {
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post1":{
-                    "lane0":"0xf9",
-                    "lane1":"0xf9"
+                    "lane0":"0xf7",
+                    "lane1":"0xf7"
                 },
                 "post2":{
-                    "lane0":"0x00",
-                    "lane1":"0x00"
+                    "lane0":"0xfe",
+                    "lane1":"0xfe"
                 },
                 "main":{
-                    "lane0":"0x30",
-                    "lane1":"0x30"
+                    "lane0":"0x28",
+                    "lane1":"0x28"
                 }
             },
             "QSFP28-{'media_interface':'AOC'}": {
