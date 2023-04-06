@@ -55,6 +55,7 @@ const struct irq_vector fpga_irq_arry[] = {
     {IRQ_CTRL_RST_FAN_BIT, "fan alarm interruput", 0, {0, 0, 0}},
     {IRQ_CTRL_RST_SPF_PRES_BIT, "sfp present interruput", 1, {FPGA_CPLD0_PRS_TRIG_ADDR, FPGA_CPLD1_PRS_TRIG_ADDR, FPGA_QDD_IRQ_TRIG_ADDR}},
     {IRQ_CTRL_RST_SPF_INT_BIT, "sfp interruput", 1, {FPGA_CPLD0_INT_TRIG_ADDR, FPGA_CPLD1_INT_TRIG_ADDR, FPGA_QDD_IRQ_TRIG_ADDR}},
+    {IRQ_CTRL_RST_DEBUG_INT_BIT, "debug interrupt", 0, {0, 0, 0}},
 };
 
 #define SYS_LED_BIT (2)
@@ -130,8 +131,8 @@ static irqreturn_t clounix_fpga_irq_hd(int irq, void *dev_id)
 
     spin_lock(&fpga_msi_lock);
     pci_read_config_word(pdev, pdev->msi_cap + PCI_MSI_DATA_32, &data);
-    LOG_ERR(CLX_DRIVER_TYPES_FPGA, "%s: %x\n", __func__, data);
-#if 0
+   /* LOG_ERR(CLX_DRIVER_TYPES_FPGA, "%s: %x\n", __func__, data);*/
+#if 1
     /*get interrupt flag*/
     irq_flag_g = readl(clounix_fpga_base + FPGA_IRQ_TRIG_ADDR);
     LOG_INFO(CLX_DRIVER_TYPES_FPGA, "%s: generate msi interrupt,irq_flag_g=0x%x.\n", __func__, irq_flag_g);
@@ -196,7 +197,7 @@ static struct device_attribute attr = __ATTR(power_cycle, S_IRUGO | S_IWUSR, get
 int drv_xilinx_fpga_probe(struct pci_dev *pdev, const struct pci_device_id *pci_id)
 {
     int err;
-#if 0
+#if 1
     if (pci_find_capability(pdev, PCI_CAP_ID_MSI) == 0) {
         LOG_ERR(CLX_DRIVER_TYPES_FPGA, "%s[%d] MSI not support.\r\n", __func__, __LINE__);
         return -EPERM;
@@ -227,21 +228,23 @@ int drv_xilinx_fpga_probe(struct pci_dev *pdev, const struct pci_device_id *pci_
         goto err_ioremap;
     }
     pci_set_drvdata(pdev, clounix_fpga_base);
+  
+  #if 1
+    LOG_INFO(CLX_DRIVER_TYPES_FPGA, "support %d msi vector\n", pci_msi_vec_count(pdev));
+      err = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_MSI | PCI_IRQ_AFFINITY);
+    if (err < 0) {
+        LOG_ERR(CLX_DRIVER_TYPES_FPGA, "%s[%d] MSI vector alloc fail.\r\n", __func__, __LINE__);
+        goto err_alloc_msi;
+    }
 
-    //LOG_ERR(CLX_DRIVER_TYPES_FPGA, "support %d msi vector\n", pci_msi_vec_count(pdev));
-    // err = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_MSI | PCI_IRQ_AFFINITY);
-    // if (err < 0) {
-    //     LOG_ERR(CLX_DRIVER_TYPES_FPGA, "%s[%d] MSI vector alloc fail.\r\n", __func__, __LINE__);
-    //     goto err_alloc_msi;
-    // }
+    err = request_irq(pci_irq_vector(pdev, 0), clounix_fpga_irq_hd, IRQF_SHARED, pdev->driver->name, pdev);
+    if (err < 0) {
+        LOG_ERR(CLX_DRIVER_TYPES_FPGA, "%s[%d] MSI vector alloc fail.\r\n", __func__, __LINE__);
+        goto err_irq;
+    }
 
-    // err = request_irq(pci_irq_vector(pdev, 0), clounix_fpga_irq_hd, IRQF_SHARED, pdev->driver->name, pdev);
-    // if (err < 0) {
-    //     LOG_ERR(CLX_DRIVER_TYPES_FPGA, "%s[%d] MSI vector alloc fail.\r\n", __func__, __LINE__);
-    //     goto err_irq;
-    // }
-
-    // writel(IRQ_CTRL_CFG_RST_BIT, clounix_fpga_base + FPGA_IRQ_CTRL_ADDR);
+    writel(IRQ_CTRL_CFG_RST_BIT, clounix_fpga_base + FPGA_IRQ_CTRL_ADDR);
+    #endif
     reboot_nb.notifier_call = sys_led_reboot_work;
     restart_nb.notifier_call = sys_led_reboot_work;
 
@@ -253,11 +256,12 @@ int drv_xilinx_fpga_probe(struct pci_dev *pdev, const struct pci_device_id *pci_
         LOG_ERR(CLX_DRIVER_TYPES_FPGA, "sysfs_create_file error status %d\r\n", err);
     }
     return 0;
-
-// err_irq:
-//   pci_free_irq_vectors(pdev);
-// err_alloc_msi:
-//   devm_iounmap(&pdev->dev, clounix_fpga_base);
+#if 1
+err_irq:
+  pci_free_irq_vectors(pdev);
+err_alloc_msi:
+  devm_iounmap(&pdev->dev, clounix_fpga_base);
+#endif
 err_ioremap:
     pci_clear_master(pdev);
     devm_release_mem_region(&pdev->dev, pci_resource_start(pdev, 0), pci_resource_len(pdev, 0));
