@@ -625,7 +625,7 @@ static int drv_fan_clx_dev_init(struct fan_driver_clx *fan)
 int drv_fan_clx_init(void **fan_driver)
 {
     struct fan_driver_clx *fan = &driver_fan_clx;
-    uint8_t syse2p_enable = true;
+    //uint8_t syse2p_enable = true;
     int ret;
 
     LOG_INFO(CLX_DRIVER_TYPES_FAN, "clx_driver_fan_init\n");
@@ -658,7 +658,7 @@ int drv_fan_clx_init(void **fan_driver)
     fan->fan_if.write_fan_eeprom_data = drv_write_fan_eeprom_data;
  
     *fan_driver = fan;
-    set_fan_eeprom_wp(fan, syse2p_enable);
+    //set_fan_eeprom_wp(fan, syse2p_enable);
     LOG_INFO(CLX_DRIVER_TYPES_FAN, "FAN driver initialization done.\r\n");
 
     return DRIVER_OK;
