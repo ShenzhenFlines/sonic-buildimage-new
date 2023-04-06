@@ -1,0 +1,11 @@
+## Debian mirror on Microsoft Azure
+## Ref: http://mirrors.163.com/debian/
+
+deb [arch=amd64] http://mirrors.163.com/debian/ buster main non-free contrib
+deb [arch=amd64] http://mirrors.163.com/debian/ buster-updates main non-free contrib
+deb [arch=amd64] http://mirrors.163.com/debian/ buster-backports main non-free contrib
+deb-src [arch=amd64] http://mirrors.163.com/debian/ buster main non-free contrib
+deb-src [arch=amd64] http://mirrors.163.com/debian/ buster-updates main non-free contrib
+deb-src [arch=amd64] http://mirrors.163.com/debian/ buster-backports main non-free contrib
+deb [arch=amd64] http://mirrors.163.com/debian-security/ buster/updates main non-free contrib
+deb-src [arch=amd64] http://mirrors.163.com/debian-security/ buster/updates main non-free contrib

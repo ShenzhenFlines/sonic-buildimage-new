@@ -13,9 +13,12 @@ rm target/sonic-clounix.bin || true
 rm target/debs/buster/sonic-platform-flines-common_1.0.0_amd64.deb || true
 cp -f files/flines_build/.gitmodules ./
 cp -f files/flines_build/Makefile.work ./
-git add .gitmodules Makefile.work
-git commit -m "fix: use internal git repository"
-git tag $(date +%Y%m%d%H%M)
+cp -f files/flines_build/Dockfile* sonic-slave-buster/
+cp -f files/flines_build/sources.list.amd64 files/apt/
+# git add .gitmodules Makefile.work
+# git commit -m "fix: use internal git repository"
+# git tag $(date +%Y%m%d%H%M)
+export SONIC_IMAGE_VERSION=$(date +%Y%m%d%H%M)
 make init
 cd src/sonic-swss
 git am ../../platform/clounix/patch/0001-support-evb8t-for-sonic-swss.patch
