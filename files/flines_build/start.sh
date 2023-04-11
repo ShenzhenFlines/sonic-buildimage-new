@@ -8,11 +8,14 @@ then
     exit -2
 fi
 
-export SONIC_IMAGE_VERSION=$(date +%Y%m%d%H%M)
+# Set by jenkins
+# export SONIC_IMAGE_VERSION=$(date +%Y%m%d%H%M)
 
 cp -f files/flines_build/.gitmodules ./
 cp -f files/flines_build/Makefile.work ./
-cp -f files/flines_build/Dockerfile* sonic-slave-buster/
+# cp -f files/flines_build/sonic-slave-buster/* sonic-slave-buster/
+# cp -f files/flines_build/sonic-slave-stretch/* sonic-slave-stretch/
+# cp -f files/flines_build/sources.list.amd64 files/apt/sources.list.amd64
 cp -f files/flines_build/sources.list.amd64 files/apt/sources.list.amd64
 cp -f files/flines_build/docker-base-stretch/versions-deb-stretch files/build/versions/dockers/docker-base-stretch/versions-deb-stretch
 cp -f files/flines_build/docker-base-buster/versions-deb-buster files/build/versions/dockers/docker-base-buster/versions-deb-buster
