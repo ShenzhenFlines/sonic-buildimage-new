@@ -11,6 +11,7 @@
 #define MUX_CH_SEL_DS410 0x40
 
 #define PORT_MAX_DS410 56
+#define PORT_PLATFORM_DS410 410
 #define PORT_CLK_DIV_DS410 (0x19)
 
 #define FAN_MAX_DS410 5

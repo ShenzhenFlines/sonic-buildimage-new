@@ -206,6 +206,7 @@ inline static int fpga_reg_read(struct clounix_priv_data *priv, int reg)
 enum {
     XCVR_PLATFORM_TYPEA,
     XCVR_PLATFORM_TYPEB,
+    XCVR_PLATFORM_TYPEC,
     XCVR_PLATFORM_TYPE_MAX
 };
 

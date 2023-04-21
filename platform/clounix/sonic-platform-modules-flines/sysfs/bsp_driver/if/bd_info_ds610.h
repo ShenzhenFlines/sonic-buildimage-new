@@ -11,6 +11,7 @@
 #define MUX_CH_SEL_DS610 0x40
 
 #define PORT_MAX_DS610 56
+#define PORT_PLATFORM_DS610 610
 #define PORT_CLK_DIV_DS610 (0x19)
 
 #define FAN_MAX_DS610 6
@@ -54,7 +55,7 @@ unsigned char ds610_vol_index_range_map[3][2] = {
 short ds610_curr_sensor_map[3][SENSOR_DRIVER_INDEX_COL_MAX] = {
     {0x20, 0, -1, 1},
     {0x21, 1, 1, 1},
-    {0x0, 0, 0, 0,},
+    {0x0, 0, 0, 0},
 };
 /*
     [0]: range

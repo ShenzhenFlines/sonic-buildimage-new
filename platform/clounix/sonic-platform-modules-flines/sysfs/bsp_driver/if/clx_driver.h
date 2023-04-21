@@ -130,6 +130,7 @@ struct bd_xcvr
 {
 	char name[BOARD_NAME_LEN];
 	unsigned int port_max;
+	unsigned int port_platform_type;
 	unsigned char clk_div;
 };
 
