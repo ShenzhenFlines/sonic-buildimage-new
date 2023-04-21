@@ -11,8 +11,10 @@ HOST_CHK_STR = "/docker"
 HOST_CHK_FILE = "/proc/1/cgroup"
 EMPTY_STRING = ""
 
-HOST_PLATFORM_JSON = '/usr/share/sonic/device/' + str(device_info.get_platform()) + '/platform.json'
+HOST_PLATFORM_JSON = '/usr/share/sonic/device/' + \
+    str(device_info.get_platform()) + '/platform.json'
 PMON_PLATFORM_JSON = '/usr/share/sonic/platform/platform.json'
+
 
 class APIHelper():
 
@@ -22,9 +24,9 @@ class APIHelper():
     def is_host(self):
         fd = os.popen("cat " + HOST_CHK_FILE + " | grep " + HOST_CHK_STR)
         data = fd.read()
-        if data is "" :
+        if data is "":
             return True
-        else :
+        else:
             return False
 
     def pci_get_value(self, resource, offset):
@@ -152,7 +154,7 @@ class APIHelper():
         json_path = ''
         if self.is_host() is True:
             json_path = HOST_PLATFORM_JSON
-        else :
+        else:
             json_path = PMON_PLATFORM_JSON
         with open(json_path, 'r') as f:
             json_data = json.load(f)

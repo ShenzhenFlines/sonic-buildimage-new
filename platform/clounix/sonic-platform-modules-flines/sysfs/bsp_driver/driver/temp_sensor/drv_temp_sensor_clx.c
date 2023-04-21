@@ -215,6 +215,7 @@ static ssize_t drv_sensor_get_main_board_temp_max(void *driver, unsigned int tem
         data = &cpu_temp_data_list[temp_index - MAX_SENSOR_NUM];
         if (data->dev != NULL)
         {
+            #if 0
             if (data->auto_inc != 0)
                 sprintf(node_name, "%s%d%s", CPU_TEMP_NODE, temp_index - MAX_SENSOR_NUM + 1, CPU_TEMP_MAX);
             else
@@ -225,6 +226,8 @@ static ssize_t drv_sensor_get_main_board_temp_max(void *driver, unsigned int tem
             {
                 ret = sprintf(buf, "%d\n", DEFAULT_CPU_TEMP_MAX);
             }
+            #endif
+            ret = sprintf(buf, "%d\n", 85000);
         }
         else
         {
@@ -237,7 +240,23 @@ static ssize_t drv_sensor_get_main_board_temp_max(void *driver, unsigned int tem
         // dev = sensor_arry[temp_index];
         // ret = get_hwmon_attr_by_name(dev, node_name, buf);
 
-        ret = (ssize_t)snprintf(buf, count, "%d\n", 75000);
+        if(temp_index == 0)//0x48
+        {
+            ret = (ssize_t)snprintf(buf, count, "%d\n", 73000);
+        }
+        else if(temp_index == 1)//0x49
+        {
+            ret = (ssize_t)snprintf(buf, count, "%d\n", 64000);
+        }
+        else if(temp_index == 2)//0x4a
+        {
+            ret = (ssize_t)snprintf(buf, count, "%d\n", 70000);
+        }
+        else//0x4b
+        {
+            ret = (ssize_t)snprintf(buf, count, "%d\n", 71000);
+        }
+
     }
     read_unlock(&list_lock);
 
@@ -387,6 +406,7 @@ static ssize_t drv_sensor_get_main_board_temp_max_hyst(void *driver, unsigned in
         data = &cpu_temp_data_list[temp_index - MAX_SENSOR_NUM];
         if (data->dev != NULL)
         {
+            #if 0
             if (data->auto_inc != 0)
                 sprintf(node_name, "%s%d%s", CPU_TEMP_NODE, temp_index - MAX_SENSOR_NUM + 1, CPU_TEMP_MAX_HYST);
             else
@@ -398,6 +418,8 @@ static ssize_t drv_sensor_get_main_board_temp_max_hyst(void *driver, unsigned in
             {
                 ret = sprintf(buf, "%d\n", DEFAULT_CPU_TEMP_MAX);
             }
+            #endif
+            ret = sprintf(buf, "%d\n", 80000);
         }
         else
         {
@@ -409,7 +431,22 @@ static ssize_t drv_sensor_get_main_board_temp_max_hyst(void *driver, unsigned in
         // sprintf(node_name, "%s%s", TEMP_NODE, TEMP_MAX_HYST);
         // dev = sensor_arry[temp_index];
         // ret = get_hwmon_attr_by_name(dev, node_name, buf);
-        ret = (ssize_t)snprintf(buf, count, "%d\n", 70000);
+        if(temp_index == 0)//0x48
+        {
+            ret = (ssize_t)snprintf(buf, count, "%d\n", 68000);
+        }
+        else if(temp_index == 1)//0x49
+        {
+            ret = (ssize_t)snprintf(buf, count, "%d\n", 59000);
+        }
+        else if(temp_index == 2)//0x4a
+        {
+            ret = (ssize_t)snprintf(buf, count, "%d\n", 65000);
+        }
+        else//0x4b
+        {
+            ret = (ssize_t)snprintf(buf, count, "%d\n", 66000);
+        }
     }
 
     read_unlock(&list_lock);

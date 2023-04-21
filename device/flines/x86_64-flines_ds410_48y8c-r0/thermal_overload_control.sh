@@ -39,7 +39,7 @@ usage() {
     echo
 }
 power_cycle() {
-    echo 0x1 > ${SETREG_FILE}
+    echo 0x2 > ${SETREG_FILE}
 }
 
 cpu_overload() {

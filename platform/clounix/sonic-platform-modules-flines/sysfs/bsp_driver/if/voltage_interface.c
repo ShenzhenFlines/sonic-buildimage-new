@@ -34,15 +34,13 @@ int voltage_if_create_driver(void)
 			rc = it->driver_init((void *)&voltage_driver);
 		}
 	}
-    /**/
 
 	if (DRIVER_OK == rc)
 	{
 		bd = clx_driver_get_platform_bd();
 		voltage_driver->total_sensor_num = bd->vol.total_sensor_num;
-		memcpy(voltage_driver->psensor_map,bd->vol.vol_sensor_map,sizeof(bd->vol.vol_sensor_map));
-		memcpy(voltage_driver->pvol_index_range_map,bd->vol.vol_index_range_map, \
-		sizeof(bd->vol.vol_index_range_map));		
+		memcpy(voltage_driver->psensor_map, bd->vol.vol_sensor_map, sizeof(bd->vol.vol_sensor_map));
+		memcpy(voltage_driver->pvol_index_range_map, bd->vol.vol_index_range_map, sizeof(bd->vol.vol_index_range_map));
 	}
 
 	return rc;
