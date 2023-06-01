@@ -123,24 +123,23 @@ static unsigned short process_power(struct i2c_client *client, int page, int reg
     return power;
 }
 
-static unsigned int process_iout(struct i2c_client *client, int page, int reg)
+static unsigned short process_iout(struct i2c_client *client, int page, int reg)
 {
-    unsigned int data;
-    unsigned int exp;
+    unsigned short data;
+    unsigned short exp;
 
     data = pmbus_read_word_data(client, page, reg);
-    exp = data >> 11;
+    exp = (data >> 11) & 0x1f;
     data = data & 0x7ff;
 
-    data = data*10;
-
     if (exp == 0x1f)
-        data = data / 2;
-    else if (exp == 0x1e)
-        data = data / 4;
+    {
+        data = (data / 2);
+    }
     else
-        data = 0;
-
+    {
+        data = (data / 4);
+    }
     return data;
 }
 
