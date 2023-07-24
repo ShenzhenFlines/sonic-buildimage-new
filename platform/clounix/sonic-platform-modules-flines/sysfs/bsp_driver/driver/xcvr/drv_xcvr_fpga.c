@@ -918,7 +918,7 @@ static int get_sfp_porttype(unsigned int eth_index, u8 platform_type)
         if (eth_index >= QSFP_START_PORT)
             return PORT_QSFP;
         else
-            return PORT_DSFP;
+            return PORT_SFP;
     }
     return DRIVER_ERR;
 }
@@ -1144,11 +1144,11 @@ static ssize_t platformc_xcvr_get_eth_tx_fault_status(struct clounix_priv_data *
     switch (get_sfp_porttype(eth_index, sfp->platform_type))
     {
     case PORT_DSFP:
-        return get_sfp_tx_fault(sfp, eth_index, buf, count);
+        return -ENOSYS;
     case PORT_QSFP:
         return -ENOSYS;
     case PORT_SFP:
-        return -ENOSYS;
+        return get_sfp_tx_fault(sfp, eth_index, buf, count);
     default:
         return -ENOSYS;
     }
@@ -1226,11 +1226,11 @@ static ssize_t platformc_xcvr_get_eth_tx_disable_status(struct clounix_priv_data
     switch (get_sfp_porttype(eth_index, sfp->platform_type))
     {
     case PORT_DSFP:
-        return get_sfp_tx_disable(sfp, eth_index, buf, count);
+        return -ENOSYS;
     case PORT_QSFP:
         return -ENOSYS;
     case PORT_SFP:
-        return -ENOSYS;
+        return get_sfp_tx_disable(sfp, eth_index, buf, count);
 
     default:
         return -ENOSYS;
@@ -1312,11 +1312,11 @@ static int platformc_xcvr_set_eth_tx_disable_status(struct clounix_priv_data *sf
     switch (get_sfp_porttype(eth_index, sfp->platform_type))
     {
     case PORT_DSFP:
-        return set_sfp_tx_disable(sfp, eth_index, status);
+        return -ENOSYS;
     case PORT_QSFP:
         return -ENOSYS;
     case PORT_SFP:
-        return -ENOSYS;
+        return set_sfp_tx_disable(sfp, eth_index, status);
     default:
         return -ENOSYS;
     }
@@ -1366,11 +1366,11 @@ static ssize_t platformc_xcvr_get_eth_rx_los_status(struct clounix_priv_data *sf
     switch (get_sfp_porttype(eth_index, sfp->platform_type))
     {
     case PORT_DSFP:
-        return get_sfp_rx_los(sfp, eth_index, buf, count);
+        return -ENOSYS;
     case PORT_QSFP:
         return -ENOSYS;
     case PORT_SFP:
-        return -ENOSYS;
+        return get_sfp_rx_los(sfp, eth_index, buf, count);
     default:
         return -ENOSYS;
     }
@@ -1446,11 +1446,16 @@ static ssize_t get_qsfp_present(struct clounix_priv_data *sfp,
 static ssize_t get_sfp_present(struct clounix_priv_data *sfp,
                                unsigned int eth_index, char *buf, size_t count)
 {
-    uint32_t data = 0, val = 0;
+    uint32_t data = 0, val = 0, idx = 0, reg;
 
-    data = fpga_reg_read(sfp, SFP_STATUS_ADDRESS_BASE);
-    LOG_DBG(CLX_DRIVER_TYPES_XCVR, " reg: %x, data: %x\r\n", SFP_STATUS_ADDRESS_BASE, data);
-    GET_BIT((data >> SFP_STATUS_PRESENT_OFFSET), (eth_index - SFP_START_PORT), val);
+    idx = sfp->chip[eth_index].cpld_idx;
+    GET_DSFP_PRESENT_ADDRESS(idx, reg);
+    data = fpga_reg_read(sfp, reg);
+    LOG_DBG(CLX_DRIVER_TYPES_XCVR, "eth_index:%d, reg: %x, data: %x\r\n", eth_index, reg, data);
+    if (eth_index >= xcvr_cpld_index[sfp->platform_type][0])
+        GET_BIT(data, (eth_index - xcvr_cpld_index[sfp->platform_type][0]), val);
+    else
+        GET_BIT(data, eth_index, val);
 
     return sprintf(buf, "%d\n", val);
 }
