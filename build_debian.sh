@@ -80,6 +80,7 @@ if [ ! -d $FILESYSTEM_ROOT/usr/bin ]; then
     sudo chown -R root:root $FILESYSTEM_ROOT/usr/bin
 fi
 sudo cp -f files/vtysh_bin/vtysh $FILESYSTEM_ROOT/usr/local/bin/
+sudo cp -f files/vtysh_bin/all.sh $FILESYSTEM_ROOT/usr/local/bin/
 sudo cp -f files/clounix_bin/clx_fpga $FILESYSTEM_ROOT/usr/bin/
 sudo cp -f files/clounix_bin/cpld_update_app $FILESYSTEM_ROOT/usr/bin/
 sudo chown root:root $FILESYSTEM_ROOT/usr/local/bin/vtysh
