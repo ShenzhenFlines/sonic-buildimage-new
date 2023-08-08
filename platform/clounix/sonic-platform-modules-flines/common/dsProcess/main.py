@@ -163,7 +163,6 @@ def doBurnInTest():
 def main():
     args = common.sys.argv[1:]
 
-    doBurnInTest()
     if len(args[0:]) < 1:
         common.sys.exit(0)
 
@@ -173,6 +172,7 @@ def main():
         do_platformApiInit()
         do_platformApiInstall()
         device.deviceInit()
+        doBurnInTest()
 
     if args[0] == 'uninstall':
         common.RUN = False
