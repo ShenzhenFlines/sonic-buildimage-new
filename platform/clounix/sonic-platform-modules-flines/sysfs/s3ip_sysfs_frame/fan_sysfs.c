@@ -319,6 +319,26 @@ static ssize_t fan_led_status_store(struct switch_obj *obj, struct switch_attrib
     return count;
 }
 
+static ssize_t fan_vmon_show(struct switch_obj *obj, struct switch_attribute *attr,
+                             char *buf)
+{
+    unsigned int fan_index;
+    int ret;
+
+    check_p(g_fan_drv);
+    check_p(g_fan_drv->get_fan_vmon);
+
+    fan_index = obj->index;
+    FAN_DBG("fan index: %u\n", fan_index);
+    ret = g_fan_drv->get_fan_vmon(fan_index, buf, PAGE_SIZE);
+    if (ret < 0)
+    {
+        FAN_ERR("get fan%u vmon failed, ret: %d\n", fan_index, ret);
+        return (ssize_t)snprintf(buf, PAGE_SIZE, "%s\n", SYSFS_DEV_ERROR);
+    }
+    return ret;
+}
+
 static ssize_t fan_motor_speed_show(struct switch_obj *obj, struct switch_attribute *attr,
                    char *buf)
 {
@@ -578,6 +598,7 @@ static struct switch_attribute fan_hw_attr = __ATTR(hardware_version, S_IRUGO, f
 static struct switch_attribute fan_num_motors_attr = __ATTR(num_motors, S_IRUGO, fan_motor_number_show, NULL);
 static struct switch_attribute fan_status_attr = __ATTR(status, S_IRUGO, fan_status_show, NULL);
 static struct switch_attribute fan_led_status_attr = __ATTR(led_status, S_IRUGO | S_IWUSR, fan_led_status_show, fan_led_status_store);
+static struct switch_attribute fan_vmon_attr = __ATTR(vmon, S_IRUGO, fan_vmon_show, NULL);
 
 static struct attribute *fan_attrs[] = {
     &fan_vendor_attr.attr,
@@ -588,6 +609,7 @@ static struct attribute *fan_attrs[] = {
     &fan_num_motors_attr.attr,
     &fan_status_attr.attr,
     &fan_led_status_attr.attr,
+    &fan_vmon_attr.attr,
     NULL,
 };
 
@@ -619,7 +641,6 @@ static struct attribute_group motor_attr_group = {
     .attrs = motor_attrs,
 };
 
-/* create fan* eeprom attributes */
 static int fan_sub_single_create_eeprom_attrs(unsigned int index)
 {
     int ret, eeprom_size;
@@ -651,7 +672,7 @@ static int fan_sub_single_create_eeprom_attrs(unsigned int index)
 
     return 0;
 }
-/* remove fan eeprom directory and attributes */
+
 static void fan_sub_single_remove_eeprom_attrs(unsigned int index)
 {
     struct fan_obj_s *curr_fan;
@@ -808,7 +829,6 @@ static int fan_sub_single_remove_kobj_and_attrs(unsigned int index)
     struct fan_obj_s *curr_fan;
 
     fan_sub_single_remove_eeprom_attrs(index);
-
     curr_fan = &g_fan.fan[index - 1];
     if (curr_fan->obj) {
         sysfs_remove_group(&curr_fan->obj->kobj, &fan_attr_group);
@@ -838,10 +858,10 @@ static int fan_sub_single_create_kobj_and_attrs(struct kobject *parent, unsigned
         switch_kobject_delete(&curr_fan->obj);
         return -EBADRQC;
     }
-    FAN_DBG("create %s dir and attrs success.\n", name);
 
     fan_sub_single_create_eeprom_attrs(index);
-
+    
+    FAN_DBG("create %s dir and attrs success.\n", name);
     return 0;
 }
 

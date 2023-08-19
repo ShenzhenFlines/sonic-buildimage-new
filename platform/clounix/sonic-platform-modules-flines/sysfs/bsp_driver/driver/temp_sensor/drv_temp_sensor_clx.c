@@ -10,8 +10,6 @@
 
 #include "clounix/hwmon_dev_common.h"
 
-//internal function declaration
-
 #define MAX_SENSOR_NUM (4)
 #define SENSOR_NUM_PER_DIE (5)
 
@@ -211,25 +209,54 @@ static ssize_t drv_sensor_get_main_board_temp_max(void *driver, unsigned int tem
     /* add vendor codes here */
 
     read_lock(&list_lock);
-    if (temp_index >= MAX_SENSOR_NUM) {
+    
+    if (temp_index >= MAX_SENSOR_NUM)
+    {
         data = &cpu_temp_data_list[temp_index - MAX_SENSOR_NUM];
-        if (data->dev != NULL) {
+        if (data->dev != NULL)
+        {
+            #if 0
             if (data->auto_inc != 0)
-                sprintf(node_name, "%s%d%s", CPU_TEMP_NODE, temp_index-MAX_SENSOR_NUM+1, CPU_TEMP_MAX);
+                sprintf(node_name, "%s%d%s", CPU_TEMP_NODE, temp_index - MAX_SENSOR_NUM + 1, CPU_TEMP_MAX);
             else
                 sprintf(node_name, "%s1%s", CPU_TEMP_NODE, CPU_TEMP_MAX);
 
             ret = get_cpu_hwmon_attr_by_name(data, node_name, buf);
-            if (ret < 0) {
-               ret = sprintf(buf, "%d\n", DEFAULT_CPU_TEMP_MAX);
+            if (ret < 0)
+            {
+                ret = sprintf(buf, "%d\n", DEFAULT_CPU_TEMP_MAX);
             }
-        } else {
+            #endif
+            ret = sprintf(buf, "%d\n", 96000);
+        }
+        else
+        {
             ret = -ENXIO;
         }
-    } else {
-        sprintf(node_name, "%s%s", TEMP_NODE, TEMP_MAX);
-        dev = sensor_arry[temp_index];
-        ret = get_hwmon_attr_by_name(dev, node_name, buf);
+    }
+    else
+    {
+        // sprintf(node_name, "%s%s", TEMP_NODE, TEMP_MAX);
+        // dev = sensor_arry[temp_index];
+        // ret = get_hwmon_attr_by_name(dev, node_name, buf);
+
+        if(temp_index == 0)//0x48
+        {
+            ret = (ssize_t)snprintf(buf, count, "%d\n", 73000);
+        }
+        else if(temp_index == 1)//0x49
+        {
+            ret = (ssize_t)snprintf(buf, count, "%d\n", 64000);
+        }
+        else if(temp_index == 2)//0x4a
+        {
+            ret = (ssize_t)snprintf(buf, count, "%d\n", 70000);
+        }
+        else//0x4b
+        {
+            ret = (ssize_t)snprintf(buf, count, "%d\n", 71000);
+        }
+
     }
     read_unlock(&list_lock);
 
@@ -347,9 +374,13 @@ static int drv_sensor_set_main_board_temp_max_hyst(void *driver, unsigned int te
     struct device *dev;
 
     read_lock(&list_lock);
-    if (temp_index >= MAX_SENSOR_NUM) {
+
+    if (temp_index >= MAX_SENSOR_NUM)
+    {
         return count;
-    } else {
+    }
+    else
+    {
         sprintf(node_name, "%s%s", TEMP_NODE, TEMP_MAX_HYST);
         dev = sensor_arry[temp_index];
         ret = set_hwmon_attr_by_name(dev, node_name, buf, count);
@@ -369,25 +400,53 @@ static ssize_t drv_sensor_get_main_board_temp_max_hyst(void *driver, unsigned in
 
     /* add vendor codes here */
     read_lock(&list_lock);
-    if (temp_index >= MAX_SENSOR_NUM) {
+
+    if (temp_index >= MAX_SENSOR_NUM)
+    {
         data = &cpu_temp_data_list[temp_index - MAX_SENSOR_NUM];
-        if (data->dev != NULL) {
+        if (data->dev != NULL)
+        {
+            #if 0
             if (data->auto_inc != 0)
-                sprintf(node_name, "%s%d%s", CPU_TEMP_NODE, temp_index-MAX_SENSOR_NUM+1, CPU_TEMP_MAX_HYST);
+                sprintf(node_name, "%s%d%s", CPU_TEMP_NODE, temp_index - MAX_SENSOR_NUM + 1, CPU_TEMP_MAX_HYST);
             else
                 sprintf(node_name, "%s1%s", CPU_TEMP_NODE, CPU_TEMP_MAX_HYST);
 
             ret = get_cpu_hwmon_attr_by_name(data, node_name, buf);
-            if (ret < 0) {
-               ret = sprintf(buf, "%d\n", DEFAULT_CPU_TEMP_MAX);
+
+            if (ret < 0)
+            {
+                ret = sprintf(buf, "%d\n", DEFAULT_CPU_TEMP_MAX);
             }
-        } else {
+            #endif
+            ret = sprintf(buf, "%d\n", 90000);
+        }
+        else
+        {
             ret = -ENXIO;
         }
-    } else {
-        sprintf(node_name, "%s%s", TEMP_NODE, TEMP_MAX_HYST);
-        dev = sensor_arry[temp_index];
-        ret = get_hwmon_attr_by_name(dev, node_name, buf);
+    }
+    else
+    {
+        // sprintf(node_name, "%s%s", TEMP_NODE, TEMP_MAX_HYST);
+        // dev = sensor_arry[temp_index];
+        // ret = get_hwmon_attr_by_name(dev, node_name, buf);
+        if(temp_index == 0)//0x48
+        {
+            ret = (ssize_t)snprintf(buf, count, "%d\n", 68000);
+        }
+        else if(temp_index == 1)//0x49
+        {
+            ret = (ssize_t)snprintf(buf, count, "%d\n", 59000);
+        }
+        else if(temp_index == 2)//0x4a
+        {
+            ret = (ssize_t)snprintf(buf, count, "%d\n", 65000);
+        }
+        else//0x4b
+        {
+            ret = (ssize_t)snprintf(buf, count, "%d\n", 66000);
+        }
     }
 
     read_unlock(&list_lock);

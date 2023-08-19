@@ -910,8 +910,8 @@ static ssize_t drv_get_psu_temp_max(void *driver, unsigned int psu_index, unsign
     if (client != NULL) {
         //sprintf(node_name, "%s%d%s", TEMP_CLASS, temp_index, TEMP_MAX);
         //ret = get_attr_val_by_name(client, node_name, buf);
-	//is it not support? default seting 100.000'
-        ret = (ssize_t)snprintf(buf, count, "%d\n", 100000);
+	//is it not support? default seting 110.000'
+        ret = (ssize_t)snprintf(buf, count, "%d\n", 110000);
     }
     read_unlock(&list_lock);
 

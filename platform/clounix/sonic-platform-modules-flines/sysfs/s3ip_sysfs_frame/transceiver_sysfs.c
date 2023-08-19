@@ -382,16 +382,16 @@ static ssize_t eth_low_power_mode_store(struct switch_obj *obj, struct switch_at
     sscanf(buf, "%d", &value);
     eth_index = obj->index;
     if (value < 0 || value > 1) {
-        SFF_ERR("invalid value: %d, can't set eth%u reset status.\n", value, eth_index);
+        SFF_ERR("invalid value: %d, can't set eth%u low power mode status.\n", value, eth_index);
         return -EINVAL;
     }
 
     ret = g_sff_drv->set_eth_low_power_mode_status(eth_index, value);
     if (ret < 0) {
-        SFF_ERR("set eth%u lpmode status %d failed, ret: %d\n", eth_index, value, ret);
+        SFF_ERR("set eth%u low power mode status %d failed, ret: %d\n", eth_index, value, ret);
         return -EIO;
     }
-    SFF_DBG("set eth%u lpmode status %d success\n", eth_index, value);
+    SFF_DBG("set eth%u low power mode status %d success\n", eth_index, value);
     return count;
 }
 

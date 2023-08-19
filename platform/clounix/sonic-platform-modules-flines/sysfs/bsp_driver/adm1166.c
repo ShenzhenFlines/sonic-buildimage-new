@@ -149,50 +149,73 @@ ssize_t adm1166_fault_log_addr_show(struct device *dev, struct device_attribute 
 
 static void process_elec_data(unsigned long long *data, unsigned char index, unsigned short addr)
 {
-    *data = ((*data * ref_voltage_mV)/((1 << adc_bits) - 1));
+    *data = ((*data * ref_voltage_mV) / ((1 << adc_bits) - 1));
 
-    
-    switch (index) {
-        case 0xa0:
-            if (addr == 0x34) {
-                *data = (*data*4363)/1000;
-            } else {
-                *data = (*data*2181)/1000;
-            }
-            break;
+    switch (index)
+    {
+    case 0xa0:
+        if (addr == 0x34)
+        {
+            *data = (*data * 4363) / 1000;
+        }
+        else
+        {
+            *data = (*data * 2181) / 1000;
+        }
+        break;
 
-        case 0xa2:
-            if (addr == 0x34) {
-                *data = (*data*4363)/1000;
-            } else {
-                *data = (*data);
-            }
-            break;
-
-        case 0xa4:
-            if (addr == 0x34) {
-                *data = (*data);
-            } else {
-                *data = (*data*4363)/1000;
-            }
-            break;
-
-        case 0xa6:
-            if (addr == 0x34) {
-                *data = (*data*11519)/1000;
-            } else {
-                *data = (*data*4363)/1000;
-            }
-
-            break;
-
-        case 0xa8:
-            *data = (*data*10472)/1000;
-            break;
-
-        default:
+    case 0xa2:
+        if (addr == 0x34)
+        {
+            *data = (*data * 4363) / 1000;
+        }
+        else
+        {
             *data = (*data);
-            break;
+        }
+        break;
+
+    case 0xa4:
+        if (addr == 0x34)
+        {
+            *data = (*data);
+        }
+        else
+        {
+            *data = (*data * 4363) / 1000;
+        }
+        break;
+
+    case 0xa6:
+        if (addr == 0x34)
+        {
+            *data = (*data * 11519) / 1000;
+        }
+        else
+        {
+            *data = (*data * 4363) / 1000;
+        }
+
+        break;
+
+    case 0xa8:
+        *data = (*data * 10472) / 1000;
+        break;
+
+    case 0xb0:
+        if (addr == 0x34)
+        {
+            *data = (*data);
+        }
+        else
+        {
+            *data = (*data * 3);
+        }
+        break;
+
+    default:
+        *data = (*data);
+        break;
     }
     /* cacl over return value's unit is mV */
     return;
