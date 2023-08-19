@@ -1,0 +1,3 @@
+﻿[submodule "behavioral-model"]
+	path = p4-switch/behavioral-model
+	url = ssh://git@172.168.120.89:3022/flks/behavioral-model.git

@@ -1,0 +1,92 @@
+[submodule "sonic-swss-common"]
+	path = src/sonic-swss-common
+	url = ssh://git@172.168.120.89:3022/flks/sonic-swss-common.git
+[submodule "sonic-linux-kernel"]
+	path = src/sonic-linux-kernel
+	url = ssh://git@172.168.120.89:3022/flks/sonic-linux-kernel.git
+[submodule "sonic-sairedis"]
+	path = src/sonic-sairedis
+	url = ssh://git@172.168.120.89:3022/flks/sonic-sairedis.git
+[submodule "sonic-swss"]
+	path = src/sonic-swss
+	url = ssh://git@172.168.120.89:3022/flks/sonic-swss.git
+[submodule "src/p4c-bm/p4c-bm"]
+	path = platform/p4/p4c-bm/p4c-bm
+	url = ssh://git@172.168.120.89:3022/flks/p4c-bm.git
+[submodule "src/p4-hlir/p4-hlir"]
+	path = platform/p4/p4-hlir/p4-hlir
+	url = ssh://git@172.168.120.89:3022/flks/p4-hlir.git
+[submodule "sonic-dbsyncd"]
+	path = src/sonic-dbsyncd
+	url = ssh://git@172.168.120.89:3022/flks/sonic-dbsyncd.git
+[submodule "src/sonic-py-swsssdk"]
+	path = src/sonic-py-swsssdk
+	url = ssh://git@172.168.120.89:3022/flks/sonic-py-swsssdk.git
+[submodule "src/sonic-snmpagent"]
+	path = src/sonic-snmpagent
+	url = ssh://git@172.168.120.89:3022/flks/sonic-snmpagent.git
+[submodule "src/ptf"]
+	path = src/ptf
+	url = ssh://git@172.168.120.89:3022/flks/ptf.git
+[submodule "src/sonic-utilities"]
+	path = src/sonic-utilities
+	url = ssh://git@172.168.120.89:3022/flks/sonic-utilities.git
+	branch = 202012
+[submodule "platform/broadcom/sonic-platform-modules-arista"]
+	path = platform/broadcom/sonic-platform-modules-arista
+	url = ssh://git@172.168.120.89:3022/flks/sonic.git
+[submodule "src/sonic-platform-common"]
+	path = src/sonic-platform-common
+	url = ssh://git@172.168.120.89:3022/flks/sonic-platform-common.git
+	branch = 202012
+[submodule "src/sonic-platform-daemons"]
+	path = src/sonic-platform-daemons
+	url = ssh://git@172.168.120.89:3022/flks/sonic-platform-daemons.git
+[submodule "src/sonic-frr/frr"]
+	path = src/sonic-frr/frr
+	url = ssh://git@172.168.120.89:3022/flks/sonic-frr.git
+	branch = frr/7.5
+[submodule "platform/p4/p4-hlir/p4-hlir-v1.1"]
+	path = platform/p4/p4-hlir/p4-hlir-v1.1
+	url = ssh://git@172.168.120.89:3022/flks/p4-hlir.git
+[submodule "platform/p4/SAI-P4-BM"]
+	path = platform/p4/SAI-P4-BM
+	url = ssh://git@172.168.120.89:3022/flks/SAI-P4-BM.git
+[submodule "platform/barefoot/sonic-platform-modules-arista"]
+	path = platform/barefoot/sonic-platform-modules-arista
+	url = ssh://git@172.168.120.89:3022/flks/sonic.git
+[submodule "platform/mellanox/hw-management/hw-mgmt"]
+	path = platform/mellanox/hw-management/hw-mgmt
+	url = ssh://git@172.168.120.89:3022/flks/hw-mgmt.git
+[submodule "src/redis-dump-load"]
+	path = src/redis-dump-load
+	url = ssh://git@172.168.120.89:3022/flks/redis-dump-load.git
+[submodule "src/scapy"]
+	path = src/scapy
+	url = ssh://git@172.168.120.89:3022/flks/scapy.git
+[submodule "platform/mellanox/mlnx-sai/SAI-Implementation"]
+	path = platform/mellanox/mlnx-sai/SAI-Implementation
+	url = ssh://git@172.168.120.89:3022/flks/SAI-Implementation.git
+[submodule "src/sonic-mgmt-framework"]
+	path = src/sonic-mgmt-framework
+	url = ssh://git@172.168.120.89:3022/flks/sonic-mgmt-framework.git
+[submodule "src/sonic-telemetry"]
+	path = src/sonic-telemetry
+	url = ssh://git@172.168.120.89:3022/flks/sonic-telemetry.git
+[submodule "Switch-SDK-drivers"]
+	path = platform/mellanox/sdk-src/sx-kernel/Switch-SDK-drivers
+	url = ssh://git@172.168.120.89:3022/flks/Switch-SDK-drivers.git
+[submodule "src/sonic-ztp"]
+	path = src/sonic-ztp
+	url = ssh://git@172.168.120.89:3022/flks/sonic-ztp.git
+[submodule "src/sonic-restapi"]
+	path = src/sonic-restapi
+	url = ssh://git@172.168.120.89:3022/flks/sonic-restapi.git
+	branch = master
+[submodule "src/sonic-mgmt-common"]
+	path = src/sonic-mgmt-common
+	url = ssh://git@172.168.120.89:3022/flks/sonic-mgmt-common.git
+[submodule "src/linkmgrd"]
+	path = src/linkmgrd
+	url = ssh://git@172.168.120.89:3022/flks/sonic-linkmgrd.git
+	branch = 202012
