@@ -50,10 +50,7 @@ int fan_if_create_driver(void)
         return rc;
     }
 
-    if (fan_driver->fan_num == 6)
-    {
-        rc = drv_fan_vmon_init((void *)fan_driver);
-    }
+    drv_fan_vmon_init((void *)fan_driver);
 
     return rc;
 }

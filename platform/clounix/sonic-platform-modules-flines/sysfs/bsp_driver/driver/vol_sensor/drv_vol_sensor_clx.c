@@ -14,7 +14,6 @@
 struct drv_vol_sensor vol_sensor;
 
 #define REAL_MAX_SENSOR_NUM (2)
-#define DS410_VOL_TOTAL_SENSOR_NUM (2)
 
 #define VOL_NODE "in"
 
