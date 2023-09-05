@@ -473,7 +473,7 @@ static ssize_t clx_fpga_sfp_eeprom_update_client(struct clounix_priv_data *sfp,
         ret = clx_fpga_sfp_eeprom_write(sfp, eth_index, &page, SFP_PAGE_SELECT_REG, 1);
         if (ret < 0)
         {
-            LOG_ERR(CLX_DRIVER_TYPES_XCVR, "Eth_index:%d, Write page register for page %d failed ret:%d!\n", eth_index, page, ret);
+            //LOG_ERR(CLX_DRIVER_TYPES_XCVR, "Eth_index:%d, Write page register for page %d failed ret:%d!\n", eth_index, page, ret);
             return ret;
         }
     }
@@ -482,7 +482,7 @@ static ssize_t clx_fpga_sfp_eeprom_update_client(struct clounix_priv_data *sfp,
     ret = clx_fpga_sfp_eeprom_read(sfp, eth_index, &page_check, SFP_PAGE_SELECT_REG, 1);
     if (ret < 0)
     {
-        LOG_ERR(CLX_DRIVER_TYPES_XCVR, "Eth_index:%d, Read page register for page %d failed ret:%d!\n", eth_index, page, ret);
+        //LOG_ERR(CLX_DRIVER_TYPES_XCVR, "Eth_index:%d, Read page register for page %d failed ret:%d!\n", eth_index, page, ret);
         return ret;
     }
     LOG_DBG(CLX_DRIVER_TYPES_XCVR, "read page register %d checked %d, ret:%d\n", page, page_check, ret);
@@ -512,7 +512,7 @@ static ssize_t clx_fpga_sfp_eeprom_update_client(struct clounix_priv_data *sfp,
         ret = clx_fpga_sfp_eeprom_write(sfp, eth_index, &page, SFP_PAGE_SELECT_REG, 1);
         if (ret < 0)
         {
-            LOG_ERR(CLX_DRIVER_TYPES_XCVR, "Eth_index:%d, Restore page register to 0 failed:%d!\n", eth_index, ret);
+            //LOG_ERR(CLX_DRIVER_TYPES_XCVR, "Eth_index:%d, Restore page register to 0 failed:%d!\n", eth_index, ret);
             /* error only if nothing has been transferred */
             if (retval == 0)
                 retval = ret;

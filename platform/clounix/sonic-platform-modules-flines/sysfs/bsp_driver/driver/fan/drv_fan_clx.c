@@ -244,7 +244,7 @@ static int drv_set_fan_led_status(void *fan, unsigned int fan_index, int status)
 static unsigned int fan_vmon_get(struct fan_driver_clx *dev, unsigned char fan_index)
 {
     uint8_t data = 0, i = 0;
-    uint8_t fan_index_to_hw[] = {2, 5, 3, 4, 1, 0};
+    uint8_t fan_index_to_hw[6] = {2, 5, 3, 4, 1, 0};
 
     do
     {
@@ -266,6 +266,25 @@ static unsigned int fan_vmon_get(struct fan_driver_clx *dev, unsigned char fan_i
     {
         LOG_ERR(CLX_DRIVER_TYPES_FAN, "fan_vmon_get error BANK_SEL = %x\r\n", data);
         return DRIVER_ERR;
+    }
+
+    if (dev->fan_if.fan_num == 6)
+    {
+        fan_index_to_hw[0] = 2;
+        fan_index_to_hw[1] = 5;
+        fan_index_to_hw[2] = 3;
+        fan_index_to_hw[3] = 4;
+        fan_index_to_hw[4] = 1;
+        fan_index_to_hw[5] = 0;
+    }
+    else
+    {
+        fan_index_to_hw[0] = 2;
+        fan_index_to_hw[1] = 3;
+        fan_index_to_hw[2] = 4;
+        fan_index_to_hw[3] = 1;
+        fan_index_to_hw[4] = 0;
+        fan_index_to_hw[5] = 5;
     }
 
     clx_i2c_read(dev->fan_if.bus, FAN_VMON_CHIP_ADDR, (FAN_VMON_VIN_LVL_BASE_REG + fan_index_to_hw[fan_index]), &data, 1);
@@ -350,10 +369,26 @@ int drv_fan_vmon_init(void *fan)
     }
 
     clx_i2c_read(fan_driver->bus, FAN_VMON_CHIP_ADDR, FAN_VMON_OFF_STAT_REG, &data, 1);
-    if (data != 0x00)
+
+    if (fan_driver->fan_num == 6)
     {
-        LOG_ERR(CLX_DRIVER_TYPES_FAN, "drv_fan_vmon_init error VMON_OFF_STAT = %x\r\n", data);
-        return DRIVER_ERR;
+        if ((data & 0x3F) != 0x00)
+        {
+            LOG_ERR(CLX_DRIVER_TYPES_FAN, "drv_fan_vmon_init error VMON_OFF_STAT = %x\r\n", data);
+            return DRIVER_ERR;
+        }
+    }
+    else if (fan_driver->fan_num == 5)
+    {
+        if ((data & 0x1F) != 0x00)
+        {
+            LOG_ERR(CLX_DRIVER_TYPES_FAN, "drv_fan_vmon_init error VMON_OFF_STAT = %x\r\n", data);
+            return DRIVER_ERR;
+        }
+    }
+    else
+    {
+
     }
 
     clx_i2c_read(fan_driver->bus, fan_driver->addr, FAN_VMON_ACT_CPLD_REG, &data, 1);
