@@ -388,7 +388,8 @@ int drv_fan_vmon_init(void *fan)
     }
     else
     {
-
+            LOG_ERR(CLX_DRIVER_TYPES_FAN, "drv_fan_vmon_init fan_num error VMON_OFF_STAT = %x\r\n", data);
+            return DRIVER_ERR;
     }
 
     clx_i2c_read(fan_driver->bus, fan_driver->addr, FAN_VMON_ACT_CPLD_REG, &data, 1);
