@@ -515,20 +515,39 @@ static u_int8_t eeprom[SYS_EEPROM_SIZE];
 static char tlv_value[TLV_DECODE_VALUE_MAX_LEN];
 int clx_driver_common_init(char *hw_platform)
 {
-    int ret = DRIVER_OK;
+    int ret = DRIVER_OK, i = 0;
 
-    if (read_eeprom(eeprom) < 0) {
-        LOG_ERR(CLX_DRIVER_TYPES_PLT, "clx_driver_common_init:failed to read syseeprom");
-        return DRIVER_ERR;
+    for (i = 0; i < 3; i++)
+    {
+        memset(eeprom, 0, SYS_EEPROM_SIZE);
+        memset(tlv_value, 0, TLV_DECODE_VALUE_MAX_LEN);
+        if (read_eeprom(eeprom) < 0)
+        {
+            usleep_range(5000, 10000);
+            if (read_eeprom(eeprom) < 0)
+            {
+                LOG_ERR(CLX_DRIVER_TYPES_PLT, "clx_driver_common_init:failed to read syseeprom");
+                return DRIVER_ERR;
+            }
+        }
+        if (tlvinfo_decode_tlv(eeprom, TLV_CODE_PLATFORM_NAME, tlv_value))
+        {
+            LOG_DBG(CLX_DRIVER_TYPES_PLT, "decode product name:%s", tlv_value);
+            snprintf(hw_platform, PRODUCT_NAME_LEN_MAX, "%s", tlv_value);
+            ret = DRIVER_OK;
+            break;
+        }
+        else
+        {
+            usleep_range(5000, 10000);
+            continue;
+        }
     }
-    if (tlvinfo_decode_tlv(eeprom, TLV_CODE_PLATFORM_NAME, tlv_value)) {
-        LOG_DBG(CLX_DRIVER_TYPES_PLT, "decode product name:%s", tlv_value);
-        snprintf(hw_platform, PRODUCT_NAME_LEN_MAX, "%s", tlv_value);
-    } else {
+    if (i >= 3)
+    {
         LOG_ERR(CLX_DRIVER_TYPES_PLT, "clx_driver_common_init:failed to decode syseeprom");
         ret = DRIVER_ERR;
     }
 
     return ret;
 }
-
