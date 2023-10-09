@@ -195,7 +195,6 @@ clx_diag l2 add mac-table static mac=00:00:00:00:00:02 vid=1152 port=96
 
 
 clx_diag pkt set sequence clear
-clx_diag pkt set rx init
 clx_diag pkt set monitor sequence
 clx_diag pkt clear monitor
 
@@ -217,7 +216,6 @@ clx_diag netif destroy profile profile-id=0
 clx_diag netif destroy profile profile-id=1
 
 
-clx_diag pkt set rx deinit
 clx_diag pkt set monitor disable
 
 clx_diag tm set shaper  portlist=0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,104,112,120,128,136,144,152 max-bw=0 max-burst=64000000
@@ -343,6 +341,7 @@ clx_diag vlan del member vid=1128 portlist=128,136 untag-portlist=128,136
 clx_diag vlan del member vid=1136 portlist=136,144 untag-portlist=136,144
 clx_diag vlan del member vid=1144 portlist=144,152 untag-portlist=144,152
 clx_diag vlan del member vid=1152 portlist=152,96 untag-portlist=152,96
+
 
 
 clx_diag port set intf-property portlist=0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,104,112,120,128,136,144,152 mtu=1536
