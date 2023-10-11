@@ -31,6 +31,7 @@ int current_if_create_driver(void)
 		if (strcmp((const char *)driver_type, (const char *)it->name) == 0)
 		{
 			rc = it->driver_init((void *)&current_driver);
+			break;
 		}
 	}
 	if (DRIVER_OK == rc)
