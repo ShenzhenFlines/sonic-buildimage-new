@@ -289,7 +289,14 @@ static unsigned int fan_vmon_get(struct fan_driver_clx *dev, unsigned char fan_i
 
     clx_i2c_read(dev->fan_if.bus, FAN_VMON_CHIP_ADDR, (FAN_VMON_VIN_LVL_BASE_REG + fan_index_to_hw[fan_index]), &data, 1);
     // v = (ADC[0:7]*5mV+0.2V)*VRANGE_MULT*HW
-    return (((data * 5) + 200) * 11);
+    if(data != 0)
+    {
+        return (((data * 5) + 200) * 11);
+    }
+    else
+    {
+        return 0;
+    }
 }
 
 static ssize_t drv_get_fan_vmon(void *fan, unsigned int fan_index, char *buf, size_t count)

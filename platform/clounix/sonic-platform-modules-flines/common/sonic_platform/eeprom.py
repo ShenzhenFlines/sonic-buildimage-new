@@ -19,6 +19,7 @@ class Eeprom(eeprom_tlvinfo.TlvInfoDecoder):
         self.__eeprom_path = "/sys/switch/syseeprom/eeprom"
         super(Eeprom, self).__init__(self.__eeprom_path, 0, '', True)
         self.__eeprom_tlv_dict = dict()
+ 
         if os.path.exists(CACHE_ROOT):
             try:
                 os.removedirs(CACHE_ROOT)
