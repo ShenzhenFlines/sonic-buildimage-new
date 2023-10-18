@@ -20,11 +20,9 @@ class Eeprom(eeprom_tlvinfo.TlvInfoDecoder):
         super(Eeprom, self).__init__(self.__eeprom_path, 0, '', True)
         self.__eeprom_tlv_dict = dict()
  
-        if os.path.exists(CACHE_ROOT):
-            try:
-                os.removedirs(CACHE_ROOT)
-            except Exception:
-                pass
+        if(os.path.isfile("/var/cache/sonic/decode-syseeprom/syseeprom_cache")):
+            os.remove("/var/cache/sonic/decode-syseeprom/syseeprom_cache")
+            
         if not os.path.exists(CACHE_ROOT):
             try:
                 os.makedirs(CACHE_ROOT)
