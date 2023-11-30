@@ -289,7 +289,7 @@ static unsigned int fan_vmon_get(struct fan_driver_clx *dev, unsigned char fan_i
 
     clx_i2c_read(dev->fan_if.bus, FAN_VMON_CHIP_ADDR, (FAN_VMON_VIN_LVL_BASE_REG + fan_index_to_hw[fan_index]), &data, 1);
     // v = (ADC[0:7]*5mV+0.2V)*VRANGE_MULT*HW
-    if(data != 0)
+    if (data != 0)
     {
         return (((data * 5) + 200) * 11);
     }
@@ -311,14 +311,14 @@ int drv_fan_vmon_init(void *fan)
     struct fan_fn_if *fan_driver = (struct fan_fn_if *)fan;
     uint8_t data = 0, i = 0;
     uint16_t value = 0;
-
+#if 0
     clx_i2c_read(fan_driver->bus, FAN_VMON_CHIP_ADDR, FAN_VMON_VENDOR_ID_REG, &data, 1);
     if (data != 0x18)
     {
         LOG_ERR(CLX_DRIVER_TYPES_FAN, "drv_fan_vmon_init error VENDOR_ID = %x\r\n", data);
         return DRIVER_ERR;
     }
-
+#endif
     do
     {
         clx_i2c_read(fan_driver->bus, FAN_VMON_CHIP_ADDR, FAN_VMON_STAT_REG, &data, 1);
@@ -395,8 +395,8 @@ int drv_fan_vmon_init(void *fan)
     }
     else
     {
-            LOG_ERR(CLX_DRIVER_TYPES_FAN, "drv_fan_vmon_init fan_num error VMON_OFF_STAT = %x\r\n", data);
-            return DRIVER_ERR;
+        LOG_ERR(CLX_DRIVER_TYPES_FAN, "drv_fan_vmon_init fan_num error VMON_OFF_STAT = %x\r\n", data);
+        return DRIVER_ERR;
     }
 
     clx_i2c_read(fan_driver->bus, fan_driver->addr, FAN_VMON_ACT_CPLD_REG, &data, 1);
