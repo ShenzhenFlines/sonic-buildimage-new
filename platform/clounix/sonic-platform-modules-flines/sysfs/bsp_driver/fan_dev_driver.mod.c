@@ -36,7 +36,7 @@ __attribute__((section("__versions"))) = {
 	{ 0xe4e4337, "clx_i2c_write" },
 	{ 0x8adb2c34, "clx_i2c_read" },
 	{ 0x81167e52, "s3ip_sysfs_fan_drivers_register" },
-	{ 0x60c957a7, "clx_driver_get_platform_bd" },
+	{ 0xe4b8943c, "clx_driver_get_platform_bd" },
 	{ 0x7c32d0f0, "printk" },
 	{ 0x2b093346, "g_dev_loglevel" },
 	{ 0xb601be4c, "__x86_indirect_thunk_rdx" },

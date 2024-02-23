@@ -42,7 +42,7 @@ __attribute__((section("__versions"))) = {
 	{ 0x88439861, "pci_set_master" },
 	{ 0x96b2f47c, "pci_alloc_irq_vectors_affinity" },
 	{ 0x8adb2c34, "clx_i2c_read" },
-	{ 0x60c957a7, "clx_driver_get_platform_bd" },
+	{ 0xe4b8943c, "clx_driver_get_platform_bd" },
 	{ 0x7c32d0f0, "printk" },
 	{ 0xa4751e78, "sysfs_create_group" },
 	{ 0x2b093346, "g_dev_loglevel" },

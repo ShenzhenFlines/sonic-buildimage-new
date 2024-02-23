@@ -23,6 +23,7 @@
 
 #define CLX_DS610_REBOOT_EEPROM_BUS 10
 #define CLX_DS610_REBOOT_EEPROM_ADDR 0x50
+
 #define DS610_VOL_TOTAL_SENSOR_NUM (8)
 #define DS610_CURR_TOTAL_SENSOR_NUM (4)
 
@@ -32,18 +33,20 @@
     [2]:sensor offset
     [3]:scaling factor
 */
-short ds610_vol_sensor_map[3][SENSOR_DRIVER_INDEX_COL_MAX] = {
+short ds610_vol_sensor_map[SENSOR_INDEX_MAX][SENSOR_COL_MAX] = {
     {0x20, 0, -1, 1},
     {0x21, 1, 3, 1},
-    {0x0, 0, 0},
+    {0x0, 0, 0, 0},
+    {0x0, 0, 0, 0},
 };
 /*
     [0]: range
     [1]: location in sensor_arry
 */
-unsigned char ds610_vol_index_range_map[3][2] = {
+unsigned char ds610_vol_index_range_map[SENSOR_ROW_MAX][SENSOR_RANGE_MAX] = {
     {4, 0},
     {8, 1},
+    {0, 0},
     {0, 0},
 };
 
@@ -51,19 +54,22 @@ unsigned char ds610_vol_index_range_map[3][2] = {
     [0]:addr
     [1]:location in sensor_arry
     [2]:sensor offse
+    [3]:scaling factor
 */
-short ds610_curr_sensor_map[3][SENSOR_DRIVER_INDEX_COL_MAX] = {
+short ds610_curr_sensor_map[SENSOR_INDEX_MAX][SENSOR_COL_MAX] = {
     {0x20, 0, -1, 1},
     {0x21, 1, 1, 1},
+    {0x0, 0, 0, 0},
     {0x0, 0, 0, 0},
 };
 /*
     [0]: range
     [1]: location in sensor_arry
 */
-unsigned char ds610_curr_index_range_map[3][2] = {
+unsigned char ds610_curr_index_range_map[SENSOR_ROW_MAX][SENSOR_RANGE_MAX] = {
     {2, 0},
     {4, 1},
+    {0, 0},
     {0, 0},
 };
 

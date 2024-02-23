@@ -33,37 +33,42 @@
     [2]:sensor offset
     [3]:scaling factor
 */
-short ds410d_vol_sensor_map[3][SENSOR_DRIVER_INDEX_COL_MAX] = {
+short ds410d_vol_sensor_map[SENSOR_INDEX_MAX][SENSOR_COL_MAX] = {
     {0x2B, 0, -3, 1},
     {0x27, 1, -3, 3},
+    {0x0, 0, 0, 0},
     {0x0, 0, 0, 0},
 };
 /*
     [0]: range
     [1]: location in sensor_arry
 */
-unsigned char ds410d_vol_index_range_map[3][2] = {
+unsigned char ds410d_vol_index_range_map[SENSOR_ROW_MAX][SENSOR_RANGE_MAX] = {
     {1, 0},
     {2, 1},
+    {0, 0},
     {0, 0},
 };
 /*
     [0]:addr
     [1]:location in sensor_arry
     [2]:sensor offse
+    [3]:scaling factor
 */
-short ds410d_curr_sensor_map[3][SENSOR_DRIVER_INDEX_COL_MAX] = {
+short ds410d_curr_sensor_map[SENSOR_INDEX_MAX][SENSOR_COL_MAX] = {
     {0x2B, 0, -1, 1},
     {0x27, 1, -1, 3},
-    {0x0, 0, 0, 1},
+    {0x0, 0, 0, 0},
+    {0x0, 0, 0, 0},
 };
 /*
     [0]: range
     [1]: location in sensor_arry
 */
-unsigned char ds410d_curr_index_range_map[][2] = {
+unsigned char ds410d_curr_index_range_map[SENSOR_ROW_MAX][SENSOR_RANGE_MAX] = {
     {1, 0},
     {2, 1},
+    {0, 0},
     {0, 0},
 };
 struct sensor_descript ds410d_sensor_map_index[] = {

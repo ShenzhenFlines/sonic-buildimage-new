@@ -34,7 +34,7 @@ __attribute__((section("__versions"))) = {
 	{ 0x91715312, "sprintf" },
 	{ 0x61c5ae4f, "kernel_read" },
 	{ 0xfb578fc5, "memset" },
-	{ 0x60c957a7, "clx_driver_get_platform_bd" },
+	{ 0xe4b8943c, "clx_driver_get_platform_bd" },
 	{ 0x7c32d0f0, "printk" },
 	{ 0x2b093346, "g_dev_loglevel" },
 	{ 0x21093a23, "s3ip_sysfs_syseeprom_drivers_register" },

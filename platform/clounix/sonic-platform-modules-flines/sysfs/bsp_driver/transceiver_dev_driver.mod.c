@@ -33,7 +33,7 @@ __attribute__((section("__versions"))) = {
 	{ 0xa6093a32, "mutex_unlock" },
 	{ 0x91715312, "sprintf" },
 	{ 0x15ba50a6, "jiffies" },
-	{ 0x60c957a7, "clx_driver_get_platform_bd" },
+	{ 0xe4b8943c, "clx_driver_get_platform_bd" },
 	{ 0x9a76f11f, "__mutex_init" },
 	{ 0x7c32d0f0, "printk" },
 	{ 0x2b093346, "g_dev_loglevel" },

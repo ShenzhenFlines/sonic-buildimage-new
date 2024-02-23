@@ -31,7 +31,7 @@ __attribute__((section("__versions"))) = {
 	{ 0x32ae5741, "_raw_read_lock" },
 	{ 0x91715312, "sprintf" },
 	{ 0xe2d5255a, "strcmp" },
-	{ 0x60c957a7, "clx_driver_get_platform_bd" },
+	{ 0xe4b8943c, "clx_driver_get_platform_bd" },
 	{ 0x7c32d0f0, "printk" },
 	{ 0x449ad0a7, "memcmp" },
 	{ 0x18e914ff, "s3ip_sysfs_vol_sensor_drivers_unregister" },

@@ -40,7 +40,7 @@ __attribute__((section("__versions"))) = {
 	{ 0xe502694f, "i2c_smbus_write_word_data" },
 	{ 0x424ecf45, "i2c_smbus_read_word_data" },
 	{ 0xbe485b91, "i2c_smbus_write_byte_data" },
-	{ 0x90597ec1, "get_vol_sensor_if" },
+	{ 0xb6c061b7, "get_vol_sensor_if" },
 	{ 0x844c1e05, "devm_kmalloc" },
 	{ 0x391ece35, "pmbus_get_driver_info" },
 	{ 0x4f24ff4, "pmbus_read_word_data" },
