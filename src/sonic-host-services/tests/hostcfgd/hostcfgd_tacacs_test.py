@@ -99,6 +99,7 @@ class TestHostcfgdTACACS(TestCase):
             Returns:
                 None
         """
+        shutil.rmtree(output_path, True)
         os.mkdir(output_path)
         # test local config
         self.check_config(test_name, test_data, "config_db_local")
