@@ -662,8 +662,8 @@ port set property unit=0 portlist=64 speed=100g
 port set property unit=0 portlist=68 speed=100g
 port set property unit=0 portlist=72 speed=100g
 port set property unit=0 portlist=76 speed=100g
-port set property unit=0 portlist=257 speed=1g
-port set property unit=0 portlist=258 speed=1g
+port set property unit=0 portlist=257 speed=10g
+port set property unit=0 portlist=258 speed=10g
 port set property unit=0 portlist=0 medium-type=cr
 port set property unit=0 portlist=1 medium-type=cr
 port set property unit=0 portlist=2 medium-type=cr
@@ -720,8 +720,8 @@ port set property unit=0 portlist=64 medium-type=cr4
 port set property unit=0 portlist=68 medium-type=cr4
 port set property unit=0 portlist=72 medium-type=cr4
 port set property unit=0 portlist=76 medium-type=cr4
-port set property unit=0 portlist=257 medium-type=x
-port set property unit=0 portlist=258 medium-type=x
+port set property unit=0 portlist=257 medium-type=kr
+port set property unit=0 portlist=258 medium-type=kr
 port set property unit=0 portlist=0 fec=rs528
 port set property unit=0 portlist=1 fec=rs528
 port set property unit=0 portlist=2 fec=rs528
@@ -780,8 +780,8 @@ port set property unit=0 portlist=72 fec=rs528
 port set property unit=0 portlist=76 fec=rs528
 port set property unit=0 portlist=257 fec=disable
 port set property unit=0 portlist=258 fec=disable
-port set adver unit=0 portlist=257-258 speed-1g-x
-port set property unit=0 portlist=257-258 an-lt=disable
+port set adver unit=0 portlist=257-258 speed-10g-kr
+port set property unit=0 portlist=257-258 an-lt=enable
 port set property unit=0 portlist=0 admin=enable
 port set property unit=0 portlist=1 admin=enable
 port set property unit=0 portlist=2 admin=enable

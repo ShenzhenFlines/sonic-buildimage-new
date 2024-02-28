@@ -84,6 +84,7 @@ fi
 sudo cp -f files/vtysh_bin/all.sh $FILESYSTEM_ROOT/var/vtysh
 sudo cp -f files/vtysh_bin/all_other.sh $FILESYSTEM_ROOT/var/vtysh
 sudo cp -f files/vtysh_bin/mac.py $FILESYSTEM_ROOT/var/vtysh
+sudo cp -f files/vtysh_bin/all_12.8t.sh $FILESYSTEM_ROOT/var/vtysh
 if [ ! -d $FILESYSTEM_ROOT/usr/lib/systemd/system/ ]; then
     sudo mkdir -p $FILESYSTEM_ROOT/usr/lib/systemd/system/
 fi
