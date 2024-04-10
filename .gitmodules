@@ -93,5 +93,5 @@
 	branch = 202012
 [submodule "cpld"]
 	path = platform/clounix/sonic-platform-modules-flines/cpld
-	url = ssh://git@172.168.120.89:3022/flks/cpld.git
+	url = ssh://git@flks.tech:3022/flks/cpld.git
 	branch = master
