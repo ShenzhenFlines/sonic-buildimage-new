@@ -53,17 +53,16 @@ class Component(ComponentBase):
             A string containing the firmware version of the component
         """
         firmware_version = 'N/A'
-        attr_rv = self.__api_helper.read_one_line_file(
-            self.__conf[self.__index]['firmware_version_path'])
-        if attr_rv != None:
-            firmware_version = attr_rv
+        if self.get_name() == 'BIOS':
+            ret, bios_ver = self.__api_helper.run_command(BIOS_QUERY_VERSION_COMMAND)
+            if ret:
+                if bios_ver:
+                    firmware_version = bios_ver
         else:
-            if self.get_name() == 'BIOS':
-                ret, bios_ver = self.__api_helper.run_command(
-                    BIOS_QUERY_VERSION_COMMAND)
-                if ret:
-                    if bios_ver:
-                        firmware_version = bios_ver
+            attr_rv = self.__api_helper.read_one_line_file(
+                self.__conf[self.__index]['firmware_version_path'])
+            if attr_rv != None:
+                firmware_version = attr_rv
         return firmware_version
 
     def install_firmware(self, image_path):
