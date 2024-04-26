@@ -6,6 +6,7 @@ import sys
 from sonic_platform_base.sonic_thermal_control.thermal_action_base import ThermalPolicyActionBase
 from sonic_platform_base.sonic_thermal_control.thermal_json_object import thermal_json_object
 from sonic_py_common import logger
+from sonic_platform.eeprom import Eeprom
 from .chassis import Chassis
 # from .thermal import Thermal
 # from .thermal_infos import *
@@ -22,6 +23,7 @@ THERMAL_OVERLOAD_POSITION_FILE = "/usr/share/sonic/platform/api_files/reboot-cau
 
 LAST_TEMP = '/tmp/last_temp'
 
+
 @thermal_json_object('thermal_control.control')
 class ControlThermalAlgoAction(ThermalPolicyActionBase):
     """
@@ -30,7 +32,6 @@ class ControlThermalAlgoAction(ThermalPolicyActionBase):
     # JSON field definition
     JSON_FIELD_STATUS = 'status'
     speed = 60
-    
 
     def __init__(self):
         self.status = True
@@ -60,7 +61,6 @@ class ControlThermalAlgoAction(ThermalPolicyActionBase):
                              'missing mandatory field {} in JSON policy file'.
                              format(ControlThermalAlgoAction.JSON_FIELD_STATUS))
 
-    
     def execute(self, thermal_info_dict):
         """
         Disable thermal control algorithm
@@ -137,20 +137,80 @@ class SwitchPolicyAction(ThermalPolicyActionBase):
 
 @thermal_json_object('thermal_control.normalization')
 class NormalizationAction(ThermalPolicyActionBase):
-    
-    cpu_up_threshold =   [55.0,57.0,59.0,61.0,63.0,65.0]
-    cpu_down_threshold = [54.0,56.0,58.0,60.0,62.0,64.0]
-    u48_up_threshold =   [35.0,36.0,37.0,38.0,41.0,45.0]
-    u48_down_threshold = [34.0,35.0,36.0,37.0,38.0,41.0]
-    u49_up_threshold =   [25.0,26.0,27.0,28.0,31.0,35.0]
-    u49_down_threshold = [24.0,25.0,26.0,27.0,28.0,31.0]
-    
-    # only for test
-    # cpu_up_threshold =   [55.0,57.0,59.0,61.0,63.0,65.0]
-    # cpu_down_threshold = [54.0,56.0,58.0,60.0,62.0,64.0]
-    
     speed = 60
-    
+    cpu_up_threshold = [55.0, 57.0, 59.0, 61.0, 63.0, 65.0]
+    cpu_down_threshold = [54.0, 56.0, 58.0, 60.0, 62.0, 64.0]
+    u48_up_threshold = [35.0, 36.0, 37.0, 38.0, 41.0, 45.0]
+    u48_down_threshold = [34.0, 35.0, 36.0, 37.0, 38.0, 41.0]
+    u49_up_threshold = [25.0, 26.0, 27.0, 28.0, 31.0, 35.0]
+    u49_down_threshold = [24.0, 25.0, 26.0, 27.0, 28.0, 31.0]
+
+    # model_str = Eeprom.modelstr()
+
+    # print("thermal_control.normalization model name: model_str {0}".format(model_str))
+
+    # if model_str == "DS610_8T":
+    #     cpu_up_threshold = [55.0, 57.0, 59.0, 61.0, 63.0, 65.0]
+    #     cpu_down_threshold = [54.0, 56.0, 58.0, 60.0, 62.0, 64.0]
+    #     u48_up_threshold = [35.0, 36.0, 37.0, 38.0, 41.0, 45.0]
+    #     u48_down_threshold = [34.0, 35.0, 36.0, 37.0, 38.0, 41.0]
+    #     u49_up_threshold = [25.0, 26.0, 27.0, 28.0, 31.0, 35.0]
+    #     u49_down_threshold = [24.0, 25.0, 26.0, 27.0, 28.0, 31.0]
+    #     print("11111111111111 DS610_8T DS610_8T DS610_8T DS610_8T 1111111111111111")
+
+    # elif model_str == "DS610D_8T":
+    #     cpu_up_threshold = [55.0, 57.0, 59.0, 61.0, 63.0, 65.0]
+    #     cpu_down_threshold = [54.0, 56.0, 58.0, 60.0, 62.0, 64.0]
+    #     u48_up_threshold = [35.0, 36.0, 37.0, 38.0, 41.0, 45.0]
+    #     u48_down_threshold = [34.0, 35.0, 36.0, 37.0, 38.0, 41.0]
+    #     u49_up_threshold = [25.0, 26.0, 27.0, 28.0, 31.0, 35.0]
+    #     u49_down_threshold = [24.0, 25.0, 26.0, 27.0, 28.0, 31.0]
+    #     print("2222222222222222 DS610D_8T DS610D_8T DS610D_8T DS610D_8T 222222222222222222")  
+
+    # elif model_str == "DS410_2T":
+    #     cpu_up_threshold = [55.0, 57.0, 59.0, 61.0, 63.0, 65.0]
+    #     cpu_down_threshold = [54.0, 56.0, 58.0, 60.0, 62.0, 64.0]
+    #     u48_up_threshold = [35.0, 36.0, 37.0, 38.0, 41.0, 45.0]
+    #     u48_down_threshold = [34.0, 35.0, 36.0, 37.0, 38.0, 41.0]
+    #     u49_up_threshold = [25.0, 26.0, 27.0, 28.0, 31.0, 35.0]
+    #     u49_down_threshold = [24.0, 25.0, 26.0, 27.0, 28.0, 31.0]
+    #     print("33333333333333 DS410_2T DS410_2T DS410_2T DS410_2T 333333333333333333") 
+
+    # elif model_str == "DS410D_2T":
+    #     cpu_up_threshold = [55.0, 57.0, 59.0, 61.0, 63.0, 65.0]
+    #     cpu_down_threshold = [54.0, 56.0, 58.0, 60.0, 62.0, 64.0]
+    #     u48_up_threshold = [35.0, 36.0, 37.0, 38.0, 41.0, 45.0]
+    #     u48_down_threshold = [34.0, 35.0, 36.0, 37.0, 38.0, 41.0]
+    #     u49_up_threshold = [25.0, 26.0, 27.0, 28.0, 31.0, 35.0]
+    #     u49_down_threshold = [24.0, 25.0, 26.0, 27.0, 28.0, 31.0]
+    #     print("44444444444444 DS410D_2T DS410D_2T DS410D_2T DS410D_2T 44444444444444444444") 
+
+    # elif model_str == "DS730_12.8T":
+    #     cpu_up_threshold = [55.0, 57.0, 59.0, 61.0, 63.0, 65.0]
+    #     cpu_down_threshold = [54.0, 56.0, 58.0, 60.0, 62.0, 64.0]
+    #     u48_up_threshold = [35.0, 36.0, 37.0, 38.0, 41.0, 45.0]
+    #     u48_down_threshold = [34.0, 35.0, 36.0, 37.0, 38.0, 41.0]
+    #     u49_up_threshold = [25.0, 26.0, 27.0, 28.0, 31.0, 35.0]
+    #     u49_down_threshold = [24.0, 25.0, 26.0, 27.0, 28.0, 31.0]
+    #     print("55555555555555555 DS730_12.8T DS730_12.8T DS730_12.8T DS730_12.8T 5555555555555555555")
+
+    # elif model_str == "DS730D_12.8T":
+    #     cpu_up_threshold = [55.0, 57.0, 59.0, 61.0, 63.0, 65.0]
+    #     cpu_down_threshold = [54.0, 56.0, 58.0, 60.0, 62.0, 64.0]
+    #     u48_up_threshold = [35.0, 36.0, 37.0, 38.0, 41.0, 45.0]
+    #     u48_down_threshold = [34.0, 35.0, 36.0, 37.0, 38.0, 41.0]
+    #     u49_up_threshold = [25.0, 26.0, 27.0, 28.0, 31.0, 35.0]
+    #     u49_down_threshold = [24.0, 25.0, 26.0, 27.0, 28.0, 31.0]
+    #     print("666666666666666666 DS730D_12.8T DS730D_12.8T DS730D_12.8T DS730D_12.8T 6666666666666666666666")
+
+    # else:
+    #     cpu_up_threshold = [55.0, 57.0, 59.0, 61.0, 63.0, 65.0]
+    #     cpu_down_threshold = [54.0, 56.0, 58.0, 60.0, 62.0, 64.0]
+    #     u48_up_threshold = [35.0, 36.0, 37.0, 38.0, 41.0, 45.0]
+    #     u48_down_threshold = [34.0, 35.0, 36.0, 37.0, 38.0, 41.0]
+    #     u49_up_threshold = [25.0, 26.0, 27.0, 28.0, 31.0, 35.0]
+    #     u49_down_threshold = [24.0, 25.0, 26.0, 27.0, 28.0, 31.0]
+
     def get_thermals(self, thermal_info_dict):
         chassis = thermal_info_dict['chassis_info'].get_chassis()
         ithermal = chassis.get_num_thermals()
@@ -166,7 +226,7 @@ class NormalizationAction(ThermalPolicyActionBase):
                 thermals['0x49'] = thermal
         # print('----[get_thermals] useful thermals count: {}'.format(len(thermals)))
         return thermals
-    
+
     def get_rules(self, nows) -> True:
         lasts = []
         with open(LAST_TEMP, 'r+') as f:
@@ -182,7 +242,7 @@ class NormalizationAction(ThermalPolicyActionBase):
         if temps[0] < nows[0] or temps[1] < nows[1] or temps[2] < nows[2]:
             return True
         return False
-    
+
     def has_warning(self, thermal_info_dict: Chassis) -> True:
         chassis = thermal_info_dict['chassis_info'].get_chassis()
         ithermal = chassis.get_num_thermals()
@@ -191,13 +251,13 @@ class NormalizationAction(ThermalPolicyActionBase):
             if thermal.get_temperature() > thermal.get_high_threshold():
                 return True
         return False
-    
+
     def print_temperature(self, thermal_info_dict):
         # print('thermal count: {0}'.format(ithermal))
         chassis = thermal_info_dict['chassis_info'].get_chassis()
         ithermal = chassis.get_num_thermals()
         zformat = '{:<20}{:<15}{:<15}{:<15}'
-        print(zformat.format('name','temperature', 'high', 'critical'))
+        print(zformat.format('name', 'temperature', 'high', 'critical'))
         for i in range(ithermal):
             thermal = chassis.get_thermal(i)
             zname = thermal.get_name()
@@ -207,9 +267,9 @@ class NormalizationAction(ThermalPolicyActionBase):
                     thermal.get_temperature(),
                     thermal.get_high_threshold(),
                     thermal.get_high_critical_threshold()
-                    )
                 )
-    
+            )
+
     def step_speed(self, thermals):
         nows = []
         nows.append(thermals['cpu'].get_temperature())
@@ -217,7 +277,7 @@ class NormalizationAction(ThermalPolicyActionBase):
         nows.append(thermals['0x49'].get_temperature())
         bup = self.get_rules(nows)
         if bup:
-            if   nows[0] > self.cpu_up_threshold[5] or nows[1] > self.u48_up_threshold[5] or nows[2] > self.u49_up_threshold[5]:
+            if nows[0] > self.cpu_up_threshold[5] or nows[1] > self.u48_up_threshold[5] or nows[2] > self.u49_up_threshold[5]:
                 self.speed = 100
             elif nows[0] > self.cpu_up_threshold[4] or nows[1] > self.u48_up_threshold[4] or nows[2] > self.u49_up_threshold[4]:
                 self.speed = 90
@@ -233,8 +293,8 @@ class NormalizationAction(ThermalPolicyActionBase):
                 self.speed = 40
             # print('----[step_speed] temperature rising, set speed {}'.format(self.speed))
         else:
-            if   nows[0] < self.cpu_down_threshold[0] and nows[1] < self.u48_down_threshold[0] and nows[2] < self.u49_down_threshold[0]:
-                self.speed = 40 
+            if nows[0] < self.cpu_down_threshold[0] and nows[1] < self.u48_down_threshold[0] and nows[2] < self.u49_down_threshold[0]:
+                self.speed = 40
             elif nows[0] < self.cpu_down_threshold[1] and nows[1] < self.u48_down_threshold[1] and nows[2] < self.u49_down_threshold[1]:
                 self.speed = 50
             elif nows[0] < self.cpu_down_threshold[2] and nows[1] < self.u48_down_threshold[2] and nows[2] < self.u49_down_threshold[2]:
@@ -249,7 +309,7 @@ class NormalizationAction(ThermalPolicyActionBase):
                 self.speed = 100
             # print('----[step_speed] temperature declining, set speed {}'.format(self.speed))
         return nows
-    
+
     def save_temps(self, temps):
         strs = []
         for i in range(3):
@@ -258,13 +318,14 @@ class NormalizationAction(ThermalPolicyActionBase):
             f.writelines(strs)
             f.flush()
             f.close()
-    
+
     def update_speed(self, thermal_info_dict):
         temps = []
         if self.has_warning(thermal_info_dict):
             # print('----[update_speed] has warning')
             self.speed = 100
-            temps = [self.cpu_up_threshold[5], self.u48_up_threshold[5], self.u49_up_threshold[5]]
+            temps = [self.cpu_up_threshold[5],
+                     self.u48_up_threshold[5], self.u49_up_threshold[5]]
         else:
             thermals = self.get_thermals(thermal_info_dict)
             # print('----[update_speed] thermals count: {}'.format(len(thermals)))
