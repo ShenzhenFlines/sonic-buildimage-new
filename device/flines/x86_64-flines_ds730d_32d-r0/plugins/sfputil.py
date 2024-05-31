@@ -39,6 +39,7 @@ class SfpUtil(SfpUtilBase):
 
     _port_to_eeprom_mapping = {}
     port_to_i2c_mapping = {}
+    _present_bitmap = None
 
     @property
     def port_start(self):
@@ -77,17 +78,14 @@ class SfpUtil(SfpUtilBase):
             port_num + 1)
 
         try:
-            file = open(presence_path)
-        except IOError as e:
-            print("Error: unable to open file: %s" % str(e))
+            with open(presence_path, 'r', encoding='utf-8') as file:
+                value = file.read(1)
+                if int(value) == 1:
+                    return True
+
+        except (IOError, ValueError) as e:
+            print("Error: unable to process file: %s" % str(e))
             return False
-
-        value = int(file.readline().rstrip(), 16)
-
-        file.close()
-        if value & 0x1 == 1:
-            return True
-
         return False
 
     def get_power(self, port_num):
@@ -324,17 +322,10 @@ class SfpUtil(SfpUtilBase):
         print "physical to logical: " + self.physical_to_logical
         """
 
-    @property
     def _get_presence_bitmap(self):
-
-        bits = []
-        for x in range(self.port_start, self.port_end+1):
-            bits.append(str(int(self.get_presence(x))))
-
-        rev = "".join(bits[::-1])
-        return int(rev, 2)
-
-    data = {'present': 1}
+        bits = [str(int(self.get_presence(x)))
+                for x in range(self.port_start, self.port_end+1)]
+        return int("".join(bits[::-1]), 2)
 
     def get_transceiver_change_event(self, timeout=0):
         port_dict = {}
@@ -342,32 +333,27 @@ class SfpUtil(SfpUtilBase):
         if timeout == 0:
             cd_ms = sys.maxsize
         else:
-            cd_ms = timeout
+            cd_ms = int(timeout * 1000)
 
-        # poll per second
         while cd_ms > 0:
-            reg_value = self._get_presence_bitmap
-            changed_ports = self.data['present'] ^ reg_value
-            if changed_ports != 0:
+            current_bitmap = self._get_presence_bitmap()
+            if self._present_bitmap is None or self._present_bitmap ^ current_bitmap:
                 break
             time.sleep(1)
-            cd_ms = cd_ms - 1000
+            cd_ms -= 1000
 
-        if changed_ports != 0:
+        if self._present_bitmap is not None and self._present_bitmap ^ current_bitmap:
             for port in range(self.port_start, self.port_end+1):
-                # Mask off the bit corresponding to our port
-                mask = (1 << (port - self.port_start))
-                if changed_ports & mask:
-                    if (reg_value & mask) == 0:
-                        port_dict[port] = SFP_STATUS_REMOVED
-                    else:
-                        port_dict[port] = SFP_STATUS_INSERTED
+                mask = 1 << (port - self.port_start)
+                if current_bitmap & mask:
+                    status = SFP_STATUS_INSERTED
+                else:
+                    status = SFP_STATUS_REMOVED
 
-            # Update cache
-            self.data['present'] = reg_value
+                if self._present_bitmap is None or (self._present_bitmap & mask) != (current_bitmap & mask):
+                    port_dict[port] = status
+            self._present_bitmap = current_bitmap
             return True, port_dict
-        else:
-            return True, {}
         return False, {}
 
     def get_transceiver_dom_info_dict(self, port_num):
