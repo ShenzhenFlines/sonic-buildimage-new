@@ -1,3 +1,5 @@
+#!/bin/python2.7
+
 import os
 import re
 import inspect
@@ -44,7 +46,9 @@ class Flash:
         self.log = logging.getLogger()  
 
     def pci(self):
-        str = os.popen('lspci -v -s 08:00.0 | grep size=512K').read()
+        str = os.popen('lspci | grep I210').read()
+        zdtb = str.split()[0]
+        str = os.popen('lspci -v -s %s | grep size=512K' % zdtb).read()
         span = re.search('[a-fA-F0-9]{8,}', str).span()
         zpci_addr = str[span[0]:span[1]]
         ipci_addr = int(zpci_addr, 16)
