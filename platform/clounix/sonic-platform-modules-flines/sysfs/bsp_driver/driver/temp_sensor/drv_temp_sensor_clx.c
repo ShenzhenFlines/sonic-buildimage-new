@@ -13,9 +13,6 @@
 #define MAX_SENSOR_NUM (4)
 #define SENSOR_NUM_PER_DIE (5)
 
-#define MAX_CPU_DIE_NUM (1)
-#define CPU_SENSOR_BASE (1)
-
 #define DEFAULT_CPU_TEMP_MAX (86 * 1000)
 
 #define TEMP_NODE "temp1"
@@ -224,10 +221,11 @@ static ssize_t drv_sensor_get_main_board_temp_max(void *driver, unsigned int tem
 
     if (temp_index >= MAX_SENSOR_NUM)
     {
+        ret = sprintf(buf, "%d\n", 96000);
+#if 0
         data = &cpu_temp_data_list[temp_index - MAX_SENSOR_NUM];
         if (data->dev != NULL)
         {
-#if 0
             if (data->auto_inc != 0)
                 sprintf(node_name, "%s%d%s", CPU_TEMP_NODE, temp_index - MAX_SENSOR_NUM + 1, CPU_TEMP_MAX);
             else
@@ -238,13 +236,12 @@ static ssize_t drv_sensor_get_main_board_temp_max(void *driver, unsigned int tem
             {
                 ret = sprintf(buf, "%d\n", DEFAULT_CPU_TEMP_MAX);
             }
-#endif
-            ret = sprintf(buf, "%d\n", 96000);
         }
         else
         {
             ret = -ENXIO;
         }
+#endif
     }
     else
     {
@@ -423,10 +420,12 @@ static ssize_t drv_sensor_get_main_board_temp_max_hyst(void *driver, unsigned in
 
     if (temp_index >= MAX_SENSOR_NUM)
     {
+        ret = sprintf(buf, "%d\n", 90000);
+#if 0
         data = &cpu_temp_data_list[temp_index - MAX_SENSOR_NUM];
         if (data->dev != NULL)
         {
-#if 0
+
             if (data->auto_inc != 0)
                 sprintf(node_name, "%s%d%s", CPU_TEMP_NODE, temp_index - MAX_SENSOR_NUM + 1, CPU_TEMP_MAX_HYST);
             else
@@ -438,13 +437,13 @@ static ssize_t drv_sensor_get_main_board_temp_max_hyst(void *driver, unsigned in
             {
                 ret = sprintf(buf, "%d\n", DEFAULT_CPU_TEMP_MAX);
             }
-#endif
-            ret = sprintf(buf, "%d\n", 90000);
+
         }
         else
         {
             ret = -ENXIO;
         }
+#endif
     }
     else
     {
@@ -509,4 +508,4 @@ int drv_sensor_temp_init(void **temp_driver)
     LOG_INFO(CLX_DRIVER_TYPES_TEMP, "TEMP driver clx initialization done.\r\n");
     return DRIVER_OK;
 }
-// clx_driver_define_initcall(drv_sensor_temp_init);
+

@@ -111,4 +111,4 @@ struct sensor_descript ds410d_sensor_map_index[] = {
     {NULL, 0, 0},
 };
 
-#endif //_BD_INFO_ds410d_H_
+#endif

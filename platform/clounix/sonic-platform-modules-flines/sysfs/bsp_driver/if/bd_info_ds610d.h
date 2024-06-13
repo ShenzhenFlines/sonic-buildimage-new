@@ -112,4 +112,4 @@ struct sensor_descript ds610d_sensor_map_index[] = {
     {NULL, 0, 0},
 };
 
-#endif //_BD_INFO_CLX8000_H_
+#endif

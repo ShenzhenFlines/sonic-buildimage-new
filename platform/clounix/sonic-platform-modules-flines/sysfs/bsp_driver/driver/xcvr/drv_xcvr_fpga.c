@@ -1126,7 +1126,8 @@ static int drv_xcvr_set_eth_power_on_status(void *xcvr, unsigned int eth_index, 
 static ssize_t get_sfp_tx_fault(struct clounix_priv_data *sfp,
                                 unsigned int eth_index, char *buf, size_t count)
 {
-    uint32_t data = 0, val = 0, idx = 0, reg;
+    uint32_t val = 0, idx = 0, reg;
+    volatile uint32_t data = 0;
 
     idx = sfp->chip[eth_index].cpld_idx;
     GET_SFP_TX_FAULT_ADDRESS(idx, reg);
@@ -1157,7 +1158,8 @@ static ssize_t platformc_xcvr_get_eth_tx_fault_status(struct clounix_priv_data *
 static ssize_t platformb_xcvr_get_eth_tx_fault_status(struct clounix_priv_data *sfp, unsigned int eth_index, char *buf, size_t count)
 {
     size_t val = 0x1;
-    uint32_t data = 0;
+    volatile uint32_t data = 0;
+
     uint32_t reg = SFP_STATUS_ADDRESS_BASE;
 
     switch (get_sfp_porttype(eth_index, sfp->platform_type))
@@ -1206,7 +1208,8 @@ static ssize_t drv_xcvr_get_eth_tx_fault_status(void *xcvr, unsigned int eth_ind
 static ssize_t platformb_xcvr_get_eth_tx_disable_status(struct clounix_priv_data *sfp, unsigned int eth_index, char *buf, size_t count)
 {
     size_t val = 0x1;
-    uint32_t data = 0;
+    volatile uint32_t data = 0;
+
     uint32_t reg = SFP_CONFIG_ADDRESS_BASE;
 
     switch (get_sfp_porttype(eth_index, sfp->platform_type))
@@ -1230,7 +1233,8 @@ static ssize_t platformb_xcvr_get_eth_tx_disable_status(struct clounix_priv_data
 
 static ssize_t get_sfp_tx_disable(struct clounix_priv_data *sfp, unsigned int eth_index, char *buf, size_t count)
 {
-    uint32_t data = 0, val = 0, reg;
+    uint32_t val = 0, reg;
+    volatile uint32_t data = 0;
 
     GET_SFP_TX_DIS_ADDRESS(sfp->chip[eth_index].cpld_idx, reg);
     data = fpga_reg_read(sfp, reg);
@@ -1378,7 +1382,8 @@ static int drv_xcvr_set_eth_tx_disable_status(void *xcvr, unsigned int eth_index
 static ssize_t get_sfp_rx_los(struct clounix_priv_data *sfp,
                               unsigned int eth_index, char *buf, size_t count)
 {
-    uint32_t data = 0, val = 0, idx = 0, reg;
+    uint32_t val = 0, idx = 0, reg;
+    volatile uint32_t data = 0;
 
     idx = sfp->chip[eth_index].cpld_idx;
     GET_SFP_RX_LOS_STATUS_ADDRESS(idx, reg);
@@ -1409,7 +1414,7 @@ static ssize_t platformc_xcvr_get_eth_rx_los_status(struct clounix_priv_data *sf
 static ssize_t platformb_xcvr_get_eth_rx_los_status(struct clounix_priv_data *sfp, unsigned int eth_index, char *buf, size_t count)
 {
     size_t val = 0x1;
-    uint32_t data = 0;
+    volatile uint32_t data = 0;
     uint32_t reg = SFP_STATUS_ADDRESS_BASE;
 
     switch (get_sfp_porttype(eth_index, sfp->platform_type))
@@ -1459,7 +1464,8 @@ static ssize_t drv_xcvr_get_eth_rx_los_status(void *xcvr, unsigned int eth_index
 static ssize_t get_dsfp_present(struct clounix_priv_data *sfp,
                                 unsigned int eth_index, char *buf, size_t count)
 {
-    uint32_t data = 0, val = 0, idx = 0, reg;
+    uint32_t val = 0, idx = 0, reg;
+    volatile uint32_t data = 0;
 
     idx = sfp->chip[eth_index].cpld_idx;
     GET_DSFP_PRESENT_ADDRESS(idx, reg);
@@ -1476,7 +1482,8 @@ static ssize_t get_dsfp_present(struct clounix_priv_data *sfp,
 static ssize_t get_qsfp_present(struct clounix_priv_data *sfp,
                                 unsigned int eth_index, char *buf, size_t count)
 {
-    uint32_t data = 0, val = 0;
+    uint32_t val = 0;
+    volatile uint32_t data = 0;
 
     data = fpga_reg_read(sfp, QSFP_STATUS_ADDRESS_BASE);
     LOG_DBG(CLX_DRIVER_TYPES_XCVR, " reg: %x, data: %x\r\n", QSFP_STATUS_ADDRESS_BASE, data);
@@ -1487,7 +1494,8 @@ static ssize_t get_qsfp_present(struct clounix_priv_data *sfp,
 static ssize_t get_sfp_present(struct clounix_priv_data *sfp,
                                unsigned int eth_index, char *buf, size_t count)
 {
-    uint32_t data = 0, val = 0, idx = 0, reg;
+    uint32_t val = 0, idx = 0, reg;
+    volatile uint32_t data = 0;
 
     idx = sfp->chip[eth_index].cpld_idx;
     GET_DSFP_PRESENT_ADDRESS(idx, reg);
@@ -1504,7 +1512,8 @@ static ssize_t get_sfp_present(struct clounix_priv_data *sfp,
 static ssize_t get_platformb_sfp_present(struct clounix_priv_data *sfp,
                                          unsigned int eth_index, char *buf, size_t count)
 {
-    uint32_t data = 0, val = 0;
+    uint32_t val = 0;
+    volatile uint32_t data = 0;
 
     data = fpga_reg_read(sfp, SFP_STATUS_ADDRESS_BASE);
     LOG_DBG(CLX_DRIVER_TYPES_XCVR, " reg: %x, data: %x\r\n", SFP_STATUS_ADDRESS_BASE, data);
@@ -1516,7 +1525,8 @@ static ssize_t get_platformb_sfp_present(struct clounix_priv_data *sfp,
 static ssize_t get_dsfp_interrupt(struct clounix_priv_data *sfp,
                                   unsigned int eth_index, char *buf, size_t count)
 {
-    uint32_t data = 0, val = 0, idx = 0, reg;
+    uint32_t val = 0, idx = 0, reg;
+    volatile uint32_t data = 0;
 
     idx = sfp->chip[eth_index].cpld_idx;
     GET_DSFP_IRQ_STATUS_ADDRESS(idx, reg);
@@ -1533,7 +1543,8 @@ static ssize_t get_dsfp_interrupt(struct clounix_priv_data *sfp,
 static ssize_t get_qsfp_interrupt(struct clounix_priv_data *sfp,
                                   unsigned int eth_index, char *buf, size_t count)
 {
-    uint32_t data = 0, val = 0;
+    uint32_t val = 0;
+    volatile uint32_t data = 0;
 
     data = fpga_reg_read(sfp, QSFP_STATUS_ADDRESS_BASE);
     LOG_DBG(CLX_DRIVER_TYPES_XCVR, " reg: %x, data: %x\r\n", QSFP_STATUS_ADDRESS_BASE, data);
@@ -1592,7 +1603,8 @@ static ssize_t drv_xcvr_get_eth_present_status(void *xcvr, unsigned int eth_inde
 
 static ssize_t get_dsfp_reset(struct clounix_priv_data *sfp, unsigned int eth_index, char *buf, size_t count)
 {
-    uint32_t data = 0, val = 0, reg;
+    uint32_t val = 0, reg;
+    volatile uint32_t data = 0;
 
     GET_DSFP_RST_ADDRESS(sfp->chip[eth_index].cpld_idx, reg);
     data = fpga_reg_read(sfp, reg);
@@ -1608,7 +1620,8 @@ static ssize_t get_dsfp_reset(struct clounix_priv_data *sfp, unsigned int eth_in
 /*QSFP CPLD 0:reset  1:not reset. clounix 0:not reset 1:reset*/
 static ssize_t get_qsfp_reset(struct clounix_priv_data *sfp, unsigned int eth_index, char *buf, size_t count)
 {
-    uint32_t data = 0, val = 0;
+    uint32_t val = 0;
+    volatile uint32_t data = 0;
     uint32_t reg = QSFP_CONFIG_ADDRESS_BASE;
 
     data = fpga_reg_read(sfp, reg);
@@ -1756,7 +1769,8 @@ static int drv_xcvr_set_eth_reset_status(void *xcvr, unsigned int eth_index, int
 static ssize_t get_dsfp_lowpower(struct clounix_priv_data *sfp,
                                  unsigned int eth_index, char *buf, int count)
 {
-    uint32_t data = 0, val = 0, reg;
+    uint32_t val = 0, reg;
+    volatile uint32_t data = 0;
 
     GET_DSFP_LOWPOWER_ADDRESS(sfp->chip[eth_index].cpld_idx, reg);
     data = fpga_reg_read(sfp, reg);
@@ -1800,7 +1814,8 @@ static ssize_t set_dsfp_lowpower(struct clounix_priv_data *sfp,
 static ssize_t get_qsfp_lowpower(struct clounix_priv_data *sfp,
                                  unsigned int eth_index, char *buf, int count)
 {
-    uint32_t data = 0, val = 0;
+    uint32_t val = 0;
+    volatile uint32_t data = 0;
 
     data = fpga_reg_read(sfp, QSFP_CONFIG_ADDRESS_BASE);
     LOG_DBG(CLX_DRIVER_TYPES_XCVR, "reg: %x, data: %x\r\n", QSFP_CONFIG_ADDRESS_BASE, data);

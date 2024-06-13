@@ -3,18 +3,19 @@
 
 #include "fan_interface.h"
 
-struct fan_driver_clx8000 {
+struct fan_driver_clx8000
+{
     struct fan_fn_if fan_if;
-    //private
+    // private
     void __iomem *fan_base;
 };
 
 #define FAN_CHIP_NUM 2
 
-#define FAN_BASE_ADDRESS           (0x0300)
+#define FAN_BASE_ADDRESS (0x0300)
 
-//register define
-#define FAN_VERSION_ADDR           (0x4)
+// register define
+#define FAN_VERSION_ADDR (0x4)
 
 enum hwmon_fan_offset
 {
@@ -44,12 +45,13 @@ enum hwmon_fan_offset
     FAN_EEPROM_WRITE_EN_OFFSET,
 
     FAN_AIR_DIRECTION_OFFSET = 0x14,
-    FAN_USB_EN_OFFSET =0x15,
+    FAN_USB_EN_OFFSET = 0x15,
     FAN6_OUTER_RPM_OFFSET = 0x16,
-    FAN6_INNER_RPM_OFFSET = 0x17    
+    FAN6_INNER_RPM_OFFSET = 0x17
 };
 
-enum user_fan_led_state {
+enum user_fan_led_state
+{
     USER_FAN_LED_DARK,
     USER_FAN_LED_GREEN,
     USER_FAN_LED_YELLOW,
@@ -57,13 +59,14 @@ enum user_fan_led_state {
     USER_FAN_LED_NOT_SUPPORT
 };
 /*
-*extract the value from FAN_LED2_CONTROL_OFFSET FAN_LED1_CONTROL_OFFSET, and mapping is as below
-* 00 DARK
-* 01 GREEN
-* 10 RED
-* 11 YELLOW
-*/
-enum dev_fan_led_state {
+ *extract the value from FAN_LED2_CONTROL_OFFSET FAN_LED1_CONTROL_OFFSET, and mapping is as below
+ * 00 DARK
+ * 01 GREEN
+ * 10 RED
+ * 11 YELLOW
+ */
+enum dev_fan_led_state
+{
     DEV_FAN_LED_DARK,
     DEV_FAN_LED_GREEN,
     DEV_FAN_LED_RED,

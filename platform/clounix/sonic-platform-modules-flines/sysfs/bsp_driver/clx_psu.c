@@ -24,22 +24,27 @@ extern struct pmbus_driver_info clx_psu_list[2];
 
 ssize_t mfr_info_show(struct device *dev, struct device_attribute *attr, char *buf)
 {
-    char tmp_buf[I2C_SMBUS_BLOCK_MAX+2] = {0};
+    char tmp_buf[I2C_SMBUS_BLOCK_MAX + 2] = {0};
     int len, i;
     struct sensor_device_attribute *s_attr = to_sensor_dev_attr(attr);
     struct i2c_client *client = to_i2c_client(dev->parent);
 
     len = i2c_smbus_read_block_data(client, s_attr->index, tmp_buf);
 
-    if (len > 0) {
-        if (s_attr->index == PMBUS_MFR_REVISION) {
-            for (i=0; i<len; i++) {
+    if (len > 0)
+    {
+        if (s_attr->index == PMBUS_MFR_REVISION)
+        {
+            for (i = 0; i < len; i++)
+            {
                 sprintf(buf, "%x", tmp_buf[i]);
                 buf++;
             }
             sprintf(buf, "\n");
-            return len+1;
-        } else {
+            return len + 1;
+        }
+        else
+        {
             return sprintf(buf, "%s\n", tmp_buf);
         }
     }
@@ -50,8 +55,8 @@ ssize_t mfr_info_show(struct device *dev, struct device_attribute *attr, char *b
 #define psu_stat_offset (0x608)
 #define psu_1_addr (0x5a)
 #define psu_2_addr (0x58)
-#define pwok (1<<1)
-#define acok (1<<2)
+#define pwok (1 << 1)
+#define acok (1 << 2)
 
 /* {'green':'0', 'amber':'1', 'off':'2', 'blink_green':'3', 'blink_amber':'4'}, */
 #define led_green (0)
@@ -68,7 +73,8 @@ ssize_t psu_stat_show(struct device *dev, struct device_attribute *attr, char *b
     unsigned int index = fpga_dev->index;
     unsigned int data;
 
-    if (clounix_fpga_base == NULL) {
+    if (clounix_fpga_base == NULL)
+    {
         return -ENXIO;
     }
     psu_stat = clounix_fpga_base + psu_stat_offset;
@@ -99,7 +105,8 @@ ssize_t led_status_show(struct device *dev, struct device_attribute *attr, char 
         "blink_green",
     };
 
-    if (clounix_fpga_base == NULL) {
+    if (clounix_fpga_base == NULL)
+    {
         return -ENXIO;
     }
     psu_stat = clounix_fpga_base + psu_stat_offset;
@@ -139,11 +146,9 @@ SENSOR_DEVICE_ATTR(led_status, S_IRUGO, led_status_show, NULL, 0);
 SENSOR_DEVICE_ATTR(mfr_id, S_IRUGO, mfr_info_show, NULL, PMBUS_MFR_ID);
 SENSOR_DEVICE_ATTR(mfr_model, S_IRUGO, mfr_info_show, NULL, PMBUS_MFR_MODEL);
 SENSOR_DEVICE_ATTR(mfr_revision, S_IRUGO, mfr_info_show, NULL, PMBUS_MFR_REVISION);
-//SENSOR_DEVICE_ATTR(mfr_location, S_IRUGO, mfr_info_show, NULL, PMBUS_MFR_LOCATION);
-SENSOR_DEVICE_ATTR(mfr_location, S_IRUGO, mfr_info_show, NULL, PMBUS_MFR_FWID);
+SENSOR_DEVICE_ATTR(mfr_location, S_IRUGO, mfr_info_show, NULL, PMBUS_MFR_LOCATION);
 SENSOR_DEVICE_ATTR(mfr_date, S_IRUGO, mfr_info_show, NULL, PMBUS_MFR_DATE);
-//SENSOR_DEVICE_ATTR(mfr_serial, S_IRUGO, mfr_info_show, NULL, PMBUS_MFR_SERIAL);
-SENSOR_DEVICE_ATTR(mfr_serial, S_IRUGO, mfr_info_show, NULL, PMBUS_MFR_FWVERSION);
+SENSOR_DEVICE_ATTR(mfr_serial, S_IRUGO, mfr_info_show, NULL, PMBUS_MFR_SERIAL);
 
 static struct attribute *fpga_psu_attrs[] = {
     &fpga_dev_attr_psu_1_acok.dev_attr.attr,
@@ -184,27 +189,29 @@ extern int psu_add(struct i2c_client *client);
 extern void psu_del(struct i2c_client *client);
 extern int psu_add_priv(struct i2c_client *client, struct device *dev);
 extern void psu_del_priv(struct i2c_client *client);
-static int clx_psu_probe(struct i2c_client *client,const struct i2c_device_id *id)
+static int clx_psu_probe(struct i2c_client *client, const struct i2c_device_id *id)
 {
     struct pmbus_driver_info *data;
     struct device *dev = &client->dev;
     struct device *hwmon_dev = NULL;
     int ret;
 
-	data = devm_kzalloc(dev, sizeof(struct pmbus_driver_info), GFP_KERNEL);
-	if (!data)
-		return -ENOMEM;
+    data = devm_kzalloc(dev, sizeof(struct pmbus_driver_info), GFP_KERNEL);
+    if (!data)
+        return -ENOMEM;
 
     memcpy(data, &clx_psu_list[id->driver_data], sizeof(struct pmbus_driver_info));
 
     ret = pmbus_do_probe(client, id, data);
-    if (ret != 0) {
+    if (ret != 0)
+    {
         goto err_pmbus;
     }
 
     hwmon_dev = devm_hwmon_device_register_with_groups(dev, client->name,
                                                        client, attr_groups);
-    if (IS_ERR(hwmon_dev)) {
+    if (IS_ERR(hwmon_dev))
+    {
         ret = PTR_ERR(hwmon_dev);
         goto err_hwmon_dev;
     }
@@ -232,28 +239,26 @@ static int clx_psu_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id clx_psu_id[] = {
-	{"gw1200d", 0},
-	{"yesm1300am", 1},
-	{}
-};
+    {"gw1200d", 0},
+    {"yesm1300am", 1},
+    {}};
 
 MODULE_DEVICE_TABLE(i2c, clx_psu_id);
 
 static const struct of_device_id __maybe_unused clx_psu_of_match[] = {
-	{.compatible = "greatwall, gw1200d"},
-	{.compatible = "3y_power, yesm1300am"},
-	{}
-};
+    {.compatible = "greatwall, gw1200d"},
+    {.compatible = "3y_power, yesm1300am"},
+    {}};
 MODULE_DEVICE_TABLE(of, clx_psu_of_match);
 
 static struct i2c_driver clx_psu_driver = {
-	.driver = {
-		.name = "clx psu",
-		.of_match_table = of_match_ptr(clx_psu_of_match),
-	},
-	.probe = clx_psu_probe,
-	.remove = clx_psu_remove,
-	.id_table = clx_psu_id,
+    .driver = {
+        .name = "clx psu",
+        .of_match_table = of_match_ptr(clx_psu_of_match),
+    },
+    .probe = clx_psu_probe,
+    .remove = clx_psu_remove,
+    .id_table = clx_psu_id,
 };
 
 module_i2c_driver(clx_psu_driver);
