@@ -93,17 +93,20 @@ sudo cp -f files/vtysh_bin/vtysh.service $FILESYSTEM_ROOT/usr/lib/systemd/system
 sudo cp -f files/vtysh_bin/bios.sh $FILESYSTEM_ROOT/usr/bin/
 sudo cp -f files/clounix_bin/clx_fpga $FILESYSTEM_ROOT/usr/bin/
 sudo cp -f files/clounix_bin/cpld_update_app $FILESYSTEM_ROOT/usr/bin/
+sudo cp -f files/clounix_bin/ec_update_app $FILESYSTEM_ROOT/usr/bin/
 sudo cp -f files/afu/afulnx_64 $FILESYSTEM_ROOT/usr/bin/
 sudo cp -f files/afu/amifldrv_mod $FILESYSTEM_ROOT/var/vtysh/
 sudo chown root:root $FILESYSTEM_ROOT/usr/local/bin/vtysh
 sudo chown root:root $FILESYSTEM_ROOT/usr/bin/clx_fpga
 sudo chown root:root $FILESYSTEM_ROOT/usr/bin/cpld_update_app
+sudo chown root:root $FILESYSTEM_ROOT/usr/bin/ec_update_app
 sudo chown root:root $FILESYSTEM_ROOT/usr/bin/afulnx_64
 sudo chown root:root $FILESYSTEM_ROOT/var/vtysh/amifldrv_mod
 sudo chmod 755 $FILESYSTEM_ROOT/usr/local/bin/vtysh
 sudo chmod 755 $FILESYSTEM_ROOT/usr/bin/clx_fpga
 sudo chmod 755 $FILESYSTEM_ROOT/usr/bin/bios.sh
 sudo chmod 755 $FILESYSTEM_ROOT/usr/bin/cpld_update_app
+sudo chmod 755 $FILESYSTEM_ROOT/usr/bin/ec_update_app
 sudo chmod 700 $FILESYSTEM_ROOT/usr/bin/afulnx_64
 sudo chmod 600 $FILESYSTEM_ROOT/var/vtysh/amifldrv_mod
 
