@@ -80,14 +80,13 @@ class SfpUtil(SfpUtilBase):
 
         try:
             with open(presence_path, 'r', encoding='utf-8') as file:
-                value = file.read(1)
-                if int(value) == 1:
+                value = file.readline().rstrip()
+                if value == "1":
                     return True
-                elif int(value) == 0:
+                elif value == "0":
                     return False
                 else:
-                    raise ValueError(
-                        f"Invalid content in {presence_path}: {value}")
+                    return False
 
         except FileNotFoundError:
             print(f"File not found for port {port_num + 1}: {presence_path}")
@@ -95,8 +94,6 @@ class SfpUtil(SfpUtilBase):
         except ValueError as e:
             print(f"Error processing file for port {port_num + 1}: {e}")
             return False
-
-        return False
 
     def get_power(self, port_num):
         if port_num < self.port_start or port_num > self.port_end:
@@ -341,7 +338,7 @@ class SfpUtil(SfpUtilBase):
         rev = "".join(bits[::-1])
         return int(rev, 2)
 
-    data = {'present': 1}
+    data = {'present': 0}
 
     def get_transceiver_change_event(self, timeout=0):
         port_dict = {}
@@ -353,7 +350,7 @@ class SfpUtil(SfpUtilBase):
 
         # poll per second
         while cd_ms > 0:
-            reg_value = self._get_presence_bitmap
+            reg_value = self._get_presence_bitmap()
             changed_ports = self.data['present'] ^ reg_value
             if changed_ports != 0:
                 break
@@ -375,7 +372,6 @@ class SfpUtil(SfpUtilBase):
             return True, port_dict
         else:
             return True, {}
-        return False, {}
 
     def get_transceiver_dom_info_dict(self, port_num):
         transceiver_dom_info_dict = {}

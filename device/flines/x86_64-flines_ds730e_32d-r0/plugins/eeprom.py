@@ -22,6 +22,7 @@ class board(eeprom_tlvinfo.TlvInfoDecoder):
         self.eeprom_path = "/sys/switch/syseeprom/eeprom"
         super(board, self).__init__(self.eeprom_path, 0, '', True)
 
+
 '''
 class psu(eeprom_fruinfo.ipmifru):
     _FRU_INFO_MAX_LEN = 256

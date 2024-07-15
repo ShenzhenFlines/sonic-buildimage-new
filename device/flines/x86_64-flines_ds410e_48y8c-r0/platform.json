@@ -115,12 +115,12 @@
             {
                 "name": "CPU / Core",
                 "position": "CPU",
-                "path":"/sys/class/hwmon/hwmon1/"
+                "path":"/sys/class/hwmon/hwmon2/"
             },
             {
                 "name": "CPU / Package",
                 "position": "CPU",
-                "path":"/sys/class/hwmon/hwmon1/"
+                "path":"/sys/class/hwmon/hwmon2/"
             }
         ],
         "sfps": [

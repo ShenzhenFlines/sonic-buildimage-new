@@ -826,7 +826,7 @@ _osal_mdc_clearStatus(
 
         /* UnMask */
         pci_read_config_dword(ptr_rc_dev, ext_cap + 0x8, &data_32);
-        data_32 &= ~0x20;
+        data_32 &= ~0x4021;
         pci_write_config_dword(ptr_rc_dev, ext_cap + 0x8, data_32);
         pci_read_config_dword(ptr_rc_dev, ext_cap + 0x14, &data_32);
         data_32 &= ~0x1;
@@ -922,6 +922,8 @@ _osal_mdc_tunePciDevice(
     {
         if (HAL_DEVICE_ID_CL8500 == (ptr_dev[idx].id.device & 0xFF00))
         {
+            _osal_mdc_clearStatus(idx);
+
             rc = _osal_mdc_tunePciPerf(idx);
         }
     }
@@ -1677,8 +1679,24 @@ _osal_mdc_waitEvent(
     UI32_T              *ptr_dev_bitmap)
 {
     unsigned long       flags = 0;
+    unsigned long       remaining = 0;
+    OSAL_MDC_DEV_T      *ptr_dev = &_osal_mdc_cb.dev[0];
+    CLX_ERROR_NO_T      rc = CLX_E_OK;
 
-    wait_event_interruptible(_osal_mdc_isr_wait, (0 != _osal_mdc_isr_dev_bitmap));
+    remaining = wait_event_interruptible_timeout(_osal_mdc_isr_wait, (0 != _osal_mdc_isr_dev_bitmap), msecs_to_jiffies(100));
+    if(remaining == 0)
+    {
+        if (NULL != ptr_dev->isr_callback)
+        {
+            rc = ptr_dev->isr_callback(ptr_dev->ptr_isr_data);
+            if (CLX_E_OK != rc)
+            {
+                OSAL_MDC_ERR("handle irq failed, rc=%d\n", rc);
+            }
+        }
+
+        _osal_mdc_isr_dev_bitmap = 0x1;
+    }
 
     /* save and clear the device bitmap. */
     spin_lock_irqsave(&_osal_mdc_isr_dev_bitmap_lock, flags);
@@ -1686,7 +1704,7 @@ _osal_mdc_waitEvent(
     _osal_mdc_isr_dev_bitmap = 0;
     spin_unlock_irqrestore(&_osal_mdc_isr_dev_bitmap_lock, flags);
 
-    return (CLX_E_OK);
+    return (rc);
 }
 
 static ssize_t
@@ -2067,7 +2085,11 @@ _osal_mdc_ioctl_allocSysDmaMemCallback(
 #error "The DMA address of OS is not 64bit. Please disable CLX_EN_64BIT_ADDR in SDK."
 #endif
 
+#if defined(CONFIG_ARCH_DMA_ADDR_T_64BIT) && defined(CLX_EN_64BIT_ADDR)
+	if (dma_set_mask_and_coherent(ptr_dma_info->ptr_dma_dev, DMA_BIT_MASK(48))) {
+#else
 	if (dma_set_mask_and_coherent(ptr_dma_info->ptr_dma_dev, DMA_BIT_MASK(32))) {
+#endif
 		dev_err(ptr_dma_info->ptr_dma_dev, "dma_set_mask_and_coherent failed\n");
 	}
 
