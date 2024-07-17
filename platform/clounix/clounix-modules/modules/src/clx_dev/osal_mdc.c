@@ -921,9 +921,7 @@ _osal_mdc_tunePciDevice(
     for (idx = 0; (idx < dev_num) && (CLX_E_OK == rc); idx++)
     {
         if (HAL_DEVICE_ID_CL8500 == (ptr_dev[idx].id.device & 0xFF00))
-        {
-            _osal_mdc_clearStatus(idx);
-
+        {      
             rc = _osal_mdc_tunePciPerf(idx);
         }
     }
