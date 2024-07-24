@@ -95,3 +95,7 @@
 	path = platform/clounix/sonic-platform-modules-flines/cpld
 	url = http://jenkins:jenkins@flks.tech:3000/flks/cpld.git
 	branch = master
+[submodule "src/sonic-linux-kernel"]
+	path = src/sonic-linux-kernel
+	url = http://jenkins:jenkins@flks.tech:3000/flks/sonic-linux-kernel.git
+	branch = flks/master
