@@ -19,6 +19,7 @@
 
 extern void __iomem *clounix_fpga_base;
 
+static int is_psu_i2c_busy = 0;
 #define DEFAULT_RETRY 3
 
 #define XIIC_MSB_OFFSET (0)
@@ -134,6 +135,12 @@ extern void __iomem *clounix_fpga_base;
 #define FPGA_EEPROM_DBG (FPGA_EEPROM_BASE + 0x0c)
 
 #define FPGA_EEPROM_RAM_ADDR_OFFSET (0x1f0000)
+
+#define FPGA_COME_REQ_ACK_OFFSET (0x30)
+#define FPGA_COME_REQ_ACK_MASK (0x01)
+#define FPGA_COME_BMC_STATUS_OFFSET (0x0A08)
+#define FPGA_COME_BMC_STATUS_MASK (0x0001)
+#define FPGA_COME_REQ_ACK_TRY_COUNT (150)
 
 struct master_conf
 {
@@ -333,11 +340,46 @@ static int clounix_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int 
     unsigned char addr;
     int i, j;
     unsigned long timeout;
+    unsigned int iic_ack_data = 0;
 
     p = &msgs[0];
     if ((0x50 <= p->addr) && (p->addr <= 0x57) && ((p->flags & I2C_M_RD) == 0))
     {
         usleep_range(6000, 10000);
+    }
+
+    if (clounix_fpga_base == NULL)
+    {
+        LOG_ERR(CLX_DRIVER_TYPES_I2C_MASTER, "fpga resource is not available.\r\n");
+        return -ENXIO;
+    }
+    else
+    {
+        if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+        {
+            iic_ack_data = 0xffffffff;
+            writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+
+            iic_ack_data = readl(clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+
+            for (i = 0; i < FPGA_COME_REQ_ACK_TRY_COUNT; i++)
+            {
+                iic_ack_data = readl(clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+                if ((iic_ack_data & FPGA_COME_REQ_ACK_MASK) == 1)
+                {
+                    break;
+                }
+                else
+                {
+                    usleep_range(50000, 60000);
+                }
+            }
+            if (i >= FPGA_COME_REQ_ACK_TRY_COUNT)
+            {
+                LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "CLX_DRIVER_TYPES_I2C_MASTER FPGA_COME_REQ_ACK_TRY_COUNT TIME OUT.\r\n");
+                return -ENXIO;
+            }
+        }
     }
 
     mutex_lock(&priv->lock);
@@ -417,12 +459,22 @@ static int clounix_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg *msgs, int 
 
     writeb((XIIC_CR_TX_FIFO_RESET_MASK | XIIC_CR_ENABLE_DEVICE_MASK), priv->mmio + XIIC_CR_REG_OFFSET);
     writeb(0, priv->mmio + XIIC_CR_REG_OFFSET);
+    if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+    {
+        iic_ack_data = 0xffffffff;
+        writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+    }
     mutex_unlock(&priv->lock);
 
     return num;
 
 out:
     fpga_i2c_reinit(priv, CLOUNIX_INIT_TIMEOUT);
+    if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+    {
+        iic_ack_data = 0xffffffff;
+        writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+    }
     mutex_unlock(&priv->lock);
 
     return -ETIMEDOUT;
@@ -459,7 +511,42 @@ static int clounix_i2c_smbus_xfer(struct i2c_adapter *adap, unsigned short addr,
 {
     struct master_priv_data *priv = i2c_get_adapdata(adap);
     unsigned char tmp;
-    unsigned char i;
+    unsigned int i;
+    unsigned int iic_ack_data = 0;
+
+    if (clounix_fpga_base == NULL)
+    {
+        LOG_ERR(CLX_DRIVER_TYPES_I2C_MASTER, "fpga resource is not available.\r\n");
+        return -ENXIO;
+    }
+    else
+    {
+        if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+        {
+            iic_ack_data = 0xffffffff;
+            writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+
+            iic_ack_data = readl(clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+
+            for (i = 0; i < FPGA_COME_REQ_ACK_TRY_COUNT; i++)
+            {
+                iic_ack_data = readl(clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+                if ((iic_ack_data & FPGA_COME_REQ_ACK_MASK) == 1)
+                {
+                    break;
+                }
+                else
+                {
+                    usleep_range(50000, 60000);
+                }
+            }
+            if (i >= FPGA_COME_REQ_ACK_TRY_COUNT)
+            {
+                LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "CLX_DRIVER_TYPES_I2C_MASTER FPGA_COME_REQ_ACK_TRY_COUNT TIME OUT.\r\n");
+                return -ENXIO;
+            }
+        }
+    }
 
     if (wait_bus_busy_status(priv, 0) == 0)
         return -EBUSY;
@@ -593,11 +680,21 @@ static int clounix_i2c_smbus_xfer(struct i2c_adapter *adap, unsigned short addr,
 
     writeb((XIIC_CR_TX_FIFO_RESET_MASK | XIIC_CR_ENABLE_DEVICE_MASK), priv->mmio + XIIC_CR_REG_OFFSET);
     writew(0, priv->mmio + XIIC_CR_REG_OFFSET);
+    if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+    {
+        iic_ack_data = 0xffffffff;
+        writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+    }
     mutex_unlock(&priv->lock);
     return 0;
 
 out:
     fpga_i2c_reinit(priv, CLOUNIX_INIT_TIMEOUT);
+    if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+    {
+        iic_ack_data = 0xffffffff;
+        writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+    }
     mutex_unlock(&priv->lock);
     return -ETIMEDOUT;
 }
@@ -637,11 +734,55 @@ static int clounix_i2c_smbus_xfer_psu1(struct i2c_adapter *adap, unsigned short 
 
     unsigned int tmp_value = 0;
 
-    unsigned char r_addr = 0, w_addr = 0, i = 0, data_size = 0;
+    unsigned char r_addr = 0, w_addr = 0, data_size = 0;
+
+    unsigned int i = 0;
 
     unsigned int *tmp_addr = NULL;
 
+    unsigned int iic_ack_data = 0;
+
     // LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "clounix_i2c_smbus_xfer_psu1 addr : %x size: %x command %x rw %x\r\n", addr, size, command, read_write);
+
+    if (is_psu_i2c_busy == 1) 
+    {
+        return -ENXIO;
+    }
+    if (clounix_fpga_base == NULL)
+    {
+        LOG_ERR(CLX_DRIVER_TYPES_I2C_MASTER, "fpga resource is not available.\r\n");
+        return -ENXIO;
+    }
+    else
+    {
+        is_psu_i2c_busy = 1;
+        if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+        {
+            iic_ack_data = 0xffffffff;
+            writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+
+            iic_ack_data = readl(clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+
+            for (i = 0; i < FPGA_COME_REQ_ACK_TRY_COUNT; i++)
+            {
+                iic_ack_data = readl(clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+                if ((iic_ack_data & FPGA_COME_REQ_ACK_MASK) == 1)
+                {
+                    break;
+                }
+                else
+                {
+                    usleep_range(50000, 60000);
+                }
+            }
+            if (i >= FPGA_COME_REQ_ACK_TRY_COUNT)
+            {
+                LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "CLX_DRIVER_TYPES_I2C_MASTER FPGA_COME_REQ_ACK_TRY_COUNT TIME OUT.\r\n");
+                is_psu_i2c_busy = 0;
+                return -ENXIO;
+            }
+        }
+    }
 
     mutex_lock(&priv->lock);
 
@@ -865,6 +1006,12 @@ static int clounix_i2c_smbus_xfer_psu1(struct i2c_adapter *adap, unsigned short 
         break;
     }
 
+    if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+    {
+        iic_ack_data = 0xffffffff;
+        writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+    }
+    is_psu_i2c_busy = 0;
     mutex_unlock(&priv->lock);
     usleep_range(6000, 10000);
     return 0;
@@ -873,6 +1020,12 @@ out:
     tmp_value = 0;
     tmp_value = (FPGA_PSU_MGR_RST | FPGA_PSU_MGR_ENABLE);
     writel(tmp_value, priv->mmio + FPGA_PSU_CFG);
+    if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+    {
+        iic_ack_data = 0xffffffff;
+        writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+    }
+    is_psu_i2c_busy = 0;
     mutex_unlock(&priv->lock);
     return -ETIMEDOUT;
 }
@@ -884,6 +1037,47 @@ static int clounix_i2c_xfer_psu1(struct i2c_adapter *adap, struct i2c_msg *msgs,
     unsigned char addr = 0, r_addr = 0, w_addr = 0, reg_addr = 0;
     unsigned int *tmp_addr = NULL;
     unsigned int tmp_value = 0, i = 0, j = 0;
+    unsigned int iic_ack_data = 0;
+
+    if (is_psu_i2c_busy == 1)
+    {
+        return -ENXIO;
+    }
+    if (clounix_fpga_base == NULL)
+    {
+        LOG_ERR(CLX_DRIVER_TYPES_I2C_MASTER, "fpga resource is not available.\r\n");
+        return -ENXIO;
+    }
+    else
+    {
+        is_psu_i2c_busy = 1;
+        if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+        {
+            iic_ack_data = 0xffffffff;
+            writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+
+            iic_ack_data = readl(clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+
+            for (i = 0; i < FPGA_COME_REQ_ACK_TRY_COUNT; i++)
+            {
+                iic_ack_data = readl(clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+                if ((iic_ack_data & FPGA_COME_REQ_ACK_MASK) == 1)
+                {
+                    break;
+                }
+                else
+                {
+                    usleep_range(50000, 60000);
+                }
+            }
+            if (i >= FPGA_COME_REQ_ACK_TRY_COUNT)
+            {
+                LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "CLX_DRIVER_TYPES_I2C_MASTER FPGA_COME_REQ_ACK_TRY_COUNT TIME OUT.\r\n");
+                is_psu_i2c_busy = 0;
+                return -ENXIO;
+            }
+        }
+    }
 
     mutex_lock(&priv->lock);
 
@@ -1061,6 +1255,12 @@ static int clounix_i2c_xfer_psu1(struct i2c_adapter *adap, struct i2c_msg *msgs,
         }
     }
 
+    if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+    {
+        iic_ack_data = 0xffffffff;
+        writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+    }
+    is_psu_i2c_busy = 0;
     mutex_unlock(&priv->lock);
 
     return num;
@@ -1069,6 +1269,12 @@ out:
     tmp_value = 0;
     tmp_value = (FPGA_PSU_MGR_RST | FPGA_PSU_MGR_ENABLE);
     writel(tmp_value, priv->mmio + FPGA_PSU_CFG);
+    if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+    {
+        iic_ack_data = 0xffffffff;
+        writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+    }
+    is_psu_i2c_busy = 0;
     mutex_unlock(&priv->lock);
     return -ETIMEDOUT;
 }
@@ -1108,11 +1314,53 @@ static int clounix_i2c_smbus_xfer_psu0(struct i2c_adapter *adap, unsigned short 
 
     unsigned int tmp_value = 0;
 
-    unsigned char r_addr = 0, w_addr = 0, i = 0, data_size = 0;
+    unsigned char r_addr = 0, w_addr = 0, data_size = 0;
+
+    unsigned int i = 0;
 
     unsigned int *tmp_addr = NULL;
 
-    // LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "clounix_i2c_smbus_xfer_psu0 addr : %x size: %x command %x rw %x\r\n", addr, size, command, read_write);
+    unsigned int iic_ack_data = 0;
+
+    if (is_psu_i2c_busy == 1)
+    {
+        return -ENXIO;
+    }
+    if (clounix_fpga_base == NULL)
+    {
+        LOG_ERR(CLX_DRIVER_TYPES_I2C_MASTER, "fpga resource is not available.\r\n");
+        return -ENXIO;
+    }
+    else
+    {
+        is_psu_i2c_busy = 1;
+        if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+        {
+            iic_ack_data = 0xffffffff;
+            writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+
+            iic_ack_data = readl(clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+
+            for (i = 0; i < FPGA_COME_REQ_ACK_TRY_COUNT; i++)
+            {
+                iic_ack_data = readl(clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+                if ((iic_ack_data & FPGA_COME_REQ_ACK_MASK) == 1)
+                {
+                    break;
+                }
+                else
+                {
+                    usleep_range(50000, 60000);
+                }
+            }
+            if (i >= FPGA_COME_REQ_ACK_TRY_COUNT)
+            {
+                LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "CLX_DRIVER_TYPES_I2C_MASTER FPGA_COME_REQ_ACK_TRY_COUNT TIME OUT.\r\n");
+                is_psu_i2c_busy = 0;
+                return -ENXIO;
+            }
+        }
+    }
 
     mutex_lock(&priv->lock);
 
@@ -1336,6 +1584,12 @@ static int clounix_i2c_smbus_xfer_psu0(struct i2c_adapter *adap, unsigned short 
         break;
     }
 
+    if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+    {
+        iic_ack_data = 0xffffffff;
+        writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+    }
+    is_psu_i2c_busy = 0;
     mutex_unlock(&priv->lock);
     usleep_range(6000, 10000);
     return 0;
@@ -1344,6 +1598,12 @@ out:
     tmp_value = 0;
     tmp_value = (FPGA_PSU_MGR_RST | FPGA_PSU_MGR_ENABLE);
     writel(tmp_value, priv->mmio + FPGA_PSU0_CFG);
+    if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+    {
+        iic_ack_data = 0xffffffff;
+        writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+    }
+    is_psu_i2c_busy = 0;
     mutex_unlock(&priv->lock);
     return -ETIMEDOUT;
 }
@@ -1355,6 +1615,47 @@ static int clounix_i2c_xfer_psu0(struct i2c_adapter *adap, struct i2c_msg *msgs,
     unsigned char addr = 0, r_addr = 0, w_addr = 0, reg_addr = 0;
     unsigned int *tmp_addr = NULL;
     unsigned int tmp_value = 0, i = 0, j = 0;
+    unsigned int iic_ack_data = 0;
+
+    if (is_psu_i2c_busy == 1)
+    {
+        return -ENXIO;
+    }
+    if (clounix_fpga_base == NULL)
+    {
+        LOG_ERR(CLX_DRIVER_TYPES_I2C_MASTER, "fpga resource is not available.\r\n");
+        return -ENXIO;
+    }
+    else
+    {
+        is_psu_i2c_busy = 1;
+        if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+        {
+            iic_ack_data = 0xffffffff;
+            writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+
+            iic_ack_data = readl(clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+
+            for (i = 0; i < FPGA_COME_REQ_ACK_TRY_COUNT; i++)
+            {
+                iic_ack_data = readl(clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+                if ((iic_ack_data & FPGA_COME_REQ_ACK_MASK) == 1)
+                {
+                    break;
+                }
+                else
+                {
+                    usleep_range(50000, 60000);
+                }
+            }
+            if (i >= FPGA_COME_REQ_ACK_TRY_COUNT)
+            {
+                LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "CLX_DRIVER_TYPES_I2C_MASTER FPGA_COME_REQ_ACK_TRY_COUNT TIME OUT.\r\n");
+                is_psu_i2c_busy = 0;
+                return -ENXIO;
+            }
+        }
+    }
 
     mutex_lock(&priv->lock);
 
@@ -1531,6 +1832,12 @@ static int clounix_i2c_xfer_psu0(struct i2c_adapter *adap, struct i2c_msg *msgs,
         }
     }
 
+    if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+    {
+        iic_ack_data = 0xffffffff;
+        writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+    }
+    is_psu_i2c_busy = 0;
     mutex_unlock(&priv->lock);
 
     return num;
@@ -1539,6 +1846,12 @@ out:
     tmp_value = 0;
     tmp_value = (FPGA_PSU_MGR_RST | FPGA_PSU_MGR_ENABLE);
     writel(tmp_value, priv->mmio + FPGA_PSU0_CFG);
+    if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+    {
+        iic_ack_data = 0xffffffff;
+        writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+    }
+    is_psu_i2c_busy = 0;
     mutex_unlock(&priv->lock);
     return -ETIMEDOUT;
 }
@@ -1578,6 +1891,41 @@ static int clounix_i2c_xfer_reboot_eeprom(struct i2c_adapter *adap, struct i2c_m
     unsigned char addr = 0, r_addr = 0, w_addr = 0, reg_addr = 0;
     unsigned int *tmp_addr = NULL;
     unsigned int tmp_value = 0, i = 0, j = 0;
+    unsigned int iic_ack_data = 0;
+
+    if (clounix_fpga_base == NULL)
+    {
+        LOG_ERR(CLX_DRIVER_TYPES_I2C_MASTER, "fpga resource is not available.\r\n");
+        return -ENXIO;
+    }
+    else
+    {
+        if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+        {
+            iic_ack_data = 0xffffffff;
+            writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+
+            iic_ack_data = readl(clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+
+            for (i = 0; i < FPGA_COME_REQ_ACK_TRY_COUNT; i++)
+            {
+                iic_ack_data = readl(clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+                if ((iic_ack_data & FPGA_COME_REQ_ACK_MASK) == 1)
+                {
+                    break;
+                }
+                else
+                {
+                    usleep_range(50000, 60000);
+                }
+            }
+            if (i >= FPGA_COME_REQ_ACK_TRY_COUNT)
+            {
+                LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "CLX_DRIVER_TYPES_I2C_MASTER FPGA_COME_REQ_ACK_TRY_COUNT TIME OUT.\r\n");
+                return -ENXIO;
+            }
+        }
+    }
 
     mutex_lock(&priv->lock);
 
@@ -1763,7 +2111,11 @@ static int clounix_i2c_xfer_reboot_eeprom(struct i2c_adapter *adap, struct i2c_m
             }
         }
     }
-
+    if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+    {
+        iic_ack_data = 0xffffffff;
+        writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+    }
     mutex_unlock(&priv->lock);
 
     return num;
@@ -1772,6 +2124,11 @@ out:
     tmp_value = 0;
     tmp_value = (FPGA_EEPROM_MGR_RST | FPGA_EEPROM_MGR_ENABLE);
     writel(tmp_value, priv->mmio + FPGA_EEPROM_CFG);
+    if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+    {
+        iic_ack_data = 0xffffffff;
+        writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+    }
     mutex_unlock(&priv->lock);
     return -ETIMEDOUT;
 }
@@ -1783,11 +2140,49 @@ static int clounix_i2c_smbus_xfer_reboot_eeprom(struct i2c_adapter *adap, unsign
 
     unsigned int tmp_value = 0;
 
-    unsigned char r_addr = 0, w_addr = 0, i = 0, data_size = 0;
+    unsigned char r_addr = 0, w_addr = 0, data_size = 0;
+
+    unsigned int i = 0;
 
     unsigned int *tmp_addr = NULL;
 
+    unsigned int iic_ack_data = 0;
+
     LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "clounix_i2c_smbus_xfer_reboot_eeprom addr : %x size: %x command %x rw %x\r\n", addr, size, command, read_write);
+
+    if (clounix_fpga_base == NULL)
+    {
+        LOG_ERR(CLX_DRIVER_TYPES_I2C_MASTER, "fpga resource is not available.\r\n");
+        return -ENXIO;
+    }
+    else
+    {
+        if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+        {
+            iic_ack_data = 0xffffffff;
+            writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+
+            iic_ack_data = readl(clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+
+            for (i = 0; i < FPGA_COME_REQ_ACK_TRY_COUNT; i++)
+            {
+                iic_ack_data = readl(clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+                if ((iic_ack_data & FPGA_COME_REQ_ACK_MASK) == 1)
+                {
+                    break;
+                }
+                else
+                {
+                    usleep_range(50000, 60000);
+                }
+            }
+            if (i >= FPGA_COME_REQ_ACK_TRY_COUNT)
+            {
+                LOG_DBG(CLX_DRIVER_TYPES_I2C_MASTER, "CLX_DRIVER_TYPES_I2C_MASTER FPGA_COME_REQ_ACK_TRY_COUNT TIME OUT.\r\n");
+                return -ENXIO;
+            }
+        }
+    }
 
     mutex_lock(&priv->lock);
 
@@ -2012,7 +2407,11 @@ static int clounix_i2c_smbus_xfer_reboot_eeprom(struct i2c_adapter *adap, unsign
     default:
         break;
     }
-
+    if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+    {
+        iic_ack_data = 0xffffffff;
+        writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+    }
     mutex_unlock(&priv->lock);
     usleep_range(6000, 10000);
     return 0;
@@ -2021,6 +2420,11 @@ out:
     tmp_value = 0;
     tmp_value = (FPGA_EEPROM_MGR_RST | FPGA_EEPROM_MGR_ENABLE);
     writel(tmp_value, priv->mmio + FPGA_EEPROM_CFG);
+    if ((readl(clounix_fpga_base + FPGA_COME_BMC_STATUS_OFFSET) & FPGA_COME_BMC_STATUS_MASK) == 1)
+    {
+        iic_ack_data = 0xffffffff;
+        writel(iic_ack_data, clounix_fpga_base + FPGA_COME_REQ_ACK_OFFSET);
+    }
     mutex_unlock(&priv->lock);
     return -ETIMEDOUT;
 }
